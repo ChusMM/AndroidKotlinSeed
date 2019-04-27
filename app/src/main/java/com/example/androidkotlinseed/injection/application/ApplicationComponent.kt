@@ -1,7 +1,12 @@
 package com.example.androidkotlinseed.injection.application
 
+import com.example.androidkotlinseed.injection.presentation.PresentationComponent
+import com.example.androidkotlinseed.injection.presentation.PresentationModule
 import dagger.Component
+import javax.inject.Singleton
 
-@Component(modules = arrayOf(ApplicationModule::class, UseCaseModule::class))
+@Singleton
+@Component(modules = [ApplicationModule::class, UseCaseModule::class])
 interface ApplicationComponent {
+    fun newPresentationComponent(presentationModule: PresentationModule): PresentationComponent
 }

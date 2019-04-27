@@ -4,7 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.example.androidkotlinseed.SuperHero
+import com.example.androidkotlinseed.domain.SuperHero
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single

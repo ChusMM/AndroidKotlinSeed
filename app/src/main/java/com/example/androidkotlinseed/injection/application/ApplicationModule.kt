@@ -2,6 +2,8 @@ package com.example.androidkotlinseed.injection.application
 
 import android.app.Application
 import android.content.Context
+import com.example.androidkotlinseed.domain.usecases.FetchHeroesUseCase
+import com.example.androidkotlinseed.repository.DataStrategy
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -18,5 +20,11 @@ class ApplicationModule(private val application: Application) {
     @Provides
     fun getAppContext(application: Application): Context {
         return application.applicationContext
+    }
+
+    @Provides
+    fun getFetchHeroesUserCase(dataStrategy: DataStrategy, context: Context)
+            : FetchHeroesUseCase {
+        return FetchHeroesUseCase(dataStrategy, context)
     }
 }

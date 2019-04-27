@@ -8,4 +8,25 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="AppTheme.NoActionBar" parent="AppTheme">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.TextAppearanceSmall" parent="TextAppearance.AppCompat.Small">
+        <item name="android:fontFamily">sans-serif-light</item>
+    </style>
+
+    <style name="AppTheme.TextAppearanceSmallAllCaps" parent="AppTheme.TextAppearanceSmall">
+        <item name="android:textAllCaps">true</item>
+    </style>
+
+    <style name="AppTheme.TextAppearanceMedium" parent="TextAppearance.AppCompat.Medium">
+        <item name="android:fontFamily">sans-serif-light</item>
+    </style>
+
+    <style name="AppTheme.TextAppearanceMediumAllCaps" parent="AppTheme.TextAppearanceMedium">
+        <item name="android:textAllCaps">true</item>
+    </style>
+
 </resources>

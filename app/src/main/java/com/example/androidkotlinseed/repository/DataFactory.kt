@@ -1,6 +1,6 @@
 package com.example.androidkotlinseed.repository
 
-import com.example.androidkotlinseed.SuperHero
+import com.example.androidkotlinseed.domain.SuperHero
 import com.example.androidkotlinseed.api.HeroListWrapper
 import com.example.androidkotlinseed.api.HeroWrapper
 
@@ -17,6 +17,15 @@ class DataFactory {
 
     private fun superHeroFromHeroWrapper(heroWrapper: HeroWrapper): SuperHero {
         val (name, photo, realName, height, power, abilities, groups) = heroWrapper
-        return SuperHero(0, name, photo, realName, height, power, abilities, groups)
+        return SuperHero(
+            0,
+            name,
+            photo,
+            realName,
+            height,
+            power,
+            abilities,
+            groups
+        )
     }
 }

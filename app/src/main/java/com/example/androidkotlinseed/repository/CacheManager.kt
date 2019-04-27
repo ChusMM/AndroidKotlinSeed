@@ -1,7 +1,7 @@
 package com.example.androidkotlinseed.repository
 
 import android.content.Context
-import com.example.androidkotlinseed.SuperHero
+import com.example.androidkotlinseed.domain.SuperHero
 import com.example.androidkotlinseed.persistence.SuperHeroDao
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable

@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">AndroidKotlinSeed</string>
+    <string name="call_failed">We got somme issues when attempting connect. Please, try it later.</string>
+    <string name="server_error_dialog_title">Error</string>
+    <string name="ok">OK</string>
+    <string name="share_image_via">Share image via…</string>
+    <string name="name">Name</string>
+    <string name="real_name">Real name</string>
+    <string name="height">Height</string>
+    <string name="power">Power</string>
+    <string name="abilities">Abilities</string>
+    <string name="groups">Groups</string>
 </resources>
