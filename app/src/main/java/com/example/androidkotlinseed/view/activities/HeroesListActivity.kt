@@ -1,25 +1,71 @@
 package com.example.androidkotlinseed.view.activities
 
 import android.os.Bundle
+import android.util.Log
+import android.view.View
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.androidkotlinseed.R
-import com.example.androidkotlinseed.domain.usecases.FetchHeroesUseCase
+import com.example.androidkotlinseed.domain.SuperHero
 import com.example.androidkotlinseed.injection.BaseActivity
+import com.example.androidkotlinseed.mvvm.QuestionListViewModel
+import com.example.androidkotlinseed.mvvm.ViewModelFactory
+import com.example.androidkotlinseed.utils.ImageLoader
+import com.example.androidkotlinseed.view.adapters.HeroesAdapter
+import com.example.androidkotlinseed.view.dialogs.CallErrorDialogFragment
 import com.example.androidkotlinseed.view.dialogs.DialogsManager
+
+import kotlinx.android.synthetic.main.activity_heroes_list.recycler_heroes as recyclerHeroes
+import kotlinx.android.synthetic.main.activity_heroes_list.swipe_layout as swipeRefreshLayout
+
 import javax.inject.Inject
 
-class HeroesListActivity : BaseActivity() {
+class HeroesListActivity : BaseActivity(), QuestionListViewModel.Listener, SwipeRefreshLayout.OnRefreshListener {
+
     private val TAG = HeroesListActivity::class.simpleName
 
-    @Inject
-    lateinit var fetchHeroesUseCase: FetchHeroesUseCase
+    @Inject lateinit var dialogsManager: DialogsManager
+    @Inject lateinit var imageLoader: ImageLoader
+    lateinit var viewModelFactory: ViewModelFactory
+    @Inject lateinit var questionListViewModel: QuestionListViewModel
 
-    @Inject
-    lateinit var dialogsManager: DialogsManager
+    private val heroObserver = Observer<List<SuperHero>> { newList -> run {
+        val heroesAdapter = HeroesAdapter(newList, this, imageLoader)
+        recyclerHeroes.adapter = heroesAdapter }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_heroes_list)
-
         getPresentationComponent().inject(this)
+
+        questionListViewModel = ViewModelProviders.of(this, viewModelFactory).get(QuestionListViewModel::class.java)
+        questionListViewModel.heroList.observe(this, heroObserver)
+
+        recyclerHeroes.layoutManager = GridLayoutManager(this, 2)
+        recyclerHeroes.setHasFixedSize(true)
+    }
+
+    override fun onStart() {
+        super.onStart()
+        swipeRefreshLayout.setOnRefreshListener(this)
+
+        recyclerHeroes.visibility = View.GONE
+        swipeRefreshLayout.isRefreshing = true
+    }
+
+    override fun onRefresh() {
+        questionListViewModel.fetchHeroesAndNotify()
+    }
+
+    override fun onHeroesFetched(superHeroes: List<SuperHero>) {
+        swipeRefreshLayout.isRefreshing = true
+    }
+
+    override fun onHeroesFetchFailed(msg: String) {
+        Log.e(TAG, "Heroes call failed");
+        dialogsManager.showDialogWithId(CallErrorDialogFragment.newInstance(), "")
     }
 }

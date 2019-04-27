@@ -1,4 +1,4 @@
-package com.example.androidkotlinseed.domain
+package com.example.androidkotlinseed.domain.usecases
 
 import android.content.Context
 import com.example.androidkotlinseed.mvvm.BaseObservable

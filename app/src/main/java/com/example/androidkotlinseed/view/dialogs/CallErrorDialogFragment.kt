@@ -7,7 +7,7 @@ import androidx.fragment.app.DialogFragment
 import com.example.androidkotlinseed.R
 
 
-class ServerErrorDialogFragment : DialogFragment() {
+class CallErrorDialogFragment : DialogFragment() {
     private var mMsg: String? = null
 
     private fun setArgs(rationalMsg: String) {
@@ -21,20 +21,19 @@ class ServerErrorDialogFragment : DialogFragment() {
 
         alertDialogBuilder.setMessage(this.mMsg ?: "")
 
-        alertDialogBuilder.setPositiveButton(
-            R.string.ok
+        alertDialogBuilder.setPositiveButton(R.string.ok
         ) { _, _ -> dismiss() }
 
         return alertDialogBuilder.create()
     }
 
     companion object {
-        fun newInstance(): ServerErrorDialogFragment {
-            return ServerErrorDialogFragment()
+        fun newInstance(): CallErrorDialogFragment {
+            return CallErrorDialogFragment()
         }
 
-        fun newInstance(rationalMsg: String): ServerErrorDialogFragment {
-            val serverErrorDialogFragment = ServerErrorDialogFragment()
+        fun newInstance(rationalMsg: String): CallErrorDialogFragment {
+            val serverErrorDialogFragment = CallErrorDialogFragment()
             serverErrorDialogFragment.setArgs(rationalMsg)
 
             return serverErrorDialogFragment

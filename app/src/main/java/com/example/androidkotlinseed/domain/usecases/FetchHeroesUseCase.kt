@@ -2,11 +2,9 @@ package com.example.androidkotlinseed.domain.usecases
 
 import android.content.Context
 import com.example.androidkotlinseed.R
-import com.example.androidkotlinseed.domain.BaseUseCase
 import com.example.androidkotlinseed.domain.SuperHero
 import com.example.androidkotlinseed.repository.DataStrategy
 import io.reactivex.Flowable
-import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -30,7 +28,7 @@ class FetchHeroesUseCase(var dataStrategy: DataStrategy) :
     }
 
     override fun onQueryHeroesOk(superHeroes: List<SuperHero>) {
-        val disposable = Observable.fromIterable(getListeners())
+        val disposable = Flowable.fromIterable(getListeners())
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { listener -> listener.onFetchHeroesOk(superHeroes) }
