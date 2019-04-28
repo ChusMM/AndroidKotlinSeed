@@ -1,6 +1,7 @@
 package com.example.androidkotlinseed.view.activities
 
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.View
 import androidx.lifecycle.Observer
@@ -31,7 +32,7 @@ class HeroesListActivity : BaseActivity(), HeroListViewModel.Listener, SwipeRefr
     @Inject lateinit var viewModelFactory: ViewModelFactory
     @Inject lateinit var heroListViewModel: HeroListViewModel
 
-    private val heroObserver = Observer<List<SuperHero>> { newList -> run {
+    private val heroListObserver = Observer<List<SuperHero>> { newList -> run {
         val heroesAdapter = HeroesAdapter(newList, this, imageLoader)
         recyclerHeroes.adapter = heroesAdapter }
     }
@@ -42,7 +43,7 @@ class HeroesListActivity : BaseActivity(), HeroListViewModel.Listener, SwipeRefr
         getPresentationComponent().inject(this)
 
         heroListViewModel = ViewModelProviders.of(this, viewModelFactory).get(HeroListViewModel::class.java)
-        heroListViewModel.heroList.observe(this, heroObserver)
+        heroListViewModel.heroList.observe(this, heroListObserver)
 
         recyclerHeroes.layoutManager = GridLayoutManager(this, 2)
         recyclerHeroes.setHasFixedSize(true)
@@ -72,6 +73,8 @@ class HeroesListActivity : BaseActivity(), HeroListViewModel.Listener, SwipeRefr
     override fun onHeroesFetched(superHeroes: List<SuperHero>) {
         swipeRefreshLayout.isRefreshing = false
         recyclerHeroes.visibility = View.VISIBLE
+        // Uncomment to test liveData
+        // Handler().postDelayed({ heroListViewModel.clearList() }, 3500)
     }
 
     override fun onHeroesFetchFailed(msg: String) {

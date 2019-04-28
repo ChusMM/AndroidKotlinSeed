@@ -8,7 +8,6 @@ import io.reactivex.Flowable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
-import java.util.HashSet
 import javax.inject.Inject
 
 class HeroListViewModel @Inject constructor (private val fetchHeroesUseCase: FetchHeroesUseCase)
@@ -44,7 +43,18 @@ class HeroListViewModel @Inject constructor (private val fetchHeroesUseCase: Fet
     }
 
     fun fetchHeroesAndNotify() {
-        fetchHeroesUseCase.fetchAndNotify()
+        val refresh = heroList.value?.isEmpty() ?: true
+
+        if (refresh) {
+            fetchHeroesUseCase.fetchAndNotify()
+        } else {
+            heroList.postValue(heroList.value)
+            heroList.value?.let { onFetchHeroesOk(it) }
+        }
+    }
+
+    fun clearList() {
+        heroList.value = mutableListOf()
     }
 
     override fun onFetchHeroesOk(superHeroes: List<SuperHero>) {

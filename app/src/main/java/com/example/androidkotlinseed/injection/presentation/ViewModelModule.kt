@@ -9,13 +9,11 @@ import dagger.MapKey
 import dagger.Module
 import dagger.multibindings.IntoMap
 
-import java.lang.annotation.Retention
-import java.lang.annotation.RetentionPolicy
-
 import kotlin.reflect.KClass
+import kotlin.annotation.Retention
 
 @Target(AnnotationTarget.FUNCTION, AnnotationTarget.PROPERTY_GETTER, AnnotationTarget.PROPERTY_SETTER)
-@Retention(RetentionPolicy.RUNTIME)
+@Retention(AnnotationRetention.RUNTIME)
 @MapKey
 internal annotation class ViewModelKey(val value: KClass<out ViewModel>)
 
