@@ -1,36 +1,32 @@
 package com.example.androidkotlinseed.injection.presentation
 
 import androidx.lifecycle.ViewModel
-import com.example.androidkotlinseed.domain.usecases.FetchHeroesUseCase
+import androidx.lifecycle.ViewModelProvider
 import com.example.androidkotlinseed.mvvm.HeroListViewModel
 import com.example.androidkotlinseed.mvvm.ViewModelFactory
 import dagger.Binds
 import dagger.MapKey
 import dagger.Module
-import dagger.Provides
 import dagger.multibindings.IntoMap
 
-import javax.inject.Provider
+import java.lang.annotation.Retention
+import java.lang.annotation.RetentionPolicy
+
 import kotlin.reflect.KClass
-import kotlin.annotation.Target
-import kotlin.annotation.Retention
+
+@Target(AnnotationTarget.FUNCTION, AnnotationTarget.PROPERTY_GETTER, AnnotationTarget.PROPERTY_SETTER)
+@Retention(RetentionPolicy.RUNTIME)
+@MapKey
+internal annotation class ViewModelKey(val value: KClass<out ViewModel>)
 
 @Module
-class ViewModelModule {
-    @Target(AnnotationTarget.FUNCTION, AnnotationTarget.PROPERTY_GETTER, AnnotationTarget.PROPERTY_SETTER)
-    @Retention(AnnotationRetention.RUNTIME)
-    @MapKey
-    internal annotation class ViewModelKey(val value: KClass<out ViewModel>)
+abstract class ViewModelModule {
 
     @Binds
-    internal fun viewModelFactory(providerMap: Map<Class<out ViewModel>, Provider<ViewModel>>): ViewModelFactory {
-        return ViewModelFactory(providerMap)
-    }
+    abstract fun viewModelFactory(factory: ViewModelFactory): ViewModelProvider.Factory
 
     @Binds
     @IntoMap
     @ViewModelKey(HeroListViewModel::class)
-    internal fun questionDetailsViewModel(fetchHeroesUseCase: FetchHeroesUseCase): ViewModel {
-        return HeroListViewModel(fetchHeroesUseCase)
-    }
+    abstract fun questionDetailsViewModel(heroListViewModel: HeroListViewModel): ViewModel
 }

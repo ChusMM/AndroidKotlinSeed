@@ -51,9 +51,18 @@ class HeroesListActivity : BaseActivity(), HeroListViewModel.Listener, SwipeRefr
     override fun onStart() {
         super.onStart()
         swipeRefreshLayout.setOnRefreshListener(this)
+        heroListViewModel.registerListener(this)
 
         recyclerHeroes.visibility = View.GONE
         swipeRefreshLayout.isRefreshing = true
+        this.onRefresh()
+    }
+
+    override fun onStop() {
+        super.onStop()
+
+        heroListViewModel.unregisterListener(this)
+        swipeRefreshLayout.setOnRefreshListener(this)
     }
 
     override fun onRefresh() {
@@ -61,7 +70,8 @@ class HeroesListActivity : BaseActivity(), HeroListViewModel.Listener, SwipeRefr
     }
 
     override fun onHeroesFetched(superHeroes: List<SuperHero>) {
-        swipeRefreshLayout.isRefreshing = true
+        swipeRefreshLayout.isRefreshing = false
+        recyclerHeroes.visibility = View.VISIBLE
     }
 
     override fun onHeroesFetchFailed(msg: String) {

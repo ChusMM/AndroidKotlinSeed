@@ -9,8 +9,9 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import java.util.HashSet
+import javax.inject.Inject
 
-class HeroListViewModel(private val fetchHeroesUseCase: FetchHeroesUseCase)
+class HeroListViewModel @Inject constructor (private val fetchHeroesUseCase: FetchHeroesUseCase)
     : ViewModel(), FetchHeroesUseCase.Listener {
 
     interface Listener {
@@ -21,7 +22,7 @@ class HeroListViewModel(private val fetchHeroesUseCase: FetchHeroesUseCase)
     val heroList: MutableLiveData<List<SuperHero>> by lazy {
         MutableLiveData<List<SuperHero>>()
     }
-    private val listeners = HashSet<Listener>()
+    private val listeners: MutableSet<Listener> = mutableSetOf()
     private val compositeDisposable = CompositeDisposable()
 
     init {
@@ -32,6 +33,14 @@ class HeroListViewModel(private val fetchHeroesUseCase: FetchHeroesUseCase)
         super.onCleared()
         fetchHeroesUseCase.unregisterListener(this)
         compositeDisposable.clear()
+    }
+
+    fun registerListener(listener: Listener) {
+        listeners.add(listener)
+    }
+
+    fun unregisterListener(listener: Listener) {
+        listeners.remove(listener)
     }
 
     fun fetchHeroesAndNotify() {
