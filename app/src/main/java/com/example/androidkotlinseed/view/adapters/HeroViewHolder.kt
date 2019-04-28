@@ -5,10 +5,10 @@ import androidx.databinding.BindingAdapter
 import androidx.databinding.library.baseAdapters.BR
 import androidx.recyclerview.widget.RecyclerView
 import com.example.androidkotlinseed.R
-import com.example.androidkotlinseed.databinding.RowHeroBinding
+import com.example.androidkotlinseed.databinding.RowHeroItemBinding
 import com.example.androidkotlinseed.utils.ImageLoader
 
-class HeroViewHolder(private val binding: RowHeroBinding, private val imageLoader: ImageLoader)
+class HeroViewHolder(private val binding: RowHeroItemBinding, private val imageLoader: ImageLoader)
     : RecyclerView.ViewHolder(binding.root) {
 
     fun <T>bindHero(item: T) = with(itemView) {
