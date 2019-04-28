@@ -6,6 +6,7 @@ import com.example.androidkotlinseed.App
 import com.example.androidkotlinseed.injection.application.ApplicationComponent
 import com.example.androidkotlinseed.injection.presentation.PresentationComponent
 import com.example.androidkotlinseed.injection.presentation.PresentationModule
+import com.example.androidkotlinseed.injection.presentation.ViewModelModule
 
 class BaseDialog: DialogFragment() {
     var isInjectorUsed = false

@@ -6,6 +6,7 @@ import com.example.androidkotlinseed.App
 import com.example.androidkotlinseed.injection.application.ApplicationComponent
 import com.example.androidkotlinseed.injection.presentation.PresentationComponent
 import com.example.androidkotlinseed.injection.presentation.PresentationModule
+import com.example.androidkotlinseed.injection.presentation.ViewModelModule
 
 abstract class BaseActivity : AppCompatActivity() {
     var isInjectorUsed = false
@@ -16,7 +17,8 @@ abstract class BaseActivity : AppCompatActivity() {
             throw RuntimeException("There is no need to use injector more than once")
         }
         isInjectorUsed = true
-        return getApplicationComponent().newPresentationComponent(PresentationModule(this))
+        return getApplicationComponent()
+            .newPresentationComponent(PresentationModule(this))
     }
 
     private fun getApplicationComponent(): ApplicationComponent {

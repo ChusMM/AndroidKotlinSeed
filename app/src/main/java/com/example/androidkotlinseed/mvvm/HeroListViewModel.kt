@@ -10,7 +10,7 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import java.util.HashSet
 
-class QuestionListViewModel(private val fetchHeroesUseCase: FetchHeroesUseCase)
+class HeroListViewModel(private val fetchHeroesUseCase: FetchHeroesUseCase)
     : ViewModel(), FetchHeroesUseCase.Listener {
 
     interface Listener {
