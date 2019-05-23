@@ -12,10 +12,15 @@ import com.example.androidkotlinseed.domain.SuperHero
 import com.example.androidkotlinseed.utils.ImageLoader
 
 class HeroesAdapter(private val heroes: List<SuperHero>,
+                    private val clickListener: HeroItemClickListener,
                     private val context: Context,
                     private val imageLoader: ImageLoader) : RecyclerView.Adapter<HeroViewHolder>() {
 
     private val TAG = HeroesAdapter::class.java.simpleName
+
+    interface HeroItemClickListener {
+        fun onClickHero(superHero: SuperHero)
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HeroViewHolder {
         //val view = LayoutInflater.from(context).inflate(R.layout.row_hero_item, parent, false)
@@ -26,7 +31,7 @@ class HeroesAdapter(private val heroes: List<SuperHero>,
 
     override fun onBindViewHolder(holder: HeroViewHolder, position: Int) {
         try {
-            holder.bindHero(heroes[position])
+            holder.bindHero(heroes[position], clickListener)
         } catch (e: NullPointerException) {
             Log.e(TAG, e.toString())
         } catch (e: IndexOutOfBoundsException) {

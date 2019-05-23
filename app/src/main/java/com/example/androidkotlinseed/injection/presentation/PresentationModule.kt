@@ -7,9 +7,11 @@ import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
 import com.example.androidkotlinseed.utils.ImageLoader
 import com.example.androidkotlinseed.utils.ImageUtils
+import com.example.androidkotlinseed.view.adapters.HeroBindingAdapter
 import com.example.androidkotlinseed.view.dialogs.DialogsManager
 import dagger.Module
 import dagger.Provides
+import javax.inject.Singleton
 
 @Module
 class PresentationModule(private val activity: FragmentActivity) {
@@ -30,9 +32,6 @@ class PresentationModule(private val activity: FragmentActivity) {
     fun getDialogManager(fragmentManager: FragmentManager): DialogsManager {
         return DialogsManager(fragmentManager)
     }
-
-    @Provides
-    fun getImageLoader(): ImageLoader = ImageLoader()
 
     @Provides
     fun getImageUtils(activity: Activity): ImageUtils = ImageUtils(activity)

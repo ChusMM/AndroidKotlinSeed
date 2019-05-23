@@ -1,22 +1,22 @@
 package com.example.androidkotlinseed.injection
 
+import android.app.Application
 import androidx.annotation.UiThread
-import androidx.appcompat.app.AppCompatActivity
 import com.example.androidkotlinseed.App
 import com.example.androidkotlinseed.injection.application.ApplicationComponent
-import com.example.androidkotlinseed.injection.presentation.PresentationComponent
-import com.example.androidkotlinseed.injection.presentation.PresentationModule
+import com.example.androidkotlinseed.injection.presentation.BindingComponent
+import com.example.androidkotlinseed.injection.presentation.BindingsModule
 
-abstract class BaseActivity : AppCompatActivity() {
+open class BaseBindingAdapter(val application: Application) {
     var isInjectorUsed = false
 
     @UiThread
-    fun getPresentationComponent(): PresentationComponent {
+    fun getBindingComponent(): BindingComponent {
         if (isInjectorUsed) {
             throw RuntimeException("There is no need to use injector more than once")
         }
         isInjectorUsed = true
-        return getApplicationComponent().newPresentationComponent(PresentationModule(this))
+        return getApplicationComponent().newBindingComponent(BindingsModule())
     }
 
     private fun getApplicationComponent(): ApplicationComponent {

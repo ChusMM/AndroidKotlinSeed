@@ -1,7 +1,6 @@
 package com.example.androidkotlinseed.view.activities
 
 import android.os.Bundle
-import android.os.Handler
 import android.util.Log
 import android.view.View
 import androidx.lifecycle.Observer
@@ -23,7 +22,8 @@ import kotlinx.android.synthetic.main.activity_heroes_list.swipe_layout as swipe
 
 import javax.inject.Inject
 
-class HeroesListActivity : BaseActivity(), HeroListViewModel.Listener, SwipeRefreshLayout.OnRefreshListener {
+class HeroesListActivity : BaseActivity(), HeroListViewModel.Listener, SwipeRefreshLayout.OnRefreshListener,
+    HeroesAdapter.HeroItemClickListener {
 
     private val TAG = HeroesListActivity::class.simpleName
 
@@ -33,7 +33,7 @@ class HeroesListActivity : BaseActivity(), HeroListViewModel.Listener, SwipeRefr
     @Inject lateinit var heroListViewModel: HeroListViewModel
 
     private val heroListObserver = Observer<List<SuperHero>> { newList -> run {
-        val heroesAdapter = HeroesAdapter(newList, this, imageLoader)
+        val heroesAdapter = HeroesAdapter(newList, this, this, imageLoader)
         recyclerHeroes.adapter = heroesAdapter }
     }
 
@@ -80,5 +80,8 @@ class HeroesListActivity : BaseActivity(), HeroListViewModel.Listener, SwipeRefr
     override fun onHeroesFetchFailed(msg: String) {
         Log.e(TAG, "Heroes call failed")
         dialogsManager.showDialogWithId(CallErrorDialogFragment.newInstance(), "")
+    }
+
+    override fun onClickHero(superHero: SuperHero) {
     }
 }

@@ -16,6 +16,7 @@ data class SuperHero(
     @ColumnInfo(name = "power") val power: String?,
     @ColumnInfo(name = "abilities") val abilities: String?,
     @ColumnInfo(name = "groups") val groups: String?) : Parcelable {
+
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
@@ -56,6 +57,7 @@ data class SuperHero(
     }
 
     companion object {
+        @Suppress("unused")
         @JvmField
         val CREATOR: Parcelable.Creator<SuperHero> = object : Parcelable.Creator<SuperHero> {
             override fun createFromParcel(source: Parcel): SuperHero =

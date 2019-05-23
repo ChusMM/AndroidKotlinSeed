@@ -29,7 +29,7 @@
                 android:layout_gravity="center"
                 android:padding="@dimen/generic_margin">
 
-                <ImageView
+                <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/hero_pic"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -49,7 +49,7 @@
                 android:maxLines="1"
                 android:padding="@dimen/generic_margin"
                 android:textStyle="bold|italic"
-                android:text="@={heroModel.name}"
+                android:text="@{heroModel.name}"
                 tools:text="Spiderman"
                 style="@style/AppTheme.TextAppearanceSmallAllCaps">
             </TextView>
