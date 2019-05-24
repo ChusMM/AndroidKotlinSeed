@@ -9,7 +9,7 @@ import com.example.androidkotlinseed.injection.presentation.PresentationModule
 import com.example.androidkotlinseed.injection.presentation.ViewModelModule
 
 class BaseDialog: DialogFragment() {
-    var isInjectorUsed = false
+    private var isInjectorUsed = false
 
     @UiThread
     fun getPresentationComponent(): PresentationComponent {

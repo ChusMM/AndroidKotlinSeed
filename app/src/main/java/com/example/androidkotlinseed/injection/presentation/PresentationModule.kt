@@ -35,4 +35,10 @@ class PresentationModule(private val activity: FragmentActivity) {
 
     @Provides
     fun getImageUtils(activity: Activity): ImageUtils = ImageUtils(activity)
+
+    @Provides
+    fun getImageLoader(): ImageLoader = ImageLoader()
+
+    @Provides
+    fun getHeroBindingAdapter(imageLoader: ImageLoader): HeroBindingAdapter = HeroBindingAdapter(imageLoader)
 }

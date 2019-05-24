@@ -6,10 +6,9 @@ import com.example.androidkotlinseed.App
 import com.example.androidkotlinseed.injection.application.ApplicationComponent
 import com.example.androidkotlinseed.injection.presentation.PresentationComponent
 import com.example.androidkotlinseed.injection.presentation.PresentationModule
-import com.example.androidkotlinseed.injection.presentation.ViewModelModule
 
 class BaseFragment : Fragment() {
-    var isInjectorUsed = false
+    private var isInjectorUsed = false
 
     @UiThread
     fun getPresentationComponent(): PresentationComponent {

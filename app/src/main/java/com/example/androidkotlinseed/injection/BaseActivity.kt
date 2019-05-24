@@ -8,7 +8,7 @@ import com.example.androidkotlinseed.injection.presentation.PresentationComponen
 import com.example.androidkotlinseed.injection.presentation.PresentationModule
 
 abstract class BaseActivity : AppCompatActivity() {
-    var isInjectorUsed = false
+    private var isInjectorUsed = false
 
     @UiThread
     fun getPresentationComponent(): PresentationComponent {
