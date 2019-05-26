@@ -30,19 +30,10 @@ class HeroesAdapter(private val heroes: List<SuperHero>,
     override fun onBindViewHolder(holder: HeroViewHolder, position: Int) {
         try {
             holder.bindHero(heroes[position], clickListener)
-        } catch (e: NullPointerException) {
-            Log.e(TAG, e.toString())
         } catch (e: IndexOutOfBoundsException) {
             Log.e(TAG, e.toString())
         }
     }
 
-    override fun getItemCount(): Int {
-        return try {
-            this.heroes.size
-        } catch (e: NullPointerException) {
-            Log.e(TAG, e.toString())
-            0
-        }
-    }
+    override fun getItemCount(): Int = this.heroes.size
 }
