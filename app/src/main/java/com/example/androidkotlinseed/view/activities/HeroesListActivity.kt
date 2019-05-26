@@ -12,7 +12,7 @@ import com.example.androidkotlinseed.domain.SuperHero
 import com.example.androidkotlinseed.injection.BaseActivity
 import com.example.androidkotlinseed.mvvm.HeroListViewModel
 import com.example.androidkotlinseed.mvvm.ViewModelFactory
-import com.example.androidkotlinseed.view.adapters.HeroBindingAdapter
+import com.example.androidkotlinseed.view.adapters.SuperHeroDataBindingAdapter
 import com.example.androidkotlinseed.view.adapters.HeroesAdapter
 import com.example.androidkotlinseed.view.dialogs.CallErrorDialogFragment
 import com.example.androidkotlinseed.view.dialogs.DialogsManager
@@ -31,7 +31,7 @@ class HeroesListActivity : BaseActivity(), HeroListViewModel.Listener, SwipeRefr
     @Inject lateinit var viewModelFactory: ViewModelFactory
     @Inject lateinit var heroListViewModel: HeroListViewModel
     @Suppress("unused")
-    @Inject lateinit var heroBindingAdapter: HeroBindingAdapter
+    @Inject lateinit var superHeroDataBindingAdapter: SuperHeroDataBindingAdapter
 
     private val heroListObserver = Observer<List<SuperHero>> { newList -> run {
         val heroesAdapter = HeroesAdapter(newList, this, this)

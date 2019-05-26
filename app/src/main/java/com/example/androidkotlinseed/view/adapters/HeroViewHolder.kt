@@ -12,9 +12,6 @@ class HeroViewHolder(private val binding: RowHeroItemBinding)
         binding.setVariable(BR.heroModel, superHero)
         binding.executePendingBindings()
 
-//        superHero.photo?.let {
-//            imageLoader.loadFromUrlFor43AspectRatio(it, hero_pic, R.drawable.placeholder)
-//        }
         itemView.setOnClickListener { clickListener.onClickHero(superHero) }
     }
 }

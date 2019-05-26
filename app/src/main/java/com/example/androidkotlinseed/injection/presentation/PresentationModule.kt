@@ -7,7 +7,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
 import com.example.androidkotlinseed.utils.ImageLoader
 import com.example.androidkotlinseed.utils.ImageUtils
-import com.example.androidkotlinseed.view.adapters.HeroBindingAdapter
+import com.example.androidkotlinseed.view.adapters.SuperHeroDataBindingAdapter
 import com.example.androidkotlinseed.view.dialogs.DialogsManager
 import dagger.Module
 import dagger.Provides
@@ -42,5 +42,5 @@ class PresentationModule(private val activity: FragmentActivity) {
 
     @Reusable
     @Provides
-    fun getHeroBindingAdapter(imageLoader: ImageLoader): HeroBindingAdapter = HeroBindingAdapter(imageLoader)
+    fun getHeroBindingAdapter(imageLoader: ImageLoader): SuperHeroDataBindingAdapter = SuperHeroDataBindingAdapter(imageLoader)
 }

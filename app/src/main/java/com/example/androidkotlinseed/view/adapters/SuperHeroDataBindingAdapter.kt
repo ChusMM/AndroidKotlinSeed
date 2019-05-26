@@ -5,11 +5,11 @@ import android.widget.ImageView
 import androidx.databinding.BindingAdapter
 import com.example.androidkotlinseed.R
 import com.example.androidkotlinseed.utils.ImageLoader
-import com.example.androidkotlinseed.view.adapters.HeroBindingAdapter.Companion.TAG
+import com.example.androidkotlinseed.view.adapters.SuperHeroDataBindingAdapter.Companion.TAG
 
-class HeroBindingAdapter(private val imageLoader: ImageLoader) {
+class SuperHeroDataBindingAdapter(private val imageLoader: ImageLoader) {
     companion object {
-        val TAG: String = HeroBindingAdapter::class.java.simpleName
+        val TAG: String = SuperHeroDataBindingAdapter::class.java.simpleName
     }
 
     init {
