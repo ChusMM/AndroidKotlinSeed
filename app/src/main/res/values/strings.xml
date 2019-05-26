@@ -10,4 +10,7 @@
     <string name="power">Power</string>
     <string name="abilities">Abilities</string>
     <string name="groups">Groups</string>
+    <string name="cannot_reach_server">Server cannot be reached</string>
+    <string name="server_access_forbidden">Access to server forbidden</string>
+    <string name="server_call_failed">We got somme issues while attempting to connect. Please, try it later.</string>
 </resources>

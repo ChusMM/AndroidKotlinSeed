@@ -1,8 +1,10 @@
 package com.example.androidkotlinseed.repository
 
+import com.example.androidkotlinseed.api.CallError
 import com.example.androidkotlinseed.domain.SuperHero
 import com.example.androidkotlinseed.api.HeroListWrapper
 import com.example.androidkotlinseed.api.HeroWrapper
+import retrofit2.HttpException
 
 class DataFactory {
     fun superHeroesFromHeroListWrapper(heroListWrapper: HeroListWrapper): List<SuperHero> {
@@ -27,5 +29,11 @@ class DataFactory {
             abilities,
             groups
         )
+    }
+
+    fun callErrorFromThrowable(error: Throwable): CallError {
+        return (error as? HttpException)?.let {
+            CallError.buildFromErrorCode(it.code())
+        } ?: CallError.UNKNOWN_ERROR
     }
 }

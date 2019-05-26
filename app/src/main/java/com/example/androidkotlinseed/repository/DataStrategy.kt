@@ -1,6 +1,7 @@
 package com.example.androidkotlinseed.repository
 
 import android.content.Context
+import com.example.androidkotlinseed.api.CallError
 import com.example.androidkotlinseed.domain.SuperHero
 import com.example.androidkotlinseed.api.MarvelApi
 
@@ -11,7 +12,7 @@ abstract class DataStrategy(open val marvelApi: MarvelApi,
 
     interface HeroesListener {
         fun onQueryHeroesOk(superHeroes: List<SuperHero>)
-        fun onQueryHeroesFailed()
+        fun onQueryHeroesFailed(callError: CallError)
     }
 
     abstract fun queryHeroes(heroesListener: HeroesListener)

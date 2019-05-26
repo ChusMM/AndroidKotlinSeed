@@ -21,15 +21,19 @@ class DataWebService(override val marvelApi: MarvelApi,
 
         disposable = heroObservable.subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .map{result -> dataFactory.superHeroesFromHeroListWrapper(result)}
+            .map { result -> dataFactory.superHeroesFromHeroListWrapper(result) }
             .subscribe(
-                { result -> run {
-                    cacheManager.replaceHeroes(result, this)
-                    heroesListener.onQueryHeroesOk(result) }
+                { result ->
+                    run {
+                        cacheManager.replaceHeroes(result, this)
+                        heroesListener.onQueryHeroesOk(result)
+                    }
                 },
-                { error -> run {
-                    handleError(error, heroesListener)
-                    cacheManager.listHeroes(heroesListener) }
+                { error ->
+                    run {
+                        handleError(error, heroesListener)
+                        cacheManager.listHeroes(heroesListener)
+                    }
                 }
             )
     }
@@ -39,6 +43,6 @@ class DataWebService(override val marvelApi: MarvelApi,
     }
 
     private fun handleError(error: Throwable, heroesListener: HeroesListener) {
-        heroesListener.onQueryHeroesFailed()
+        heroesListener.onQueryHeroesFailed(dataFactory.callErrorFromThrowable(error))
     }
 }

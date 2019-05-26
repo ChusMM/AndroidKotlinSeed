@@ -2,6 +2,7 @@ package com.example.androidkotlinseed.domain.usecases
 
 import android.content.Context
 import com.example.androidkotlinseed.R
+import com.example.androidkotlinseed.api.CallError
 import com.example.androidkotlinseed.domain.SuperHero
 import com.example.androidkotlinseed.repository.DataStrategy
 import io.reactivex.Flowable
@@ -36,7 +37,7 @@ class FetchHeroesUseCase(var dataStrategy: DataStrategy) :
         compositeDisposable.add(disposable)
     }
 
-    override fun onQueryHeroesFailed() {
+    override fun onQueryHeroesFailed(callError: CallError) {
         this.notifyFailed()
     }
 
