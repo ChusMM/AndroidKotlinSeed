@@ -11,7 +11,7 @@ import com.example.androidkotlinseed.view.adapters.HeroBindingAdapter
 import com.example.androidkotlinseed.view.dialogs.DialogsManager
 import dagger.Module
 import dagger.Provides
-import javax.inject.Singleton
+import dagger.Reusable
 
 @Module
 class PresentationModule(private val activity: FragmentActivity) {
@@ -36,9 +36,11 @@ class PresentationModule(private val activity: FragmentActivity) {
     @Provides
     fun getImageUtils(activity: Activity): ImageUtils = ImageUtils(activity)
 
+    @Reusable
     @Provides
     fun getImageLoader(): ImageLoader = ImageLoader()
 
+    @Reusable
     @Provides
     fun getHeroBindingAdapter(imageLoader: ImageLoader): HeroBindingAdapter = HeroBindingAdapter(imageLoader)
 }
