@@ -31,7 +31,7 @@ class HeroListViewModel @Inject constructor (private val fetchHeroesUseCase: Fet
     override fun onCleared() {
         super.onCleared()
         fetchHeroesUseCase.unregisterListener(this)
-        compositeDisposable.clear()
+        compositeDisposable.dispose()
     }
 
     fun registerListener(listener: Listener) {
@@ -44,8 +44,11 @@ class HeroListViewModel @Inject constructor (private val fetchHeroesUseCase: Fet
 
     fun fetchHeroesAndNotify() {
         val refresh = heroList.value?.isEmpty() ?: true
+        this.fetchHeroesAndNotify(refresh)
+    }
 
-        if (refresh) {
+    fun fetchHeroesAndNotify(forceRefresh: Boolean) {
+        if (forceRefresh) {
             fetchHeroesUseCase.fetchAndNotify()
         } else {
             heroList.postValue(heroList.value)
@@ -59,17 +62,14 @@ class HeroListViewModel @Inject constructor (private val fetchHeroesUseCase: Fet
 
     override fun onFetchHeroesOk(superHeroes: List<SuperHero>) {
         heroList.value = superHeroes
+
         val disposable = Flowable.fromIterable(listeners)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
             .subscribe { listener -> listener.onHeroesFetched(superHeroes) }
         compositeDisposable.add(disposable)
     }
 
     override fun onFetchHeroesFailed(msg: String) {
         val disposable = Flowable.fromIterable(listeners)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
             .subscribe { listener -> listener.onHeroesFetchFailed(msg) }
         compositeDisposable.add(disposable)
     }

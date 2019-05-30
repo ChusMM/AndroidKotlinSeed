@@ -6,14 +6,12 @@ import com.example.androidkotlinseed.api.CallError
 import com.example.androidkotlinseed.domain.SuperHero
 import com.example.androidkotlinseed.repository.DataStrategy
 import io.reactivex.Flowable
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
+import io.reactivex.disposables.Disposable
 
 class FetchHeroesUseCase(var dataStrategy: DataStrategy) :
     BaseUseCase<FetchHeroesUseCase.Listener>(), DataStrategy.HeroesListener {
 
-    private val compositeDisposable = CompositeDisposable()
+    private var disposable: Disposable? = null
 
     interface Listener {
         fun onFetchHeroesOk(superHeroes: List<SuperHero>)
@@ -25,30 +23,31 @@ class FetchHeroesUseCase(var dataStrategy: DataStrategy) :
     }
 
     fun fetchAndNotify() {
+        disposable?.dispose()
         dataStrategy.queryHeroes(this)
     }
 
     override fun onQueryHeroesOk(superHeroes: List<SuperHero>) {
-        val disposable = Flowable.fromIterable(getListeners())
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe { listener -> listener.onFetchHeroesOk(superHeroes) }
-
-        compositeDisposable.add(disposable)
+        this.notifyOk(superHeroes)
     }
 
     override fun onQueryHeroesFailed(callError: CallError) {
         this.notifyFailed()
     }
 
+    private fun notifyOk(superHeroes: List<SuperHero>) {
+        getListener()?.let {
+            disposable = Flowable.just(it)
+                .subscribe { listener -> listener.onFetchHeroesOk(superHeroes) }
+        }
+    }
+
     private fun notifyFailed() {
-        val reason = getContextRef()?.getString(R.string.call_failed) ?: "Connection Failed"
+        getListener()?.let {
+            val reason = getContextRef()?.getString(R.string.call_failed) ?: "Connection Failed"
 
-        val disposable = Flowable.fromIterable(getListeners())
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe { listener -> listener.onFetchHeroesFailed(reason) }
-
-        compositeDisposable.add(disposable)
+            disposable = Flowable.just(it)
+                .subscribe { listener -> listener.onFetchHeroesFailed(reason) }
+        }
     }
 }

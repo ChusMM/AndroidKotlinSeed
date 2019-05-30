@@ -84,10 +84,10 @@ class UseCaseModule {
                         dataFactory: DataFactory,
                         context: Context): DataStrategy {
         return when(dataSource) {
-            DataSource.DATA_WS -> DataWebService(marvelApi, cacheManager, dataFactory, context)
-            DataSource.DATA_MOCK -> DataWebService(marvelApi, cacheManager, dataFactory, context)
+            DataSource.DATA_WS -> DataWebService(marvelApi, dataFactory, cacheManager)
+            DataSource.DATA_MOCK -> DataWebService(marvelApi, dataFactory, cacheManager)
             else -> {
-                DataWebService(marvelApi, cacheManager, dataFactory, context)
+                DataWebService(marvelApi, dataFactory, cacheManager)
             }
         }
     }

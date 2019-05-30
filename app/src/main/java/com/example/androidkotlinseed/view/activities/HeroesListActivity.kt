@@ -25,7 +25,9 @@ import javax.inject.Inject
 class HeroesListActivity : BaseActivity(), HeroListViewModel.Listener, SwipeRefreshLayout.OnRefreshListener,
     HeroesAdapter.HeroItemClickListener {
 
-    private val TAG = HeroesListActivity::class.simpleName
+    companion object {
+        private val TAG = HeroesListActivity::class.simpleName
+    }
 
     @Inject lateinit var dialogsManager: DialogsManager
     @Inject lateinit var viewModelFactory: ViewModelFactory
@@ -52,11 +54,9 @@ class HeroesListActivity : BaseActivity(), HeroListViewModel.Listener, SwipeRefr
 
     override fun onStart() {
         super.onStart()
-        swipeRefreshLayout.setOnRefreshListener(this)
         heroListViewModel.registerListener(this)
+        swipeRefreshLayout.setOnRefreshListener(this)
 
-        recyclerHeroes.visibility = View.GONE
-        swipeRefreshLayout.isRefreshing = true
         this.onRefresh()
     }
 
@@ -68,6 +68,9 @@ class HeroesListActivity : BaseActivity(), HeroListViewModel.Listener, SwipeRefr
     }
 
     override fun onRefresh() {
+        recyclerHeroes.visibility = View.GONE
+        swipeRefreshLayout.isRefreshing = true
+
         heroListViewModel.fetchHeroesAndNotify()
     }
 
@@ -80,6 +83,9 @@ class HeroesListActivity : BaseActivity(), HeroListViewModel.Listener, SwipeRefr
 
     override fun onHeroesFetchFailed(msg: String) {
         Log.e(TAG, "Heroes call failed")
+
+        swipeRefreshLayout.isRefreshing = false
+        recyclerHeroes.visibility = View.VISIBLE
         dialogsManager.showDialogWithId(CallErrorDialogFragment.newInstance(), "")
     }
 

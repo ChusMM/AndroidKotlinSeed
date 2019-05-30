@@ -20,6 +20,7 @@ enum class DataSource(private val dataSource: String) {
             return buildFromString(BuildConfig.DATA_SOURCE)
         }
 
+        @Suppress("MemberVisibilityCanBePrivate")
         fun buildFromString(source: String): DataSource {
             return when(source) {
                 WS_DATA_ORIGIN -> DATA_WS
