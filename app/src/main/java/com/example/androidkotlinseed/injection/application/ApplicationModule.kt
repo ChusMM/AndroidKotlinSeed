@@ -9,7 +9,7 @@ import dagger.Provides
 import javax.inject.Singleton
 
 @Module
-class ApplicationModule(private val application: Application) {
+open class ApplicationModule(private val application: Application) {
     
     @Singleton
     @Provides
@@ -23,7 +23,7 @@ class ApplicationModule(private val application: Application) {
     }
 
     @Provides
-    fun getFetchHeroesUserCase(dataStrategy: DataStrategy, context: Context)
+    open fun getFetchHeroesUserCase(dataStrategy: DataStrategy, context: Context)
             : FetchHeroesUseCase {
         return FetchHeroesUseCase(dataStrategy, context)
     }

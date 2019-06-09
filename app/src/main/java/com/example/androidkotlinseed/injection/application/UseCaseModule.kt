@@ -18,7 +18,7 @@ import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
 @Module
-class UseCaseModule {
+open class UseCaseModule {
     companion object {
         private const val BASE_URL = BuildConfig.API_BASE_URL
         private const val CONNECT_TIMEOUT: Long = 10
@@ -36,7 +36,7 @@ class UseCaseModule {
 
     @Singleton
     @Provides
-    fun getMarvelApi(retrofitBuilder: Retrofit.Builder): MarvelApi {
+    open fun getMarvelApi(retrofitBuilder: Retrofit.Builder): MarvelApi {
         val httpClientBuilder = OkHttpClient.Builder()
             .connectTimeout(CONNECT_TIMEOUT, TimeUnit.SECONDS)
             .readTimeout(READ_TIMEOUT, TimeUnit.SECONDS)
@@ -61,24 +61,24 @@ class UseCaseModule {
 
     @Singleton
     @Provides
-    fun getAppDataBase(application: Application): AppDataBase {
+    open fun getAppDataBase(application: Application): AppDataBase {
         return Room.databaseBuilder(application,
             AppDataBase::class.java, "heroes_database").build()
     }
 
     @Singleton
     @Provides
-    fun getSuperHeroDao(appDataBase: AppDataBase): SuperHeroDao {
+    open fun getSuperHeroDao(appDataBase: AppDataBase): SuperHeroDao {
         return appDataBase.superHeroDao()
     }
 
     @Provides
-    fun getCacheManager(superHeroDao: SuperHeroDao, context: Context): CacheManager {
+    open fun getCacheManager(superHeroDao: SuperHeroDao, context: Context): CacheManager {
         return CacheManager(superHeroDao, context)
     }
 
     @Provides
-    fun getDataStrategy(dataSource: DataSource,
+    open fun getDataStrategy(dataSource: DataSource,
                         marvelApi: MarvelApi,
                         cacheManager: CacheManager,
                         dataFactory: DataFactory,
