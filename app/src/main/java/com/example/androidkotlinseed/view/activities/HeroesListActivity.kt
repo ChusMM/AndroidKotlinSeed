@@ -1,5 +1,6 @@
 package com.example.androidkotlinseed.view.activities
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -90,5 +91,9 @@ class HeroesListActivity : BaseActivity(), HeroListViewModel.Listener, SwipeRefr
     }
 
     override fun onClickHero(superHero: SuperHero) {
+        val intent = Intent(this, HeroDetailActivity::class.java)
+        intent.putExtra(HeroDetailActivity.HERO_EXTRA, superHero)
+
+        this.startActivity(intent)
     }
 }

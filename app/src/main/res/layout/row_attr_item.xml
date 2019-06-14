@@ -1,37 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
-    android:layout_margin="@dimen/generic_margin"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="?attr/selectableItemBackground">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools">
 
-    <TextView
-        android:id="@+id/title"
+    <data>
+        <variable name="heroAttr" type="com.example.androidkotlinseed.domain.HeroAttribute"/>
+    </data>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_margin="@dimen/generic_margin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="start|center_vertical"
-        android:maxLines="1"
-        android:ellipsize="end"
-        android:textStyle="bold|italic"
-        tools:text="Atributo"
-        style="@style/AppTheme.TextAppearanceMediumAllCaps"/>
+        android:background="?attr/selectableItemBackground">
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginBottom="@dimen/small_margin"
-        android:background="?attr/colorButtonNormal">
-    </View>
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="start|center_vertical"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:textStyle="bold|italic"
+            android:text="@{heroAttr.attribute}"
+            tools:text="Atributo"
+            style="@style/AppTheme.TextAppearanceMediumAllCaps"/>
 
-    <TextView
-        android:id="@+id/description"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="start|center_vertical"
-        tools:text="Descripción"
-        style="@style/AppTheme.TextAppearanceSmall"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginBottom="@dimen/small_margin"
+            android:background="?attr/colorButtonNormal">
+        </View>
 
-</LinearLayout>
+        <TextView
+            android:id="@+id/description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="start|center_vertical"
+            android:text="@{heroAttr.description}"
+            tools:text="Descripción"
+            style="@style/AppTheme.TextAppearanceSmall"/>
+    </LinearLayout>
+</layout>

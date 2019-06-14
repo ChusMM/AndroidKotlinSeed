@@ -10,12 +10,12 @@ import androidx.room.PrimaryKey
 data class SuperHero(
     @PrimaryKey(autoGenerate = true) val uid: Int,
     @ColumnInfo(name = "name") val name: String,
-    @ColumnInfo(name = "photo") val photo: String?,
-    @ColumnInfo(name = "real_name") val realName: String?,
-    @ColumnInfo(name = "height") val height: String?,
-    @ColumnInfo(name = "power") val power: String?,
-    @ColumnInfo(name = "abilities") val abilities: String?,
-    @ColumnInfo(name = "groups") val groups: String?) : Parcelable {
+    @ColumnInfo(name = "photo") val photo: String,
+    @ColumnInfo(name = "real_name") val realName: String,
+    @ColumnInfo(name = "height") val height: String,
+    @ColumnInfo(name = "power") val power: String,
+    @ColumnInfo(name = "abilities") val abilities: String,
+    @ColumnInfo(name = "groups") val groups: String) : Parcelable {
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -34,13 +34,13 @@ data class SuperHero(
 
     constructor(source: Parcel) : this(
         source.readInt(),
-        source.readString(),
-        source.readString(),
-        source.readString(),
-        source.readString(),
-        source.readString(),
-        source.readString(),
-        source.readString()
+        source.readString().let { it } ?: HEROE_NO_ATTR,
+        source.readString().let { it } ?: HEROE_NO_ATTR,
+        source.readString().let { it } ?: HEROE_NO_ATTR,
+        source.readString().let { it } ?: HEROE_NO_ATTR,
+        source.readString().let { it } ?: HEROE_NO_ATTR,
+        source.readString().let { it } ?: HEROE_NO_ATTR,
+        source.readString().let { it } ?: HEROE_NO_ATTR
     )
 
     override fun describeContents() = 0
@@ -57,6 +57,8 @@ data class SuperHero(
     }
 
     companion object {
+        private const val HEROE_NO_ATTR = ""
+
         @Suppress("unused")
         @JvmField
         val CREATOR: Parcelable.Creator<SuperHero> = object : Parcelable.Creator<SuperHero> {
