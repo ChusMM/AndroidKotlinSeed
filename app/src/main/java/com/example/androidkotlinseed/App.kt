@@ -6,18 +6,22 @@ import com.example.androidkotlinseed.injection.application.ApplicationModule
 import com.example.androidkotlinseed.injection.application.DaggerApplicationComponent
 import com.example.androidkotlinseed.injection.application.UseCaseModule
 
-class App : Application() {
+open class App : Application() {
     private lateinit var appComponent: ApplicationComponent
 
     override fun onCreate() {
         super.onCreate()
-        appComponent = DaggerApplicationComponent.builder()
-            .applicationModule(ApplicationModule(this))
-            .useCaseModule(UseCaseModule())
-            .build()
+        appComponent = this.buidAppComponent()
     }
 
     fun getApplicationComponent(): ApplicationComponent {
         return appComponent
+    }
+
+    protected open fun buidAppComponent(): ApplicationComponent {
+        return DaggerApplicationComponent.builder()
+            .applicationModule(ApplicationModule(this))
+            .useCaseModule(UseCaseModule())
+            .build()
     }
 }

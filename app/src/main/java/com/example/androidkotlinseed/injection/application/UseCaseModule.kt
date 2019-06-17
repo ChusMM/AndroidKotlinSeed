@@ -27,7 +27,7 @@ open class UseCaseModule {
 
     @Singleton
     @Provides
-    fun getRetrofit(): Retrofit.Builder {
+    open fun getRetrofit(): Retrofit.Builder {
         return Retrofit.Builder()
             .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())

@@ -14,7 +14,7 @@ android {
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "'com.example.androidkotlinseed.MockRunner"
         multiDexEnabled true
     }
     buildTypes {
@@ -111,8 +111,6 @@ dependencies {
     //Picasso
     implementation 'com.squareup.picasso:picasso:2.71828'
 
-    testImplementation 'junit:junit:4.12'
-
     // Unit test dependencies
     testImplementation 'junit:junit:4.12'
     testImplementation 'org.mockito:mockito-core:2.28.2'
@@ -127,4 +125,13 @@ dependencies {
 
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-contrib:3.2.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-intents:3.2.0'
+    androidTestImplementation 'androidx.test:rules:1.2.0'
+    androidTestImplementation 'org.powermock:powermock-core:2.0.2'
+    androidTestImplementation 'org.powermock:powermock-module-junit4:2.0.2'
+    androidTestImplementation 'org.powermock:powermock-api-mockito2:2.0.2'
+    androidTestImplementation 'com.squareup.okhttp3:mockwebserver:3.2.0'
+    kaptAndroidTest 'com.google.dagger:dagger-compiler:2.16'
+    kaptAndroidTest 'com.google.dagger:dagger-android-processor:2.16'
 }
