@@ -11,10 +11,10 @@ import org.junit.After
 import org.junit.Test
 import org.junit.runner.RunWith
 
-import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Rule
 import org.powermock.modules.junit4.PowerMockRunner
+import android.content.Intent
 
 /**
  * Instrumented test, which will execute on an Android device.
@@ -24,7 +24,7 @@ import org.powermock.modules.junit4.PowerMockRunner
 @RunWith(PowerMockRunner::class)
 class HeroesListActivityTest {
     @Rule
-    val testRule: ActivityTestRule<HeroesListActivity> = ActivityTestRule(HeroesListActivity::class.java, false, false)
+    val activityRule: ActivityTestRule<HeroesListActivity> = ActivityTestRule(HeroesListActivity::class.java, false, false)
 
     private lateinit var mockWebServer: MockWebServer
 
@@ -41,8 +41,6 @@ class HeroesListActivityTest {
 
     @Test
     fun useAppContext() {
-        // Context of the app under test.
-        val appContext = InstrumentationRegistry.getTargetContext()
-        assertEquals("com.example.androidkotlinseed", appContext.packageName)
+        activityRule.launchActivity(Intent())
     }
 }
