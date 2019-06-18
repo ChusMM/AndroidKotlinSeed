@@ -11,7 +11,6 @@ import org.junit.runner.RunWith
 import org.junit.Before
 import org.junit.Rule
 import android.content.Intent
-import android.os.SystemClock
 import androidx.test.espresso.Espresso
 import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.contrib.RecyclerViewActions
