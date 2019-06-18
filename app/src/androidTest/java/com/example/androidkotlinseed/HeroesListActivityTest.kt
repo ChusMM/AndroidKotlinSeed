@@ -38,7 +38,6 @@ class HeroesListActivityTest {
     fun setup() {
         mockWebServer = MockWebServer()
         mockWebServer.start(8080)
-
         Intents.init()
     }
 
@@ -50,8 +49,6 @@ class HeroesListActivityTest {
 
     @Test
     fun heroListActivity_clickFirst_Ok() {
-        SystemClock.sleep(2000)
-
         mockWebServer.dispatcher = MockServerDispatcher().RequestDispatcher()
         activityRule.launchActivity(Intent())
 
