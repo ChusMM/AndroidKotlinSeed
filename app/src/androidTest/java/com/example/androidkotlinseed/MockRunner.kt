@@ -6,6 +6,7 @@ import android.content.Context
 import android.os.StrictMode
 import android.os.Bundle
 
+@Suppress("unused") // See testInstrumentationRunner
 class MockRunner: AndroidJUnitRunner() {
     override fun onCreate(arguments: Bundle) {
         StrictMode.setThreadPolicy(StrictMode.ThreadPolicy.Builder().permitAll().build())

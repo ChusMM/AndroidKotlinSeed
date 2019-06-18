@@ -1,8 +1,5 @@
-@file:Suppress("DEPRECATION")
-
 package com.example.androidkotlinseed
 
-import androidx.test.InstrumentationRegistry
 import androidx.test.rule.ActivityTestRule
 import com.example.androidkotlinseed.view.activities.HeroesListActivity
 import okhttp3.mockwebserver.MockWebServer
@@ -13,17 +10,26 @@ import org.junit.runner.RunWith
 
 import org.junit.Before
 import org.junit.Rule
-import org.powermock.modules.junit4.PowerMockRunner
 import android.content.Intent
+import android.os.SystemClock
+import androidx.test.espresso.Espresso
+import androidx.test.espresso.action.ViewActions
+import androidx.test.espresso.contrib.RecyclerViewActions
+import androidx.test.espresso.intent.Intents
+import androidx.test.espresso.intent.matcher.IntentMatchers
+import androidx.test.espresso.matcher.ViewMatchers
+import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.example.androidkotlinseed.view.activities.HeroDetailActivity
+import com.example.androidkotlinseed.view.adapters.HeroViewHolder
 
 /**
  * Instrumented test, which will execute on an Android device.
  *
  * See [testing documentation](http://d.android.com/tools/testing).
  */
-@RunWith(PowerMockRunner::class)
+@RunWith(AndroidJUnit4::class)
 class HeroesListActivityTest {
-    @Rule
+    @get:Rule
     val activityRule: ActivityTestRule<HeroesListActivity> = ActivityTestRule(HeroesListActivity::class.java, false, false)
 
     private lateinit var mockWebServer: MockWebServer
@@ -32,15 +38,27 @@ class HeroesListActivityTest {
     fun setup() {
         mockWebServer = MockWebServer()
         mockWebServer.start(8080)
+
+        Intents.init()
     }
 
     @After
     fun tearDown() {
         mockWebServer.shutdown()
+        Intents.release()
     }
 
     @Test
-    fun useAppContext() {
+    fun heroListActivity_clickFirst_Ok() {
+        SystemClock.sleep(2000)
+
+        mockWebServer.dispatcher = MockServerDispatcher().RequestDispatcher()
         activityRule.launchActivity(Intent())
+
+        Espresso.onView(ViewMatchers.withId(R.id.recycler_heroes)).perform(
+            RecyclerViewActions.actionOnItemAtPosition<HeroViewHolder>(0, ViewActions.click())
+        )
+
+        Intents.intended(IntentMatchers.hasComponent(HeroDetailActivity::class.java.name))
     }
 }

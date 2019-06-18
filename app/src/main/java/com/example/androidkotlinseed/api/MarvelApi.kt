@@ -4,6 +4,10 @@ import io.reactivex.Observable
 import retrofit2.http.GET
 
 interface MarvelApi {
-    @GET("/bins/bvyob")
+    companion object {
+        const val GET_HEROES_PATH = "/bins/bvyob"
+    }
+
+    @GET(GET_HEROES_PATH)
     fun getHeroes(): Observable<HeroListWrapper>
 }
