@@ -8,7 +8,7 @@ import com.example.androidkotlinseed.domain.SuperHero
 import com.example.androidkotlinseed.injection.BaseActivity
 import com.example.androidkotlinseed.utils.ImageLoader
 import com.example.androidkotlinseed.view.adapters.HeroAttributesAdapter
-import com.example.androidkotlinseed.view.dialogs.CallErrorDialogFragment
+import com.example.androidkotlinseed.view.dialogs.ErrorDialogFragment
 import com.example.androidkotlinseed.view.dialogs.DialogsManager
 import kotlinx.android.synthetic.main.activity_hero_detail.hero_attrs_list as heroAttrs
 import kotlinx.android.synthetic.main.activity_hero_detail.hero_pic as heroPic
@@ -42,7 +42,7 @@ class HeroDetailActivity : BaseActivity() {
             heroAttrs.adapter = attrAdapter
         } ?: run {
             Log.e(TAG, "No hero provided to show its detail")
-            dialogsManager.showDialogWithId(CallErrorDialogFragment.newInstance(), "")
+            dialogsManager.showDialogWithId(ErrorDialogFragment.newInstance(), "")
         }
     }
 }

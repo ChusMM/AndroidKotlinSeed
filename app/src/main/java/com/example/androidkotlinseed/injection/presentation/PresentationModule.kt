@@ -6,7 +6,7 @@ import android.view.LayoutInflater
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LifecycleRegistry
-import com.example.androidkotlinseed.mvvm.ViewMvcFactory
+import com.example.androidkotlinseed.view.mvc.ViewMvcFactory
 import com.example.androidkotlinseed.utils.ImageLoader
 import com.example.androidkotlinseed.utils.ImageUtils
 import com.example.androidkotlinseed.view.adapters.SuperHeroDataBindingAdapter
@@ -53,5 +53,6 @@ class PresentationModule(private val activity: FragmentActivity) {
     fun getViewMvcFactory(layoutInflater: LayoutInflater,
                           dialogsManager: DialogsManager,
                           imageUtils: ImageUtils,
-                          imageLoader: ImageLoader): ViewMvcFactory = ViewMvcFactory(layoutInflater, dialogsManager, imageUtils, imageLoader)
+                          imageLoader: ImageLoader): ViewMvcFactory =
+        ViewMvcFactory(layoutInflater, dialogsManager, imageUtils, imageLoader)
 }

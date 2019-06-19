@@ -2,17 +2,18 @@ package com.example.androidkotlinseed.view.activities
 
 import android.os.Bundle
 import androidx.lifecycle.*
-import androidx.recyclerview.widget.GridLayoutManager
 import com.example.androidkotlinseed.injection.BaseActivity
 import com.example.androidkotlinseed.mvvm.*
 import com.example.androidkotlinseed.view.adapters.SuperHeroDataBindingAdapter
+import com.example.androidkotlinseed.view.mvc.heroeslist.HeroListViewMvc
+import com.example.androidkotlinseed.view.mvc.ViewMvcFactory
 
 import kotlinx.android.synthetic.main.activity_heroes_list.recycler_heroes as recyclerHeroes
 import kotlinx.android.synthetic.main.activity_heroes_list.swipe_layout as swipeRefreshLayout
 
 import javax.inject.Inject
 
-class HeroesListActivityMvc : BaseActivity(), LifecycleOwner {
+class HeroesListActivity : BaseActivity(), LifecycleOwner {
 
     @Inject lateinit var viewMvcFactory: ViewMvcFactory
     @Inject lateinit var viewModelFactory: ViewModelFactory
@@ -36,9 +37,6 @@ class HeroesListActivityMvc : BaseActivity(), LifecycleOwner {
         lifecycleRegistry.addObserver(heroListViewModel)
         lifecycleRegistry.addObserver(viewMvc)
         lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_CREATE)
-
-        recyclerHeroes.layoutManager = GridLayoutManager(this, 2)
-        recyclerHeroes.setHasFixedSize(true)
     }
 
     override fun onStart() {

@@ -15,9 +15,8 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
             android:usesCleartextTraffic="${usesCleartextTraffic}"
-            tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".view.activities.HeroDetailActivity">
-        </activity>
+            tools:ignore="GoogleAppIndexingWarning,UnusedAttribute">
+
         <activity
                 android:name=".SplashActivity"
                 android:theme="@style/AppTheme.NoActionBar">
@@ -27,7 +26,13 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".view.activities.HeroesListActivityMvc">
+
+        <activity
+                android:name=".view.activities.HeroesListActivity">
+        </activity>
+
+        <activity
+                android:name=".view.activities.HeroDetailActivity">
         </activity>
 
         <provider

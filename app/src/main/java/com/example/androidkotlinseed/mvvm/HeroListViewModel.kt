@@ -3,6 +3,7 @@ package com.example.androidkotlinseed.mvvm
 import androidx.lifecycle.*
 import com.example.androidkotlinseed.domain.SuperHero
 import com.example.androidkotlinseed.domain.usecases.FetchHeroesUseCase
+import com.example.androidkotlinseed.view.mvc.heroeslist.HeroListViewMvc
 import io.reactivex.Flowable
 import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject

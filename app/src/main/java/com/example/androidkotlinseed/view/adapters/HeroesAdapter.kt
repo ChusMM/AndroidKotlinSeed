@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.androidkotlinseed.R
 import com.example.androidkotlinseed.databinding.RowHeroItemBinding
 import com.example.androidkotlinseed.domain.SuperHero
-import com.example.androidkotlinseed.mvvm.HeroListViewMvc
+import com.example.androidkotlinseed.view.mvc.heroeslist.HeroListViewMvc
 
 class HeroesAdapter(private val heroes: List<SuperHero>,
                     private val clickListener: HeroListViewMvc,

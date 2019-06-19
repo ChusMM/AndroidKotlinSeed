@@ -4,7 +4,7 @@ import androidx.databinding.library.baseAdapters.BR
 import androidx.recyclerview.widget.RecyclerView
 import com.example.androidkotlinseed.databinding.RowHeroItemBinding
 import com.example.androidkotlinseed.domain.SuperHero
-import com.example.androidkotlinseed.mvvm.HeroListViewMvc
+import com.example.androidkotlinseed.view.mvc.heroeslist.HeroListViewMvc
 
 class HeroViewHolder(private val binding: RowHeroItemBinding)
     : RecyclerView.ViewHolder(binding.root) {

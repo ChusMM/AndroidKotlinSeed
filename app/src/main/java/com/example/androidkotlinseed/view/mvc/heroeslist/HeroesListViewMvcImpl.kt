@@ -1,4 +1,4 @@
-package com.example.androidkotlinseed.mvvm
+package com.example.androidkotlinseed.view.mvc.heroeslist
 
 import android.content.Intent
 import android.util.Log
@@ -9,19 +9,18 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.Observer
 import androidx.lifecycle.OnLifecycleEvent
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.androidkotlinseed.R
 import com.example.androidkotlinseed.domain.SuperHero
 import com.example.androidkotlinseed.view.activities.HeroDetailActivity
 import com.example.androidkotlinseed.view.adapters.HeroesAdapter
-import com.example.androidkotlinseed.view.dialogs.CallErrorDialogFragment
+import com.example.androidkotlinseed.view.dialogs.ErrorDialogFragment
 import com.example.androidkotlinseed.view.dialogs.DialogsManager
 import kotlinx.android.synthetic.main.activity_heroes_list.view.*
 
 class HeroesListViewMvcImpl(layoutInflater: LayoutInflater,
                             container: ViewGroup?,
-                            private val dialogsManager: DialogsManager)
-    : HeroListViewMvc, SwipeRefreshLayout.OnRefreshListener {
+                            private val dialogsManager: DialogsManager) :
+    HeroListViewMvc {
 
     companion object {
         private val TAG = HeroesListViewMvcImpl::class.java.simpleName
@@ -46,7 +45,7 @@ class HeroesListViewMvcImpl(layoutInflater: LayoutInflater,
     @OnLifecycleEvent(Lifecycle.Event.ON_START)
     fun onStart() = with(rootView) {
         swipe_layout.setOnRefreshListener(this@HeroesListViewMvcImpl)
-        onRefresh()
+        this@HeroesListViewMvcImpl.onRefresh()
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
@@ -73,7 +72,7 @@ class HeroesListViewMvcImpl(layoutInflater: LayoutInflater,
 
         swipe_layout.isRefreshing = false
         recycler_heroes.visibility = View.VISIBLE
-        dialogsManager.showDialogWithId(CallErrorDialogFragment.newInstance(), "")
+        dialogsManager.showDialogWithId(ErrorDialogFragment.newInstance(), "")
     }
 
     override fun onClickHero(superHero: SuperHero) {

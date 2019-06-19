@@ -1,4 +1,4 @@
-package com.example.androidkotlinseed.mvvm
+package com.example.androidkotlinseed.view.mvc
 
 import android.view.View
 import androidx.lifecycle.LifecycleObserver

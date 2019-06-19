@@ -7,7 +7,7 @@ import androidx.fragment.app.DialogFragment
 import com.example.androidkotlinseed.R
 
 
-class CallErrorDialogFragment : DialogFragment() {
+class ErrorDialogFragment : DialogFragment() {
     private var mMsg: String? = null
 
     private fun setArgs(rationalMsg: String) {
@@ -28,12 +28,12 @@ class CallErrorDialogFragment : DialogFragment() {
     }
 
     companion object {
-        fun newInstance(): CallErrorDialogFragment {
-            return CallErrorDialogFragment()
+        fun newInstance(): ErrorDialogFragment {
+            return ErrorDialogFragment()
         }
 
-        fun newInstance(rationalMsg: String): CallErrorDialogFragment {
-            val serverErrorDialogFragment = CallErrorDialogFragment()
+        fun newInstance(rationalMsg: String): ErrorDialogFragment {
+            val serverErrorDialogFragment = ErrorDialogFragment()
             serverErrorDialogFragment.setArgs(rationalMsg)
 
             return serverErrorDialogFragment
