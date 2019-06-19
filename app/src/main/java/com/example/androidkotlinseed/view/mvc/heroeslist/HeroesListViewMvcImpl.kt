@@ -75,7 +75,7 @@ class HeroesListViewMvcImpl(layoutInflater: LayoutInflater,
 
         swipe_layout.isRefreshing = false
         recycler_heroes.visibility = View.VISIBLE
-        dialogsManager.showDialogWithId(ErrorDialogFragment.newInstance(), "")
+        dialogsManager.showDialogWithId(ErrorDialogFragment.newInstance(msg), "")
     }
 
     override fun onClickHero(superHero: SuperHero) = with(rootView) {

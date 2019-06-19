@@ -1,30 +1,32 @@
 package com.example.androidkotlinseed.domain.usecases
 
 import android.content.Context
-import com.example.androidkotlinseed.R
 import com.example.androidkotlinseed.api.CallError
 import com.example.androidkotlinseed.domain.SuperHero
 import com.example.androidkotlinseed.repository.DataStrategy
 import io.reactivex.Flowable
 import io.reactivex.disposables.Disposable
+import java.lang.ref.WeakReference
 
-class FetchHeroesUseCase(var dataStrategy: DataStrategy) :
-    BaseUseCase<FetchHeroesUseCase.Listener>(), DataStrategy.HeroesListener {
+class FetchHeroesUseCase(private val dataStrategy: DataStrategy) :
+    IFetchHeroesUseCase, DataStrategy.HeroesListener {
+
+    override var contextRef: WeakReference<Context>? = null
+    override var listener: IFetchHeroesUseCase.Listener? = null
 
     private var disposable: Disposable? = null
 
-    interface Listener {
-        fun onFetchHeroesOk(superHeroes: List<SuperHero>)
-        fun onFetchHeroesFailed(msg: String)
-    }
-
     constructor(dataStrategy: DataStrategy, context: Context) : this(dataStrategy) {
-        super.setContextRef(context)
+        setContextRef(context)
     }
 
-    fun fetchAndNotify() {
-        disposable?.dispose()
+    override fun fetchAndNotify() {
+        this.dispose()
         dataStrategy.queryHeroes(this)
+    }
+
+    override fun dispose() {
+        disposable?.dispose()
     }
 
     override fun onQueryHeroesOk(superHeroes: List<SuperHero>) {
@@ -32,20 +34,18 @@ class FetchHeroesUseCase(var dataStrategy: DataStrategy) :
     }
 
     override fun onQueryHeroesFailed(callError: CallError) {
-        this.notifyFailed()
+        this.notifyFailed(contextRef?.get()?.getString(callError.msgStringRes) ?: "Connection failed")
     }
 
     private fun notifyOk(superHeroes: List<SuperHero>) {
-        getListener()?.let {
+        listener?.let {
             disposable = Flowable.just(it)
                 .subscribe { listener -> listener.onFetchHeroesOk(superHeroes) }
         }
     }
 
-    private fun notifyFailed() {
-        getListener()?.let {
-            val reason = getContextRef()?.getString(R.string.server_call_failed) ?: "Connection Failed"
-
+    private fun notifyFailed(reason: String) {
+        listener?.let {
             disposable = Flowable.just(it)
                 .subscribe { listener -> listener.onFetchHeroesFailed(reason) }
         }

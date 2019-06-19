@@ -3,10 +3,9 @@ package com.example.androidkotlinseed.domain.usecases
 import android.content.Context
 import java.lang.ref.WeakReference
 
-abstract class BaseUseCase<L> {
-    private var listener: L? = null
-
-    private var contextRef: WeakReference<Context>? = null
+interface IBaseUseCase<L> {
+    var listener: L?
+    var contextRef: WeakReference<Context>?
 
     fun registerListener(listener: L) {
         this.listener = listener
@@ -17,8 +16,6 @@ abstract class BaseUseCase<L> {
             this.listener = null
         }
     }
-
-    protected fun getListener(): L? = listener
 
     fun setContextRef(context: Context) {
         this.contextRef = WeakReference(context)
