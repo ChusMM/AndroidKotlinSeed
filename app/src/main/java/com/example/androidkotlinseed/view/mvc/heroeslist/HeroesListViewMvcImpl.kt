@@ -19,8 +19,7 @@ import kotlinx.android.synthetic.main.activity_heroes_list.view.*
 
 class HeroesListViewMvcImpl(layoutInflater: LayoutInflater,
                             container: ViewGroup?,
-                            private val dialogsManager: DialogsManager) :
-    HeroesListViewMvc {
+                            private val dialogsManager: DialogsManager) : HeroesListViewMvc {
 
     companion object {
         private val TAG = HeroesListViewMvcImpl::class.java.simpleName
