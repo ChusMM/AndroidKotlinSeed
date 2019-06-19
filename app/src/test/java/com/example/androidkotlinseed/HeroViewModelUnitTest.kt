@@ -1,19 +1,14 @@
 package com.example.androidkotlinseed
 
-import android.app.Application
 import android.util.Log
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LifecycleRegistry
 import androidx.lifecycle.LiveData
 import com.example.androidkotlinseed.api.CallError
 import com.example.androidkotlinseed.domain.SuperHero
 import com.example.androidkotlinseed.domain.usecases.FetchHeroesUseCase
-import com.example.androidkotlinseed.injection.DaggerUnitTestApplicationComponent
 import com.example.androidkotlinseed.injection.UnitTestApplicationComponent
-import com.example.androidkotlinseed.injection.UnitTestApplicationModule
-import com.example.androidkotlinseed.injection.UnitTestUseCaseModule
 import com.example.androidkotlinseed.mvvm.HeroListViewModel
 import com.example.androidkotlinseed.mvvm.TestObserver
 import com.example.androidkotlinseed.repository.DataFactory
@@ -56,20 +51,13 @@ class HeroViewModelUnitTest {
 
     @Before
     fun setup() {
-        val app: Application = mock(Application::class.java)
-        `when`(app.applicationContext).thenReturn(app)
-
-        testUnitApplicationComponent = DaggerUnitTestApplicationComponent.builder()
-            .applicationModule(UnitTestApplicationModule(app))
-            .useCaseModule(UnitTestUseCaseModule())
-            .build()
+        testUnitApplicationComponent = unitTestUtils.createTestApplicationComponent()
         testUnitApplicationComponent.inject(this)
 
         heroListViewModel = HeroListViewModel(fetchHeroesUseCase)
         heroListViewModel.heroList.testObserver()
 
-        val lifeCycleOwner: LifecycleOwner = mock(LifecycleOwner::class.java)
-        lifeCycle = LifecycleRegistry(lifeCycleOwner)
+        lifeCycle = unitTestUtils.createLifecycleOwner()
         lifeCycle.addObserver(heroListViewModel)
     }
 
