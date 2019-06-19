@@ -14,6 +14,7 @@ class HeroListViewModel @Inject constructor (private val fetchHeroesUseCase: IFe
     val heroList: MutableLiveData<List<SuperHero>> by lazy {
         MutableLiveData<List<SuperHero>>()
     }
+
     private val listeners: MutableSet<HeroesListViewMvc> = mutableSetOf()
     private val compositeDisposable = CompositeDisposable()
 
@@ -43,12 +44,12 @@ class HeroListViewModel @Inject constructor (private val fetchHeroesUseCase: IFe
         listeners.remove(listener)
     }
 
-    private fun fetchHeroesAndNotify() {
+    fun fetchHeroesAndNotify() {
         val refresh = heroList.value?.isEmpty() ?: true
         this.fetchHeroesAndNotify(refresh)
     }
 
-    private fun fetchHeroesAndNotify(forceRefresh: Boolean) {
+    fun fetchHeroesAndNotify(forceRefresh: Boolean) {
         if (forceRefresh) {
             fetchHeroesUseCase.fetchAndNotify()
         } else {
@@ -56,6 +57,7 @@ class HeroListViewModel @Inject constructor (private val fetchHeroesUseCase: IFe
         }
     }
 
+    //region Usecase Listener
     override fun onFetchHeroesOk(superHeroes: List<SuperHero>) {
         heroList.value = superHeroes
     }
@@ -65,4 +67,5 @@ class HeroListViewModel @Inject constructor (private val fetchHeroesUseCase: IFe
             .subscribe { listener -> listener.onHeroesFetchFailed(msg) }
         compositeDisposable.add(disposable)
     }
+    //endregion
 }

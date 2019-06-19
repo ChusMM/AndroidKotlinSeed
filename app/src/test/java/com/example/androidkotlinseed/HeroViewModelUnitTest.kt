@@ -44,7 +44,7 @@ class HeroViewModelUnitTest {
 
     // System to test
     private lateinit var heroListViewModel: HeroListViewModel
-    lateinit var lifeCycle: LifecycleRegistry
+    private lateinit var lifeCycle: LifecycleRegistry
 
     // Utililites
     private val unitTestUtils = UnitTestUtils()

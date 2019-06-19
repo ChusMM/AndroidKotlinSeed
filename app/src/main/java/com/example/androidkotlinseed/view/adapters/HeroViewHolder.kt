@@ -9,10 +9,10 @@ import com.example.androidkotlinseed.view.mvc.heroeslist.HeroesListViewMvc
 class HeroViewHolder(private val binding: RowHeroItemBinding)
     : RecyclerView.ViewHolder(binding.root) {
 
-    fun bindHero(superHero: SuperHero, clickListener: HeroesListViewMvc) = with(itemView) {
+    fun bindHero(superHero: SuperHero, clickListener: HeroesListViewMvc.ViewListener?) = with(itemView) {
         binding.setVariable(BR.heroModel, superHero)
         binding.executePendingBindings()
 
-        itemView.setOnClickListener { clickListener.onClickHero(superHero) }
+        itemView.setOnClickListener { clickListener?.onClickHero(superHero) }
     }
 }

@@ -12,7 +12,7 @@ import com.example.androidkotlinseed.domain.SuperHero
 import com.example.androidkotlinseed.view.mvc.heroeslist.HeroesListViewMvc
 
 class HeroesAdapter(private val heroes: List<SuperHero>,
-                    private val clickListener: HeroesListViewMvc,
+                    private val clickListener: HeroesListViewMvc.ViewListener?,
                     private val context: Context) : RecyclerView.Adapter<HeroViewHolder>() {
 
     private val TAG = HeroesAdapter::class.java.simpleName

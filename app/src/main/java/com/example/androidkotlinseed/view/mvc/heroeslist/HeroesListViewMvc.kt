@@ -6,8 +6,14 @@ import com.example.androidkotlinseed.domain.SuperHero
 import com.example.androidkotlinseed.view.mvc.ViewMvc
 
 interface HeroesListViewMvc: ViewMvc, SwipeRefreshLayout.OnRefreshListener {
+    var viewListener: ViewListener?
+
     fun getViewModelObserver(): Observer<List<SuperHero>>
     fun onHeroesFetched()
     fun onHeroesFetchFailed(msg: String)
-    fun onClickHero(superHero: SuperHero)
+
+    interface ViewListener {
+        fun onSwipeGesture()
+        fun onClickHero(superHero: SuperHero)
+    }
 }
