@@ -8,8 +8,7 @@ import io.reactivex.Flowable
 import io.reactivex.disposables.Disposable
 import java.lang.ref.WeakReference
 
-class FetchHeroesUseCase(private val dataStrategy: DataStrategy) :
-    IFetchHeroesUseCase, DataStrategy.HeroesListener {
+class FetchHeroesUseCase(private val dataStrategy: DataStrategy) : IFetchHeroesUseCase {
 
     override var contextRef: WeakReference<Context>? = null
     override var listener: IFetchHeroesUseCase.Listener? = null

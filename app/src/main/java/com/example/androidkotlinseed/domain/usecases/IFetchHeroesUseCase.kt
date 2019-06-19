@@ -1,8 +1,9 @@
 package com.example.androidkotlinseed.domain.usecases
 
 import com.example.androidkotlinseed.domain.SuperHero
+import com.example.androidkotlinseed.repository.DataStrategy
 
-interface IFetchHeroesUseCase: IBaseUseCase<IFetchHeroesUseCase.Listener> {
+interface IFetchHeroesUseCase: IBaseUseCase<IFetchHeroesUseCase.Listener>, DataStrategy.HeroesListener {
     fun fetchAndNotify()
     fun dispose()
 
