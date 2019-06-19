@@ -12,6 +12,7 @@ import org.mockito.ArgumentCaptor
 import org.mockito.Mockito
 import org.powermock.api.mockito.PowerMockito
 
+@Suppress("MemberVisibilityCanBePrivate")
 class UnitTestUtils {
 
     fun <T> any(t: Class<out T>): T {
