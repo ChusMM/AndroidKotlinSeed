@@ -1,10 +1,10 @@
-package com.example.androidkotlinseed
+package com.example.androidkotlinseed.view.activities
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
-import com.example.androidkotlinseed.view.activities.HeroesListActivity
+import com.example.androidkotlinseed.R
 
 class SplashActivity : AppCompatActivity() {
 

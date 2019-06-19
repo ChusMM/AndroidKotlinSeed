@@ -5,11 +5,8 @@ import androidx.lifecycle.*
 import com.example.androidkotlinseed.injection.BaseActivity
 import com.example.androidkotlinseed.mvvm.*
 import com.example.androidkotlinseed.view.adapters.SuperHeroDataBindingAdapter
-import com.example.androidkotlinseed.view.mvc.heroeslist.HeroListViewMvc
+import com.example.androidkotlinseed.view.mvc.heroeslist.HeroesListViewMvc
 import com.example.androidkotlinseed.view.mvc.ViewMvcFactory
-
-import kotlinx.android.synthetic.main.activity_heroes_list.recycler_heroes as recyclerHeroes
-import kotlinx.android.synthetic.main.activity_heroes_list.swipe_layout as swipeRefreshLayout
 
 import javax.inject.Inject
 
@@ -22,13 +19,13 @@ class HeroesListActivity : BaseActivity(), LifecycleOwner {
     @Suppress("unused")
     @Inject lateinit var superHeroDataBindingAdapter: SuperHeroDataBindingAdapter
 
-    private lateinit var viewMvc: HeroListViewMvc
+    private lateinit var viewMvc: HeroesListViewMvc
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         getPresentationComponent().inject(this)
 
-        viewMvc = viewMvcFactory.newInstance(HeroListViewMvc::class, null)
+        viewMvc = viewMvcFactory.newInstance(HeroesListViewMvc::class, null)
         setContentView(viewMvc.rootView)
 
         heroListViewModel = ViewModelProviders.of(this, viewModelFactory).get(HeroListViewModel::class.java)

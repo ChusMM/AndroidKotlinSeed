@@ -44,7 +44,7 @@ class FetchHeroesUseCase(var dataStrategy: DataStrategy) :
 
     private fun notifyFailed() {
         getListener()?.let {
-            val reason = getContextRef()?.getString(R.string.call_failed) ?: "Connection Failed"
+            val reason = getContextRef()?.getString(R.string.server_call_failed) ?: "Connection Failed"
 
             disposable = Flowable.just(it)
                 .subscribe { listener -> listener.onFetchHeroesFailed(reason) }

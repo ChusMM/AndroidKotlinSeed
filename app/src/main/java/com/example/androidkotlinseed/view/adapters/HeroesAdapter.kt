@@ -9,10 +9,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.androidkotlinseed.R
 import com.example.androidkotlinseed.databinding.RowHeroItemBinding
 import com.example.androidkotlinseed.domain.SuperHero
-import com.example.androidkotlinseed.view.mvc.heroeslist.HeroListViewMvc
+import com.example.androidkotlinseed.view.mvc.heroeslist.HeroesListViewMvc
 
 class HeroesAdapter(private val heroes: List<SuperHero>,
-                    private val clickListener: HeroListViewMvc,
+                    private val clickListener: HeroesListViewMvc,
                     private val context: Context) : RecyclerView.Adapter<HeroViewHolder>() {
 
     private val TAG = HeroesAdapter::class.java.simpleName

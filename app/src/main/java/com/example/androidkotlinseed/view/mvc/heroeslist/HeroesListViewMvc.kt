@@ -5,7 +5,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.androidkotlinseed.domain.SuperHero
 import com.example.androidkotlinseed.view.mvc.ViewMvc
 
-interface HeroListViewMvc: ViewMvc, SwipeRefreshLayout.OnRefreshListener {
+interface HeroesListViewMvc: ViewMvc, SwipeRefreshLayout.OnRefreshListener {
     fun getViewModelObserver(): Observer<List<SuperHero>>
     fun onHeroesFetched(superHeroes: List<SuperHero>)
     fun onHeroesFetchFailed(msg: String)

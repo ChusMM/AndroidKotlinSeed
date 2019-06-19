@@ -1,48 +1,44 @@
 package com.example.androidkotlinseed.view.activities
 
 import android.os.Bundle
-import android.util.Log
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.androidkotlinseed.R
+import android.view.MenuItem
 import com.example.androidkotlinseed.domain.SuperHero
 import com.example.androidkotlinseed.injection.BaseActivity
-import com.example.androidkotlinseed.utils.ImageLoader
-import com.example.androidkotlinseed.view.adapters.HeroAttributesAdapter
-import com.example.androidkotlinseed.view.dialogs.ErrorDialogFragment
-import com.example.androidkotlinseed.view.dialogs.DialogsManager
+import com.example.androidkotlinseed.view.mvc.ViewMvcFactory
+import com.example.androidkotlinseed.view.mvc.herodetail.HeroDetailViewMvc
 import kotlinx.android.synthetic.main.activity_hero_detail.hero_attrs_list as heroAttrs
 import kotlinx.android.synthetic.main.activity_hero_detail.hero_pic as heroPic
 import javax.inject.Inject
 
 class HeroDetailActivity : BaseActivity() {
-    private val TAG = HeroDetailActivity::class.java.simpleName
-
     companion object {
         const val HERO_EXTRA = "hero_extra"
     }
 
-    @Inject lateinit var dialogsManager: DialogsManager
-    @Inject lateinit var imageLoader: ImageLoader
+    @Inject lateinit var viewMvcFactory: ViewMvcFactory
+
+    private lateinit var viewMvc: HeroDetailViewMvc
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_hero_detail)
         super.getPresentationComponent().inject(this)
 
-        val hero = intent.getParcelableExtra(HERO_EXTRA) as SuperHero?
-        this.bindHero(hero)
+        viewMvc = viewMvcFactory.newInstance(HeroDetailViewMvc::class, null)
+        setContentView(viewMvc.rootView)
+
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+        val hero = intent.getParcelableExtra(HERO_EXTRA) as? SuperHero
+        viewMvc.bindHero(hero)
     }
 
-    private fun bindHero(hero: SuperHero?) {
-        hero?.let {
-            imageLoader.loadFromUrl(it.photo, heroPic)
-
-            val attrAdapter = HeroAttributesAdapter(it, this)
-            heroAttrs.layoutManager = LinearLayoutManager(this)
-            heroAttrs.adapter = attrAdapter
-        } ?: run {
-            Log.e(TAG, "No hero provided to show its detail")
-            dialogsManager.showDialogWithId(ErrorDialogFragment.newInstance(), "")
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when(item?.itemId) {
+            android.R.id.home -> {
+                this.finish()
+                return true
+            }
         }
+        return super.onOptionsItemSelected(item)
     }
 }

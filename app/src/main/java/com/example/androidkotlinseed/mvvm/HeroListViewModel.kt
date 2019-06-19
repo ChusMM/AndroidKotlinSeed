@@ -3,7 +3,7 @@ package com.example.androidkotlinseed.mvvm
 import androidx.lifecycle.*
 import com.example.androidkotlinseed.domain.SuperHero
 import com.example.androidkotlinseed.domain.usecases.FetchHeroesUseCase
-import com.example.androidkotlinseed.view.mvc.heroeslist.HeroListViewMvc
+import com.example.androidkotlinseed.view.mvc.heroeslist.HeroesListViewMvc
 import io.reactivex.Flowable
 import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
@@ -14,7 +14,7 @@ class HeroListViewModel @Inject constructor (private val fetchHeroesUseCase: Fet
     val heroList: MutableLiveData<List<SuperHero>> by lazy {
         MutableLiveData<List<SuperHero>>()
     }
-    private val listeners: MutableSet<HeroListViewMvc> = mutableSetOf()
+    private val listeners: MutableSet<HeroesListViewMvc> = mutableSetOf()
     private val compositeDisposable = CompositeDisposable()
 
     @OnLifecycleEvent(Lifecycle.Event.ON_START)
@@ -29,11 +29,11 @@ class HeroListViewModel @Inject constructor (private val fetchHeroesUseCase: Fet
         compositeDisposable.dispose()
     }
 
-    fun registerListener(listener: HeroListViewMvc) {
+    fun registerListener(listener: HeroesListViewMvc) {
         listeners.add(listener)
     }
 
-    fun unregisterListener(listener: HeroListViewMvc) {
+    fun unregisterListener(listener: HeroesListViewMvc) {
         listeners.remove(listener)
     }
 

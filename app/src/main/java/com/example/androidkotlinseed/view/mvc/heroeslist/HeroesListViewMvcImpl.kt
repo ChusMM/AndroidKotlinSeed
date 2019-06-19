@@ -20,7 +20,7 @@ import kotlinx.android.synthetic.main.activity_heroes_list.view.*
 class HeroesListViewMvcImpl(layoutInflater: LayoutInflater,
                             container: ViewGroup?,
                             private val dialogsManager: DialogsManager) :
-    HeroListViewMvc {
+    HeroesListViewMvc {
 
     companion object {
         private val TAG = HeroesListViewMvcImpl::class.java.simpleName
@@ -33,7 +33,7 @@ class HeroesListViewMvcImpl(layoutInflater: LayoutInflater,
     }
 
     private fun initViews() = with(rootView) {
-        recycler_heroes.layoutManager = GridLayoutManager(rootView.context, 2)
+        recycler_heroes.layoutManager = GridLayoutManager(context, 2)
         recycler_heroes.setHasFixedSize(true)
     }
 
@@ -75,10 +75,10 @@ class HeroesListViewMvcImpl(layoutInflater: LayoutInflater,
         dialogsManager.showDialogWithId(ErrorDialogFragment.newInstance(), "")
     }
 
-    override fun onClickHero(superHero: SuperHero) {
-        val intent = Intent(rootView.context, HeroDetailActivity::class.java)
+    override fun onClickHero(superHero: SuperHero) = with(rootView) {
+        val intent = Intent(context, HeroDetailActivity::class.java)
         intent.putExtra(HeroDetailActivity.HERO_EXTRA, superHero)
 
-        rootView.context.startActivity(intent)
+        context.startActivity(intent)
     }
 }
