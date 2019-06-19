@@ -37,9 +37,13 @@ class HeroesListViewMvcImpl(layoutInflater: LayoutInflater,
         recycler_heroes.setHasFixedSize(true)
     }
 
-    private val heroListObserver = Observer<List<SuperHero>> { newList -> run {
-        val heroesAdapter = HeroesAdapter(newList, this, rootView.context)
-        rootView.recycler_heroes.adapter = heroesAdapter }
+    private val heroListObserver = Observer<List<SuperHero>> { newList ->
+        run {
+            val heroesAdapter = HeroesAdapter(newList, this, rootView.context)
+            rootView.recycler_heroes.adapter = heroesAdapter
+
+            this.onHeroesFetched()
+        }
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_START)
@@ -62,7 +66,7 @@ class HeroesListViewMvcImpl(layoutInflater: LayoutInflater,
         swipe_layout.isRefreshing = true
     }
 
-    override fun onHeroesFetched(superHeroes: List<SuperHero>) = with(rootView) {
+    override fun onHeroesFetched() = with(rootView) {
         swipe_layout.isRefreshing = false
         recycler_heroes.visibility = View.VISIBLE
     }

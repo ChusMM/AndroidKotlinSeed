@@ -7,7 +7,7 @@ import com.example.androidkotlinseed.view.mvc.ViewMvc
 
 interface HeroesListViewMvc: ViewMvc, SwipeRefreshLayout.OnRefreshListener {
     fun getViewModelObserver(): Observer<List<SuperHero>>
-    fun onHeroesFetched(superHeroes: List<SuperHero>)
+    fun onHeroesFetched()
     fun onHeroesFetchFailed(msg: String)
     fun onClickHero(superHero: SuperHero)
 }

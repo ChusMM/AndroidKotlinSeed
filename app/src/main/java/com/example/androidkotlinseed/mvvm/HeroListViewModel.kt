@@ -29,6 +29,11 @@ class HeroListViewModel @Inject constructor (private val fetchHeroesUseCase: Fet
         compositeDisposable.dispose()
     }
 
+    @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
+    fun clearList() {
+        heroList.value = mutableListOf()
+    }
+
     fun registerListener(listener: HeroesListViewMvc) {
         listeners.add(listener)
     }
@@ -47,20 +52,11 @@ class HeroListViewModel @Inject constructor (private val fetchHeroesUseCase: Fet
             fetchHeroesUseCase.fetchAndNotify()
         } else {
             heroList.postValue(heroList.value)
-            heroList.value?.let { onFetchHeroesOk(it) }
         }
-    }
-
-    fun clearList() {
-        heroList.value = mutableListOf()
     }
 
     override fun onFetchHeroesOk(superHeroes: List<SuperHero>) {
         heroList.value = superHeroes
-
-        val disposable = Flowable.fromIterable(listeners)
-            .subscribe { listener -> listener.onHeroesFetched(superHeroes) }
-        compositeDisposable.add(disposable)
     }
 
     override fun onFetchHeroesFailed(msg: String) {
