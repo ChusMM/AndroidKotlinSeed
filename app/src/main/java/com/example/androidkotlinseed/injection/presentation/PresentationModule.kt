@@ -5,6 +5,8 @@ import android.content.Context
 import android.view.LayoutInflater
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
+import androidx.lifecycle.LifecycleRegistry
+import com.example.androidkotlinseed.mvvm.ViewMvcFactory
 import com.example.androidkotlinseed.utils.ImageLoader
 import com.example.androidkotlinseed.utils.ImageUtils
 import com.example.androidkotlinseed.view.adapters.SuperHeroDataBindingAdapter
@@ -34,6 +36,9 @@ class PresentationModule(private val activity: FragmentActivity) {
     }
 
     @Provides
+    fun getLifecycleRegistry(): LifecycleRegistry = LifecycleRegistry(activity)
+
+    @Provides
     fun getImageUtils(activity: Activity): ImageUtils = ImageUtils(activity)
 
     @Reusable
@@ -43,4 +48,10 @@ class PresentationModule(private val activity: FragmentActivity) {
     @Reusable
     @Provides
     fun getHeroBindingAdapter(imageLoader: ImageLoader): SuperHeroDataBindingAdapter = SuperHeroDataBindingAdapter(imageLoader)
+
+    @Provides
+    fun getViewMvcFactory(layoutInflater: LayoutInflater,
+                          dialogsManager: DialogsManager,
+                          imageUtils: ImageUtils,
+                          imageLoader: ImageLoader): ViewMvcFactory = ViewMvcFactory(layoutInflater, dialogsManager, imageUtils, imageLoader)
 }

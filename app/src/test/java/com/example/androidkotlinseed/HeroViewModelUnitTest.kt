@@ -3,6 +3,9 @@ package com.example.androidkotlinseed
 import android.app.Application
 import android.util.Log
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LifecycleRegistry
 import androidx.lifecycle.LiveData
 import com.example.androidkotlinseed.api.CallError
 import com.example.androidkotlinseed.domain.SuperHero
@@ -46,6 +49,7 @@ class HeroViewModelUnitTest {
 
     // System to test
     private lateinit var heroListViewModel: HeroListViewModel
+    lateinit var lifeCycle: LifecycleRegistry
 
     // Utililites
     private val unitTestUtils = UnitTestUtils()
@@ -63,10 +67,15 @@ class HeroViewModelUnitTest {
 
         heroListViewModel = HeroListViewModel(fetchHeroesUseCase)
         heroListViewModel.heroList.testObserver()
+
+        val lifeCycleOwner: LifecycleOwner = mock(LifecycleOwner::class.java)
+        lifeCycle = LifecycleRegistry(lifeCycleOwner)
+        lifeCycle.addObserver(heroListViewModel)
     }
 
     @After
     fun tearDown() {
+        lifeCycle.removeObserver(heroListViewModel)
         reset(fetchHeroesUseCase)
     }
 
@@ -75,7 +84,7 @@ class HeroViewModelUnitTest {
         val result = dataFactory.superHeroesFromHeroListWrapper(unitTestUtils.heroListWrapper)
         this.fetchSucccess(result)
 
-        heroListViewModel.fetchHeroesAndNotify()
+        lifeCycle.handleLifecycleEvent(Lifecycle.Event.ON_START)
 
         verify(fetchHeroesUseCase, times(1)).fetchAndNotify()
         verify(fetchHeroesUseCase, times(1)).onQueryHeroesOk(result)
@@ -88,7 +97,7 @@ class HeroViewModelUnitTest {
     fun heroListViewModel_fetchHeroes_fail() {
         this.fetchFailed()
 
-        heroListViewModel.fetchHeroesAndNotify()
+        lifeCycle.handleLifecycleEvent(Lifecycle.Event.ON_START)
 
         verify(fetchHeroesUseCase, times(1)).fetchAndNotify()
         verify(fetchHeroesUseCase, times(1)).onQueryHeroesFailed(unitTestUtils.any(CallError::class.java))

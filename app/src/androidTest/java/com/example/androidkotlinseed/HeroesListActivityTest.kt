@@ -1,7 +1,7 @@
 package com.example.androidkotlinseed
 
 import androidx.test.rule.ActivityTestRule
-import com.example.androidkotlinseed.view.activities.HeroesListActivity
+import com.example.androidkotlinseed.view.activities.HeroesListActivityMvc
 import okhttp3.mockwebserver.MockWebServer
 import org.junit.After
 
@@ -29,7 +29,7 @@ import com.example.androidkotlinseed.view.adapters.HeroViewHolder
 @RunWith(AndroidJUnit4::class)
 class HeroesListActivityTest {
     @get:Rule
-    val activityRule: ActivityTestRule<HeroesListActivity> = ActivityTestRule(HeroesListActivity::class.java, false, false)
+    val activityRule: ActivityTestRule<HeroesListActivityMvc> = ActivityTestRule(HeroesListActivityMvc::class.java, false, false)
 
     private lateinit var mockWebServer: MockWebServer
 

@@ -1,53 +1,47 @@
 package com.example.androidkotlinseed.mvvm
 
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
 import com.example.androidkotlinseed.domain.SuperHero
 import com.example.androidkotlinseed.domain.usecases.FetchHeroesUseCase
 import io.reactivex.Flowable
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 class HeroListViewModel @Inject constructor (private val fetchHeroesUseCase: FetchHeroesUseCase)
-    : ViewModel(), FetchHeroesUseCase.Listener {
-
-    interface Listener {
-        fun onHeroesFetched(superHeroes: List<SuperHero>)
-        fun onHeroesFetchFailed(msg: String)
-    }
+    : ViewModel(), LifecycleObserver, FetchHeroesUseCase.Listener {
 
     val heroList: MutableLiveData<List<SuperHero>> by lazy {
         MutableLiveData<List<SuperHero>>()
     }
-    private val listeners: MutableSet<Listener> = mutableSetOf()
+    private val listeners: MutableSet<HeroListViewMvc> = mutableSetOf()
     private val compositeDisposable = CompositeDisposable()
 
-    init {
+    @OnLifecycleEvent(Lifecycle.Event.ON_START)
+    fun registerUsecaseListener() {
         fetchHeroesUseCase.registerListener(this)
+        this.fetchHeroesAndNotify()
     }
 
-    override fun onCleared() {
-        super.onCleared()
+    @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
+    fun unregisterUsecaseListener() {
         fetchHeroesUseCase.unregisterListener(this)
         compositeDisposable.dispose()
     }
 
-    fun registerListener(listener: Listener) {
+    fun registerListener(listener: HeroListViewMvc) {
         listeners.add(listener)
     }
 
-    fun unregisterListener(listener: Listener) {
+    fun unregisterListener(listener: HeroListViewMvc) {
         listeners.remove(listener)
     }
 
-    fun fetchHeroesAndNotify() {
+    private fun fetchHeroesAndNotify() {
         val refresh = heroList.value?.isEmpty() ?: true
         this.fetchHeroesAndNotify(refresh)
     }
 
-    fun fetchHeroesAndNotify(forceRefresh: Boolean) {
+    private fun fetchHeroesAndNotify(forceRefresh: Boolean) {
         if (forceRefresh) {
             fetchHeroesUseCase.fetchAndNotify()
         } else {

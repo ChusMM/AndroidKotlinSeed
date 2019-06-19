@@ -4,11 +4,12 @@ import androidx.databinding.library.baseAdapters.BR
 import androidx.recyclerview.widget.RecyclerView
 import com.example.androidkotlinseed.databinding.RowHeroItemBinding
 import com.example.androidkotlinseed.domain.SuperHero
+import com.example.androidkotlinseed.mvvm.HeroListViewMvc
 
 class HeroViewHolder(private val binding: RowHeroItemBinding)
     : RecyclerView.ViewHolder(binding.root) {
 
-    fun bindHero(superHero: SuperHero, clickListener: HeroesAdapter.HeroItemClickListener) = with(itemView) {
+    fun bindHero(superHero: SuperHero, clickListener: HeroListViewMvc) = with(itemView) {
         binding.setVariable(BR.heroModel, superHero)
         binding.executePendingBindings()
 
