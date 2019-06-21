@@ -44,7 +44,7 @@ class HeroListViewModel @Inject constructor (private val fetchHeroesUseCase: IFe
         listeners.remove(listener)
     }
 
-    fun fetchHeroesAndNotify() {
+    private fun fetchHeroesAndNotify() {
         val refresh = heroList.value?.isEmpty() ?: true
         this.fetchHeroesAndNotify(refresh)
     }

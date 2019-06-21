@@ -17,7 +17,6 @@ class HeroesListActivity : BaseActivity(), LifecycleOwner, HeroesListViewMvc.Vie
     @Inject lateinit var viewModelFactory: ViewModelFactory
     @Inject lateinit var heroListViewModel: HeroListViewModel
     @Inject lateinit var lifecycleRegistry: LifecycleRegistry
-    @Suppress("unused")
     @Inject lateinit var superHeroDataBindingAdapter: SuperHeroDataBindingAdapter
 
     private lateinit var viewMvc: HeroesListViewMvc
