@@ -20,7 +20,6 @@ class DataFactory {
     private fun superHeroFromHeroWrapper(heroWrapper: HeroWrapper): SuperHero {
         val (name, photo, realName, height, power, abilities, groups) = heroWrapper
         return SuperHero(
-            0,
             name,
             photo,
             realName,

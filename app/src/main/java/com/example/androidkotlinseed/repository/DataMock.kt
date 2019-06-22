@@ -10,14 +10,14 @@ class DataMock(marvelApi: MarvelApi,
                override val dataFactory: DataFactory,
                cacheManager: CacheManager) : DataStrategy(marvelApi, cacheManager, dataFactory) {
 
-    override fun queryHeroes(heroesListener: HeroesListener) {
+    override fun queryHeroes(queryHeroesListener: QueryHeroesListener) {
         Handler().postDelayed( {
             try {
-                heroesListener.onQueryHeroesOk(dataFactory.
+                queryHeroesListener.onQueryHeroesOk(dataFactory.
                     superHeroesFromHeroListWrapper(HeroListWrapper.fromJson(mockHeroesJson)))
             } catch (t:Throwable) {
                 Log.e(TAG, t.toString())
-                heroesListener.onQueryHeroesFailed(CallError.UNKNOWN_ERROR)
+                queryHeroesListener.onQueryHeroesFailed(CallError.UNKNOWN_ERROR)
             }
 
         }, 1000)

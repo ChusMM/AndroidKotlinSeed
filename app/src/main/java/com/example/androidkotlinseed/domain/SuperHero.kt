@@ -4,11 +4,10 @@ import android.os.Parcel
 import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
-import androidx.room.PrimaryKey
 
-@Entity(tableName = "super_heroes")
+@Entity(tableName = "super_heroes", primaryKeys = ["name"])
 data class SuperHero(
-    @PrimaryKey(autoGenerate = true) val uid: Int,
+    //@PrimaryKey(autoGenerate = true) val uid: Int,
     @ColumnInfo(name = "name") val name: String,
     @ColumnInfo(name = "photo") val photo: String,
     @ColumnInfo(name = "real_name") val realName: String,
@@ -33,20 +32,18 @@ data class SuperHero(
     }
 
     constructor(source: Parcel) : this(
-        source.readInt(),
-        source.readString().let { it } ?: HEROE_NO_ATTR,
-        source.readString().let { it } ?: HEROE_NO_ATTR,
-        source.readString().let { it } ?: HEROE_NO_ATTR,
-        source.readString().let { it } ?: HEROE_NO_ATTR,
-        source.readString().let { it } ?: HEROE_NO_ATTR,
-        source.readString().let { it } ?: HEROE_NO_ATTR,
-        source.readString().let { it } ?: HEROE_NO_ATTR
+        source.readString().let { it } ?: HERO_NO_ATTR,
+        source.readString().let { it } ?: HERO_NO_ATTR,
+        source.readString().let { it } ?: HERO_NO_ATTR,
+        source.readString().let { it } ?: HERO_NO_ATTR,
+        source.readString().let { it } ?: HERO_NO_ATTR,
+        source.readString().let { it } ?: HERO_NO_ATTR,
+        source.readString().let { it } ?: HERO_NO_ATTR
     )
 
     override fun describeContents() = 0
 
     override fun writeToParcel(dest: Parcel, flags: Int) = with(dest) {
-        writeInt(uid)
         writeString(name)
         writeString(photo)
         writeString(realName)
@@ -57,7 +54,7 @@ data class SuperHero(
     }
 
     companion object {
-        private const val HEROE_NO_ATTR = ""
+        private const val HERO_NO_ATTR = ""
 
         @Suppress("unused")
         @JvmField

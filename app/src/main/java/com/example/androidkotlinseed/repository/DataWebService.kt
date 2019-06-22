@@ -11,7 +11,7 @@ class DataWebService(override val marvelApi: MarvelApi,
 
     private var disposable: Disposable? = null
 
-    override fun queryHeroes(heroesListener: HeroesListener) {
+    override fun queryHeroes(queryHeroesListener: QueryHeroesListener) {
         this.cancelCurrentFetchIfActive()
 
         val heroObservable = marvelApi.getHeroes()
@@ -21,14 +21,14 @@ class DataWebService(override val marvelApi: MarvelApi,
             .map { result -> dataFactory.superHeroesFromHeroListWrapper(result) }
             .subscribe(
                 { result -> run {
-                        super.saveHeroes(result)
-                        heroesListener.onQueryHeroesOk(result)
+                        cacheManager.saveHeroes(result)
+                        queryHeroesListener.onQueryHeroesOk(result)
                     }
                 },
                 { error ->
                     run {
                         cacheManager.checkHeroesCacheValidity { cacheExpired ->
-                            handleError(cacheExpired, heroesListener, error)
+                            handleError(cacheExpired, queryHeroesListener, error)
                         }
                     }
                 }
@@ -39,11 +39,11 @@ class DataWebService(override val marvelApi: MarvelApi,
         disposable?.dispose()
     }
 
-    private fun handleError(cacheExpired: Boolean, heroesListener: HeroesListener, error: Throwable) {
+    private fun handleError(cacheExpired: Boolean, queryHeroesListener: QueryHeroesListener, error: Throwable) {
         if (cacheExpired) {
-            heroesListener.onQueryHeroesFailed(dataFactory.callErrorFromThrowable(error))
+            queryHeroesListener.onQueryHeroesFailed(dataFactory.callErrorFromThrowable(error))
         } else {
-            super.queryHeroesFromCache(heroesListener)
+            cacheManager.queryHeroesFromCache(queryHeroesListener)
         }
     }
 }

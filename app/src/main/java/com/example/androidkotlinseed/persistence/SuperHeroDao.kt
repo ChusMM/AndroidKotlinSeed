@@ -15,9 +15,6 @@ interface SuperHeroDao {
     @Query("SELECT * FROM super_heroes")
     fun getAll(): Observable<List<SuperHero>>
 
-    @Query("SELECT * FROM super_heroes WHERE uid IN (:heroIds)")
-    fun loadAllByIds(heroIds: IntArray): Observable<List<SuperHero>>
-
     @Query("SELECT * FROM super_heroes WHERE name LIKE :first LIMIT 1")
     fun findByName(first: String): SuperHero
 
