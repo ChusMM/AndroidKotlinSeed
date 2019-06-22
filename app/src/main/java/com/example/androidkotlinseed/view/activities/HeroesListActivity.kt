@@ -6,7 +6,6 @@ import androidx.lifecycle.*
 import com.example.androidkotlinseed.domain.SuperHero
 import com.example.androidkotlinseed.injection.BaseActivity
 import com.example.androidkotlinseed.mvvm.*
-import com.example.androidkotlinseed.view.adapters.SuperHeroDataBindingAdapter
 import com.example.androidkotlinseed.view.mvc.heroeslist.HeroesListViewMvc
 import com.example.androidkotlinseed.view.mvc.ViewMvcFactory
 
@@ -17,7 +16,6 @@ class HeroesListActivity : BaseActivity(), LifecycleOwner, HeroesListViewMvc.Vie
     @Inject lateinit var viewModelFactory: ViewModelFactory
     @Inject lateinit var heroListViewModel: HeroListViewModel
     @Inject lateinit var lifecycleRegistry: LifecycleRegistry
-    @Inject lateinit var superHeroDataBindingAdapter: SuperHeroDataBindingAdapter
 
     private lateinit var viewMvc: HeroesListViewMvc
 

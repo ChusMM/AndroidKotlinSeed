@@ -36,7 +36,7 @@
                     android:layout_gravity="center"
                     android:scaleType="centerCrop"
                     app:srcCompat="@drawable/placeholder"
-                    app:imageUrl="@{heroModel.photo}"
+                    app:heroImageUrl="@{heroModel.photo}"
                     tools:ignore="ContentDescription"/>
             </FrameLayout>
 

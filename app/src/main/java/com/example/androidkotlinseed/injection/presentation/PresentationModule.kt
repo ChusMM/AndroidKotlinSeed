@@ -9,7 +9,6 @@ import androidx.lifecycle.LifecycleRegistry
 import com.example.androidkotlinseed.view.mvc.ViewMvcFactory
 import com.example.androidkotlinseed.utils.ImageLoader
 import com.example.androidkotlinseed.utils.ImageUtils
-import com.example.androidkotlinseed.view.adapters.SuperHeroDataBindingAdapter
 import com.example.androidkotlinseed.view.dialogs.DialogsManager
 import dagger.Module
 import dagger.Provides
@@ -44,10 +43,6 @@ class PresentationModule(private val activity: FragmentActivity) {
     @Reusable
     @Provides
     fun getImageLoader(): ImageLoader = ImageLoader()
-
-    @Reusable
-    @Provides
-    fun getHeroBindingAdapter(imageLoader: ImageLoader): SuperHeroDataBindingAdapter = SuperHeroDataBindingAdapter(imageLoader)
 
     @Provides
     fun getViewMvcFactory(layoutInflater: LayoutInflater,
