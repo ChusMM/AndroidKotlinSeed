@@ -26,7 +26,7 @@ class UnitTestUseCaseModule : UseCaseModule() {
         return mock(SuperHeroDao::class.java)
     }
 
-    override fun getCacheManager(superHeroDao: SuperHeroDao, context: Context): CacheManager {
+    override fun getCacheManager(superHeroDao: SuperHeroDao): CacheManager {
         return mock(CacheManager::class.java)
     }
 
