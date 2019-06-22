@@ -5,7 +5,7 @@ import androidx.databinding.BindingAdapter
 import com.example.androidkotlinseed.R
 import com.example.androidkotlinseed.utils.ImageLoader
 
-const val TAG: String = "SuperHeroDataBindingAdapter"
+const val TAG: String = "DataBindingAdapter"
 
 private var filePrivateImageLoader = ImageLoader()
 
