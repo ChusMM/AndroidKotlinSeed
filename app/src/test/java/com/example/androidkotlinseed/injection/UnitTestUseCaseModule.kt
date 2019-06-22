@@ -30,13 +30,11 @@ class UnitTestUseCaseModule : UseCaseModule() {
         return mock(CacheManager::class.java)
     }
 
-    override fun getDataStrategy(
-        dataSource: DataSource,
-        marvelApi: MarvelApi,
-        cacheManager: CacheManager,
-        dataFactory: DataFactory,
-        context: Context
-    ): DataStrategy {
+    override fun getDataStrategy(dataSource: DataSource,
+                                 marvelApi: MarvelApi,
+                                 cacheManager: CacheManager,
+                                 dataFactory: DataFactory,
+                                 context: Context): DataStrategy {
         return mock(DataStrategy::class.java)
     }
 }

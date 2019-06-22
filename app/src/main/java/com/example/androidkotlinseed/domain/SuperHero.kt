@@ -6,15 +6,13 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 
 @Entity(tableName = "super_heroes", primaryKeys = ["name"])
-data class SuperHero(
-    //@PrimaryKey(autoGenerate = true) val uid: Int,
-    @ColumnInfo(name = "name") val name: String,
-    @ColumnInfo(name = "photo") val photo: String,
-    @ColumnInfo(name = "real_name") val realName: String,
-    @ColumnInfo(name = "height") val height: String,
-    @ColumnInfo(name = "power") val power: String,
-    @ColumnInfo(name = "abilities") val abilities: String,
-    @ColumnInfo(name = "groups") val groups: String) : Parcelable {
+data class SuperHero(@ColumnInfo(name = "name") val name: String,
+                     @ColumnInfo(name = "photo") val photo: String,
+                     @ColumnInfo(name = "real_name") val realName: String,
+                     @ColumnInfo(name = "height") val height: String,
+                     @ColumnInfo(name = "power") val power: String,
+                     @ColumnInfo(name = "abilities") val abilities: String,
+                     @ColumnInfo(name = "groups") val groups: String) : Parcelable {
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
