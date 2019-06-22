@@ -73,8 +73,8 @@ open class UseCaseModule {
     }
 
     @Provides
-    open fun getCacheManager(superHeroDao: SuperHeroDao, context: Context): CacheManager {
-        return CacheManager(superHeroDao, context)
+    open fun getCacheManager(superHeroDao: SuperHeroDao): CacheManager {
+        return CacheManager(superHeroDao)
     }
 
     @Provides

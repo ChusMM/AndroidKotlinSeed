@@ -25,9 +25,11 @@ class DataWebService(override val marvelApi: MarvelApi,
                         heroesListener.onQueryHeroesOk(result)
                     }
                 },
-                { error -> run {
-                        handleError(error, heroesListener)
-                        super.queryHeroesFromCache(heroesListener)
+                { error ->
+                    run {
+                        cacheManager.checkHeroesCacheValidity { cacheExpired ->
+                            handleError(cacheExpired, heroesListener, error)
+                        }
                     }
                 }
             )
@@ -37,7 +39,11 @@ class DataWebService(override val marvelApi: MarvelApi,
         disposable?.dispose()
     }
 
-    private fun handleError(error: Throwable, heroesListener: HeroesListener) {
-        heroesListener.onQueryHeroesFailed(dataFactory.callErrorFromThrowable(error))
+    private fun handleError(cacheExpired: Boolean, heroesListener: HeroesListener, error: Throwable) {
+        if (cacheExpired) {
+            heroesListener.onQueryHeroesFailed(dataFactory.callErrorFromThrowable(error))
+        } else {
+            super.queryHeroesFromCache(heroesListener)
+        }
     }
 }
