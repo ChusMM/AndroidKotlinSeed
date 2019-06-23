@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LifecycleRegistry
+import com.example.androidkotlinseed.utils.AppRxSchedulers
 import com.example.androidkotlinseed.view.mvc.ViewMvcFactory
 import com.example.androidkotlinseed.utils.ImageLoader
 import com.example.androidkotlinseed.utils.ImageUtils
@@ -30,15 +31,15 @@ class PresentationModule(private val activity: FragmentActivity) {
     fun context(activity: Activity): Context = activity
 
     @Provides
-    fun getDialogManager(fragmentManager: FragmentManager): DialogsManager {
-        return DialogsManager(fragmentManager)
-    }
+    fun getDialogManager(fragmentManager: FragmentManager): DialogsManager = DialogsManager(fragmentManager)
+
 
     @Provides
     fun getLifecycleRegistry(): LifecycleRegistry = LifecycleRegistry(activity)
 
     @Provides
-    fun getImageUtils(activity: Activity): ImageUtils = ImageUtils(activity)
+    fun getImageUtils(activity: Activity, appRxSchedulers: AppRxSchedulers): ImageUtils =
+        ImageUtils(activity, appRxSchedulers)
 
     @Reusable
     @Provides
