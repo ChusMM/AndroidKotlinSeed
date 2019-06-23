@@ -5,8 +5,11 @@ import android.content.Context
 import com.example.androidkotlinseed.domain.usecases.FetchHeroesUseCase
 import com.example.androidkotlinseed.domain.usecases.IFetchHeroesUseCase
 import com.example.androidkotlinseed.repository.DataStrategy
+import com.example.androidkotlinseed.utils.AppRxSchedulers
 import dagger.Module
 import dagger.Provides
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import javax.inject.Singleton
 
 @Module
@@ -28,4 +31,13 @@ open class ApplicationModule(private val application: Application) {
             : IFetchHeroesUseCase {
         return FetchHeroesUseCase(dataStrategy, context)
     }
+
+    @Singleton
+    @Provides
+    fun provideRxSchedulers() = AppRxSchedulers(
+        database = Schedulers.single(),
+        disk = Schedulers.io(),
+        network = Schedulers.io(),
+        main = AndroidSchedulers.mainThread()
+    )
 }

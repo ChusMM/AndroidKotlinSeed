@@ -1,7 +1,6 @@
 package com.example.androidkotlinseed.injection
 
 import android.app.Application
-import android.content.Context
 import com.example.androidkotlinseed.api.MarvelApi
 import com.example.androidkotlinseed.injection.application.UseCaseModule
 import com.example.androidkotlinseed.persistence.AppDataBase
@@ -10,6 +9,7 @@ import com.example.androidkotlinseed.repository.CacheManager
 import com.example.androidkotlinseed.repository.DataFactory
 import com.example.androidkotlinseed.repository.DataSource
 import com.example.androidkotlinseed.repository.DataStrategy
+import com.example.androidkotlinseed.utils.AppRxSchedulers
 import org.powermock.api.mockito.PowerMockito.mock
 import retrofit2.Retrofit
 
@@ -26,7 +26,7 @@ class UnitTestUseCaseModule : UseCaseModule() {
         return mock(SuperHeroDao::class.java)
     }
 
-    override fun getCacheManager(superHeroDao: SuperHeroDao): CacheManager {
+    override fun getCacheManager(superHeroDao: SuperHeroDao, appRxSchedulers: AppRxSchedulers): CacheManager {
         return mock(CacheManager::class.java)
     }
 
@@ -34,7 +34,7 @@ class UnitTestUseCaseModule : UseCaseModule() {
                                  marvelApi: MarvelApi,
                                  cacheManager: CacheManager,
                                  dataFactory: DataFactory,
-                                 context: Context): DataStrategy {
+                                 appRxSchedulers: AppRxSchedulers): DataStrategy {
         return mock(DataStrategy::class.java)
     }
 }

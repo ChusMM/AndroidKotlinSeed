@@ -1,13 +1,13 @@
 package com.example.androidkotlinseed.injection.application
 
 import android.app.Application
-import android.content.Context
 import androidx.room.Room
 import com.example.androidkotlinseed.BuildConfig
 import com.example.androidkotlinseed.api.MarvelApi
 import com.example.androidkotlinseed.persistence.AppDataBase
 import com.example.androidkotlinseed.persistence.SuperHeroDao
 import com.example.androidkotlinseed.repository.*
+import com.example.androidkotlinseed.utils.AppRxSchedulers
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
@@ -73,19 +73,19 @@ open class UseCaseModule {
     }
 
     @Provides
-    open fun getCacheManager(superHeroDao: SuperHeroDao): CacheManager {
-        return CacheManager(superHeroDao)
+    open fun getCacheManager(superHeroDao: SuperHeroDao, appRxSchedulers: AppRxSchedulers): CacheManager {
+        return CacheManager(superHeroDao, appRxSchedulers)
     }
 
     @Provides
     open fun getDataStrategy(dataSource: DataSource,
-                        marvelApi: MarvelApi,
-                        cacheManager: CacheManager,
-                        dataFactory: DataFactory,
-                        context: Context): DataStrategy {
+                             marvelApi: MarvelApi,
+                             cacheManager: CacheManager,
+                             dataFactory: DataFactory,
+                             appRxSchedulers: AppRxSchedulers): DataStrategy {
         return when(dataSource) {
-            DataSource.DATA_WS -> DataWebService(marvelApi, dataFactory, cacheManager)
-            DataSource.DATA_MOCK -> DataMock(marvelApi, dataFactory, cacheManager)
+            DataSource.DATA_WS -> DataWebService(marvelApi, dataFactory, cacheManager, appRxSchedulers)
+            DataSource.DATA_MOCK -> DataMock(dataFactory, cacheManager, appRxSchedulers)
         }
     }
 }

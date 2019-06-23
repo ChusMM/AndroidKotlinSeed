@@ -1,34 +1,35 @@
 package com.example.androidkotlinseed.repository
 
 import com.example.androidkotlinseed.api.MarvelApi
-import io.reactivex.android.schedulers.AndroidSchedulers
+import com.example.androidkotlinseed.utils.AppRxSchedulers
 import io.reactivex.disposables.Disposable
-import io.reactivex.schedulers.Schedulers
 
-class DataWebService(override val marvelApi: MarvelApi,
-                     override val dataFactory: DataFactory,
-                     cacheManager: CacheManager) : DataStrategy(marvelApi, cacheManager, dataFactory) {
+class DataWebService(private val marvelApi: MarvelApi,
+                     private val dataFactory: DataFactory,
+                     private val cacheManager: CacheManager,
+                     private val appRxSchedulers: AppRxSchedulers) : DataStrategy {
 
     private var disposable: Disposable? = null
 
-    override fun queryHeroes(queryHeroesListener: QueryHeroesListener) {
+    override fun queryHeroes(queryHeroesListener: DataStrategy.QueryHeroesListener) {
         this.cancelCurrentFetchIfActive()
 
         val heroObservable = marvelApi.getHeroes()
 
-        disposable = heroObservable.subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
+        disposable = heroObservable.subscribeOn(appRxSchedulers.network)
+            .observeOn(appRxSchedulers.main)
             .map { result -> dataFactory.superHeroesFromHeroListWrapper(result) }
             .subscribe(
-                { result -> run {
+                { result ->
+                    run {
                         cacheManager.saveHeroes(result)
                         queryHeroesListener.onQueryHeroesOk(result)
                     }
                 },
                 { error ->
                     run {
-                        cacheManager.checkHeroesCacheValidity { cacheExpired ->
-                            handleError(cacheExpired, queryHeroesListener, error)
+                        cacheManager.checkHeroesCacheValidity {
+                                cacheExpired -> handleError(cacheExpired, queryHeroesListener, error)
                         }
                     }
                 }
@@ -39,7 +40,9 @@ class DataWebService(override val marvelApi: MarvelApi,
         disposable?.dispose()
     }
 
-    private fun handleError(cacheExpired: Boolean, queryHeroesListener: QueryHeroesListener, error: Throwable) {
+    private fun handleError(cacheExpired: Boolean,
+                            queryHeroesListener: DataStrategy.QueryHeroesListener,
+                            error: Throwable) {
         if (cacheExpired) {
             queryHeroesListener.onQueryHeroesFailed(dataFactory.callErrorFromThrowable(error))
         } else {

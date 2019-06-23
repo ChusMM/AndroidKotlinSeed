@@ -6,10 +6,8 @@ import androidx.room.Ignore
 import com.example.androidkotlinseed.persistence.ExpirationEntity
 
 @Entity(tableName = "expiration_table", primaryKeys = ["entity"])
-data class ExpirationTable(
-    @ColumnInfo(name = "entity") val entity: String,
-    @ColumnInfo(name = "time_stamp") val timeStamp: Long) {
-
+data class ExpirationTable(@ColumnInfo(name = "entity") val entity: String,
+                           @ColumnInfo(name = "time_stamp") val timeStamp: Long) {
     @Ignore
     private val expirationTimeout = ExpirationEntity.buildFromString(entity).timeout
 

@@ -4,13 +4,13 @@ import android.os.Handler
 import android.util.Log
 import com.example.androidkotlinseed.api.CallError
 import com.example.androidkotlinseed.api.HeroListWrapper
-import com.example.androidkotlinseed.api.MarvelApi
+import com.example.androidkotlinseed.utils.AppRxSchedulers
 
-class DataMock(marvelApi: MarvelApi,
-               override val dataFactory: DataFactory,
-               cacheManager: CacheManager) : DataStrategy(marvelApi, cacheManager, dataFactory) {
+class DataMock(private val dataFactory: DataFactory,
+               private val cacheManager: CacheManager,
+               private val appRxSchedulers: AppRxSchedulers) : DataStrategy {
 
-    override fun queryHeroes(queryHeroesListener: QueryHeroesListener) {
+    override fun queryHeroes(queryHeroesListener: DataStrategy.QueryHeroesListener) {
         Handler().postDelayed( {
             try {
                 queryHeroesListener.onQueryHeroesOk(dataFactory.
