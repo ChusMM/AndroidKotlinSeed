@@ -56,7 +56,7 @@ open class UseCaseModule {
     @Singleton
     @Provides
     fun getDataSource(): DataSource {
-        return DataSource.getDefaultDataSource()
+        return DataSourceProvider().getDefaultDataSource()
     }
 
     @Singleton
