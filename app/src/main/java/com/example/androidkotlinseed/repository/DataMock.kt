@@ -5,7 +5,7 @@ import com.example.androidkotlinseed.api.CallError
 import com.example.androidkotlinseed.api.HeroListWrapper
 import com.example.androidkotlinseed.domain.SuperHero
 import com.example.androidkotlinseed.utils.AppRxSchedulers
-import io.reactivex.Flowable
+import io.reactivex.Observable
 import io.reactivex.disposables.Disposable
 import java.util.concurrent.TimeUnit
 
@@ -18,10 +18,9 @@ class DataMock(private val dataFactory: DataFactory,
     override fun queryHeroes(queryHeroesListener: DataStrategy.QueryHeroesListener) {
         disposable?.dispose()
 
-        disposable = Flowable.just(getMockHeroesList())
+        disposable = getMockHeroesList()
             .subscribeOn(appRxSchedulers.network)
             .observeOn(appRxSchedulers.main)
-            .delay(1000, TimeUnit.MILLISECONDS)
             .subscribe({ result ->
                 queryHeroesListener.onQueryHeroesOk(result)
             }, { error ->
@@ -32,8 +31,9 @@ class DataMock(private val dataFactory: DataFactory,
             })
     }
 
-    private fun getMockHeroesList(): List<SuperHero> {
-        return dataFactory.superHeroesFromHeroListWrapper(HeroListWrapper.fromJson(mockHeroesJson))
+    private fun getMockHeroesList(): Observable<List<SuperHero>> {
+        return Observable.just(dataFactory.superHeroesFromHeroListWrapper(HeroListWrapper.fromJson(mockHeroesJson)))
+            .delay(1000, TimeUnit.MILLISECONDS)
     }
 
     companion object {
