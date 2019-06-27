@@ -1,26 +1,39 @@
 package com.example.androidkotlinseed.repository
 
-import android.os.Handler
 import android.util.Log
 import com.example.androidkotlinseed.api.CallError
 import com.example.androidkotlinseed.api.HeroListWrapper
+import com.example.androidkotlinseed.domain.SuperHero
 import com.example.androidkotlinseed.utils.AppRxSchedulers
+import io.reactivex.Flowable
+import io.reactivex.disposables.Disposable
+import java.util.concurrent.TimeUnit
 
 class DataMock(private val dataFactory: DataFactory,
                private val cacheManager: CacheManager,
                private val appRxSchedulers: AppRxSchedulers) : DataStrategy {
 
-    override fun queryHeroes(queryHeroesListener: DataStrategy.QueryHeroesListener) {
-        Handler().postDelayed( {
-            try {
-                queryHeroesListener.onQueryHeroesOk(dataFactory.
-                    superHeroesFromHeroListWrapper(HeroListWrapper.fromJson(mockHeroesJson)))
-            } catch (t:Throwable) {
-                Log.e(TAG, t.toString())
-                queryHeroesListener.onQueryHeroesFailed(CallError.UNKNOWN_ERROR)
-            }
+    private var disposable: Disposable? = null
 
-        }, 1000)
+    override fun queryHeroes(queryHeroesListener: DataStrategy.QueryHeroesListener) {
+        disposable?.dispose()
+
+        disposable = Flowable.just(getMockHeroesList())
+            .subscribeOn(appRxSchedulers.network)
+            .observeOn(appRxSchedulers.main)
+            .delay(1000, TimeUnit.MILLISECONDS)
+            .subscribe({ result ->
+                queryHeroesListener.onQueryHeroesOk(result)
+            }, { error ->
+                run {
+                    Log.e(TAG, error.toString())
+                    queryHeroesListener.onQueryHeroesFailed(CallError.UNKNOWN_ERROR)
+                }
+            })
+    }
+
+    private fun getMockHeroesList(): List<SuperHero> {
+        return dataFactory.superHeroesFromHeroListWrapper(HeroListWrapper.fromJson(mockHeroesJson))
     }
 
     companion object {
