@@ -10,12 +10,21 @@ import com.example.androidkotlinseed.repository.DataFactory
 import com.example.androidkotlinseed.repository.DataSource
 import com.example.androidkotlinseed.repository.DataStrategy
 import com.example.androidkotlinseed.utils.AppRxSchedulers
-import org.powermock.api.mockito.PowerMockito.mock
+import org.mockito.Mockito.mock
 import retrofit2.Retrofit
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
+import retrofit2.converter.gson.GsonConverterFactory
 
 class UnitTestUseCaseModule : UseCaseModule() {
-    override fun getMarvelApi(retrofitBuilder: Retrofit.Builder): MarvelApi {
-        return mock(MarvelApi::class.java)
+    companion object {
+        private const val BASE_URL = "http://localhost:8080/"
+    }
+
+    override fun getRetrofit(): Retrofit.Builder {
+        return Retrofit.Builder()
+            .baseUrl(BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
     }
 
     override fun getAppDataBase(application: Application): AppDataBase {
@@ -32,8 +41,8 @@ class UnitTestUseCaseModule : UseCaseModule() {
 
     override fun getDataStrategy(dataSource: DataSource,
                                  marvelApi: MarvelApi,
-                                 cacheManager: CacheManager,
                                  dataFactory: DataFactory,
+                                 cacheManager: CacheManager,
                                  appRxSchedulers: AppRxSchedulers): DataStrategy {
         return mock(DataStrategy::class.java)
     }

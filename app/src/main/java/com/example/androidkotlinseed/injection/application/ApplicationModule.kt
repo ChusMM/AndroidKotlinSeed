@@ -34,7 +34,7 @@ open class ApplicationModule(private val application: Application) {
 
     @Singleton
     @Provides
-    fun provideRxSchedulers() = AppRxSchedulers(
+    open fun provideRxSchedulers() = AppRxSchedulers(
         database = Schedulers.single(),
         disk = Schedulers.io(),
         network = Schedulers.io(),

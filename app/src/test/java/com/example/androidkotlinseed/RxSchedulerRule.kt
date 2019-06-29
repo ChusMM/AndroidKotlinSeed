@@ -17,11 +17,13 @@ class RxSchedulerRule : TestRule {
             override fun evaluate() {
                 RxAndroidPlugins.reset()
                 RxAndroidPlugins.setInitMainThreadSchedulerHandler { SCHEDULER_INSTANCE }
+                RxAndroidPlugins.setMainThreadSchedulerHandler { SCHEDULER_INSTANCE }
 
                 RxJavaPlugins.reset()
                 RxJavaPlugins.setIoSchedulerHandler { SCHEDULER_INSTANCE }
                 RxJavaPlugins.setNewThreadSchedulerHandler { SCHEDULER_INSTANCE }
                 RxJavaPlugins.setComputationSchedulerHandler { SCHEDULER_INSTANCE }
+                RxJavaPlugins.setSingleSchedulerHandler{ SCHEDULER_INSTANCE }
 
                 base.evaluate()
             }

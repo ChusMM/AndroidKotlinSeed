@@ -1,33 +1,34 @@
-package com.example.androidkotlinseed
+package com.example.androidkotlinseed.mvvm
 
 import android.util.Log
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleRegistry
 import androidx.lifecycle.LiveData
+import com.example.androidkotlinseed.RxSchedulerRule
+import com.example.androidkotlinseed.UnitTestMockServerDispatcher
+import com.example.androidkotlinseed.UnitTestUtils
 import com.example.androidkotlinseed.api.CallError
 import com.example.androidkotlinseed.domain.SuperHero
 import com.example.androidkotlinseed.domain.usecases.IFetchHeroesUseCase
 import com.example.androidkotlinseed.injection.UnitTestApplicationComponent
-import com.example.androidkotlinseed.mvvm.HeroListViewModel
-import com.example.androidkotlinseed.mvvm.TestObserver
 import com.example.androidkotlinseed.repository.DataFactory
 import com.google.common.truth.Truth
+import okhttp3.mockwebserver.MockWebServer
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.Mockito.times
-import org.mockito.Mockito.verify
-import org.mockito.Mockito.reset
-import org.powermock.api.mockito.PowerMockito.*
+import org.mockito.Mockito.*
+import org.powermock.core.classloader.annotations.PowerMockIgnore
 import org.powermock.core.classloader.annotations.PrepareForTest
 import org.powermock.modules.junit4.PowerMockRunner
 import javax.inject.Inject
 
 @RunWith(PowerMockRunner::class)
 @PrepareForTest(Log::class)
+@PowerMockIgnore("javax.net.ssl.*")
 class HeroViewModelUnitTest {
     private lateinit var testUnitApplicationComponent: UnitTestApplicationComponent
 
@@ -48,9 +49,13 @@ class HeroViewModelUnitTest {
 
     // Utililites
     private val unitTestUtils = UnitTestUtils()
+    private lateinit var mockWebServer: MockWebServer
 
     @Before
     fun setup() {
+        mockWebServer = MockWebServer()
+        mockWebServer.start(8080)
+
         testUnitApplicationComponent = unitTestUtils.createTestApplicationComponent()
         testUnitApplicationComponent.inject(this)
 
@@ -65,10 +70,13 @@ class HeroViewModelUnitTest {
     fun tearDown() {
         lifeCycle.removeObserver(heroListViewModel)
         reset(fetchHeroesUseCase)
+        mockWebServer.shutdown()
     }
 
     @Test
     fun heroListViewModel_fetchHeroes_success() {
+        mockWebServer.dispatcher = UnitTestMockServerDispatcher().RequestDispatcher()
+
         val result = dataFactory.superHeroesFromHeroListWrapper(unitTestUtils.heroListWrapper)
         this.fetchSucccess(result)
 
@@ -82,12 +90,14 @@ class HeroViewModelUnitTest {
 
     @Test
     fun heroListViewModel_fetchHeroes_fail() {
+        mockWebServer.dispatcher = UnitTestMockServerDispatcher().RequestDispatcher()
+
         this.fetchFailed()
 
         lifeCycle.handleLifecycleEvent(Lifecycle.Event.ON_START)
 
         verify(fetchHeroesUseCase, times(1)).fetchAndNotify()
-        verify(fetchHeroesUseCase, times(1)).onQueryHeroesFailed(unitTestUtils.any(CallError::class.java))
+        verify(fetchHeroesUseCase, times(1)).onQueryHeroesFailed(unitTestUtils.any())
 
         Truth.assertThat(heroListViewModel.heroList.value).isNull()
     }

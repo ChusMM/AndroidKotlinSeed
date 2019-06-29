@@ -1,7 +1,6 @@
 package com.example.androidkotlinseed.repository
 
 import android.util.Log
-import com.example.androidkotlinseed.api.CallError
 import com.example.androidkotlinseed.api.HeroListWrapper
 import com.example.androidkotlinseed.domain.SuperHero
 import com.example.androidkotlinseed.utils.AppRxSchedulers
@@ -10,25 +9,30 @@ import io.reactivex.disposables.Disposable
 import java.util.concurrent.TimeUnit
 
 class DataMock(private val dataFactory: DataFactory,
-               private val cacheManager: CacheManager,
-               private val appRxSchedulers: AppRxSchedulers) : DataStrategy {
+               private val appRxSchedulers: AppRxSchedulers,
+               override val cacheManager: CacheManager) : DataStrategy {
 
     private var disposable: Disposable? = null
 
     override fun queryHeroes(queryHeroesListener: DataStrategy.QueryHeroesListener) {
-        disposable?.dispose()
+        this.cancelCurrentFetchIfActive()
 
         disposable = getMockHeroesList()
             .subscribeOn(appRxSchedulers.network)
             .observeOn(appRxSchedulers.main)
-            .subscribe({ result ->
-                queryHeroesListener.onQueryHeroesOk(result)
-            }, { error ->
-                run {
+            .subscribe(
+                { result ->
+                    saveHeroesRetrieved(result, queryHeroesListener)
+                },
+                { error ->
                     Log.e(TAG, error.toString())
-                    queryHeroesListener.onQueryHeroesFailed(CallError.UNKNOWN_ERROR)
+                    handleGetHeroesError(queryHeroesListener, dataFactory.callErrorFromThrowable(error))
                 }
-            })
+            )
+    }
+
+    private fun cancelCurrentFetchIfActive() {
+        disposable?.dispose()
     }
 
     private fun getMockHeroesList(): Observable<List<SuperHero>> {

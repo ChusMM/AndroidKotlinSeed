@@ -72,6 +72,7 @@ open class UseCaseModule {
         return appDataBase.superHeroDao()
     }
 
+    @Singleton
     @Provides
     open fun getCacheManager(superHeroDao: SuperHeroDao, appRxSchedulers: AppRxSchedulers): CacheManager {
         return CacheManager(superHeroDao, appRxSchedulers)
@@ -80,12 +81,12 @@ open class UseCaseModule {
     @Provides
     open fun getDataStrategy(dataSource: DataSource,
                              marvelApi: MarvelApi,
-                             cacheManager: CacheManager,
                              dataFactory: DataFactory,
+                             cacheManager: CacheManager,
                              appRxSchedulers: AppRxSchedulers): DataStrategy {
         return when(dataSource) {
-            DataSource.DATA_WS -> DataWebService(marvelApi, dataFactory, cacheManager, appRxSchedulers)
-            DataSource.DATA_MOCK -> DataMock(dataFactory, cacheManager, appRxSchedulers)
+            DataSource.DATA_WS -> DataWebService(marvelApi, dataFactory, appRxSchedulers, cacheManager)
+            DataSource.DATA_MOCK -> DataMock(dataFactory, appRxSchedulers, cacheManager)
         }
     }
 }

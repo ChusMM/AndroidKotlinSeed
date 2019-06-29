@@ -132,6 +132,7 @@ dependencies {
     testImplementation 'org.powermock:powermock-module-junit4:2.0.2'
     testImplementation 'org.powermock:powermock-api-mockito2:2.0.2'
     testImplementation "androidx.arch.core:core-testing:$lifecycle_version"
+    testImplementation 'com.squareup.okhttp3:mockwebserver:3.14.2'
     testImplementation "com.google.truth:truth:0.36"
     kaptTest 'com.google.dagger:dagger-compiler:2.16'
     kaptTest 'com.google.dagger:dagger-android-processor:2.16'

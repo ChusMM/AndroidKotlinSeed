@@ -29,7 +29,7 @@ interface SuperHeroDao {
 
     @Query("UPDATE expiration_table SET time_stamp = :timeStamp WHERE entity = :entity")
     fun updateHeroesExpirationRow(entity: String = ExpirationEntity.HEROES.entityName,
-                                    timeStamp: Long = System.currentTimeMillis()): Single<Int>
+                                  timeStamp: Long = System.currentTimeMillis()): Single<Int>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertHeroesExpirationRow(expirationTable: ExpirationTable = ExpirationTable(
