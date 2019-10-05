@@ -17,7 +17,7 @@ import kotlinx.android.synthetic.main.activity_heroes_list.view.*
 
 class HeroesListViewMvcImpl(layoutInflater: LayoutInflater,
                             container: ViewGroup?,
-                            private val dialogsManager: DialogsManager) : HeroesListViewMvc {
+                            private val dialogManager: DialogsManager) : HeroesListViewMvc {
 
     companion object {
         private val TAG = HeroesListViewMvcImpl::class.java.simpleName
@@ -25,6 +25,14 @@ class HeroesListViewMvcImpl(layoutInflater: LayoutInflater,
 
     override var rootView: View = layoutInflater.inflate(R.layout.activity_heroes_list, container, false)
     override var viewListener: HeroesListViewMvc.ViewListener? = null
+    override val heroListObserver = Observer<List<SuperHero>> { newList ->
+        run {
+            val heroesAdapter = HeroesAdapter(newList, viewListener, rootView.context)
+            rootView.recycler_heroes.adapter = heroesAdapter
+
+            this.onHeroesFetched()
+        }
+    }
 
     private var isGesture = true
 
@@ -35,15 +43,6 @@ class HeroesListViewMvcImpl(layoutInflater: LayoutInflater,
     private fun initViews() = with(rootView) {
         recycler_heroes.layoutManager = GridLayoutManager(context, 2)
         recycler_heroes.setHasFixedSize(true)
-    }
-
-    private val heroListObserver = Observer<List<SuperHero>> { newList ->
-        run {
-            val heroesAdapter = HeroesAdapter(newList, viewListener, rootView.context)
-            rootView.recycler_heroes.adapter = heroesAdapter
-
-            this.onHeroesFetched()
-        }
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_START)
@@ -57,10 +56,6 @@ class HeroesListViewMvcImpl(layoutInflater: LayoutInflater,
     @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
     fun onStop()  = with(rootView) {
         swipe_layout.setOnRefreshListener(null)
-    }
-
-    override fun getViewModelObserver(): Observer<List<SuperHero>> {
-        return heroListObserver
     }
 
     override fun onRefresh(): Unit = with(rootView) {
@@ -84,6 +79,6 @@ class HeroesListViewMvcImpl(layoutInflater: LayoutInflater,
 
         swipe_layout.isRefreshing = false
         recycler_heroes.visibility = View.VISIBLE
-        dialogsManager.showDialogWithId(ErrorDialogFragment.newInstance(msg), "")
+        dialogManager.showDialogWithId(ErrorDialogFragment.newInstance(msg), "")
     }
 }

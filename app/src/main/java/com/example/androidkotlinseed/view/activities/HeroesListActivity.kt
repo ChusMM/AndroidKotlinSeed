@@ -14,9 +14,9 @@ import javax.inject.Inject
 class HeroesListActivity : BaseActivity(), LifecycleOwner, HeroesListViewMvc.ViewListener {
     @Inject lateinit var viewMvcFactory: ViewMvcFactory
     @Inject lateinit var viewModelFactory: ViewModelFactory
-    @Inject lateinit var heroListViewModel: HeroListViewModel
     @Inject lateinit var lifecycleRegistry: LifecycleRegistry
 
+    private lateinit var heroListViewModel: HeroListViewModel
     private lateinit var viewMvc: HeroesListViewMvc
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,8 +28,9 @@ class HeroesListActivity : BaseActivity(), LifecycleOwner, HeroesListViewMvc.Vie
 
         setContentView(viewMvc.rootView)
 
-        heroListViewModel = ViewModelProviders.of(this, viewModelFactory).get(HeroListViewModel::class.java)
-        heroListViewModel.heroList.observe(this, viewMvc.getViewModelObserver())
+        heroListViewModel = ViewModelProviders.of(this, viewModelFactory)
+            .get(HeroListViewModel::class.java)
+        heroListViewModel.heroList.observe(this, viewMvc.heroListObserver)
 
         lifecycleRegistry.addObserver(heroListViewModel)
         lifecycleRegistry.addObserver(viewMvc)
@@ -38,13 +39,13 @@ class HeroesListActivity : BaseActivity(), LifecycleOwner, HeroesListViewMvc.Vie
 
     override fun onStart() {
         super.onStart()
-        heroListViewModel.registerListener(viewMvc)
+        heroListViewModel.registerViewBinder(viewMvc)
         lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_START)
     }
 
     override fun onStop() {
         super.onStop()
-        heroListViewModel.unregisterListener(viewMvc)
+        heroListViewModel.unregisterViewBinder(viewMvc)
         lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_STOP)
     }
 

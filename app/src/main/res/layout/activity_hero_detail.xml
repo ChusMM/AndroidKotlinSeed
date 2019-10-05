@@ -60,7 +60,7 @@
             android:id="@+id/hero_attrs_list"
             android:padding="@dimen/generic_margin"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:clipToPadding="false"
             android:clipChildren="false"
             android:orientation="vertical"

@@ -4,6 +4,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.androidkotlinseed.R
 import com.example.androidkotlinseed.domain.SuperHero
@@ -15,44 +16,48 @@ import kotlinx.android.synthetic.main.activity_hero_detail.view.*
 
 class HeroDetailViewMvcImpl(layoutInflater: LayoutInflater,
                             container: ViewGroup?,
-                            private val dialogsManager: DialogsManager,
+                            private val dialogManager: DialogsManager,
                             private val imageLoader: ImageLoader):
-    HeroDetailViewMvc, ImageLoader.LoadFinishListener, View.OnClickListener {
-
-    override var viewListener: HeroDetailViewMvc.ViewListener? = null
-    private lateinit var heroBound: SuperHero
+    HeroDetailViewMvc, ImageLoader.LoadFinishListener {
 
     companion object {
         private val TAG = HeroDetailViewMvcImpl::class.java.simpleName
     }
 
     override var rootView: View = layoutInflater.inflate(R.layout.activity_hero_detail, container, false)
+    override var viewListener: HeroDetailViewMvc.ViewListener? = null
+    override val heroDetailObserver = Observer<SuperHero> { superHero ->
+        bindHero(superHero)
+    }
 
-    override fun bindHero(hero: SuperHero?) = with(rootView) {
-        hero?.let {
-            this@HeroDetailViewMvcImpl.heroBound = it
+    init {
+        initViews()
+    }
 
-            imageLoader.loadFromUrl(it.photo, rootView.hero_pic, this@HeroDetailViewMvcImpl)
+    private fun initViews() = with(rootView) {
+        image_detail_button.visibility = View.GONE
+    }
 
-            val attrAdapter = HeroAttributesAdapter(it, context)
+    private fun bindHero(hero: SuperHero?) = with(rootView) {
+        image_detail_button.visibility = View.GONE
+
+        hero?.let { superHero ->
+            imageLoader.loadFromUrl(superHero.photo, rootView.hero_pic, this@HeroDetailViewMvcImpl)
+
+            val attrAdapter = HeroAttributesAdapter(superHero, context)
             hero_attrs_list.layoutManager = LinearLayoutManager(context)
             hero_attrs_list.adapter = attrAdapter
 
-            image_detail_button.setOnClickListener(this@HeroDetailViewMvcImpl)
-
+            image_detail_button.setOnClickListener {
+                viewListener?.onZoomClicked(superHero)
+            }
         } ?: run {
             Log.e(TAG, "No hero provided to show its detail")
-            dialogsManager.showDialogWithId(ErrorDialogFragment.newInstance(context.getString(R.string.hero_not_bound)), "")
+            dialogManager.showDialogWithId(ErrorDialogFragment.newInstance(context.getString(R.string.hero_not_bound)), "")
         }
     }
 
     override fun onImageLoaded() = with(rootView) {
         image_detail_button.visibility = View.VISIBLE
-    }
-
-    override fun onClick(view: View) {
-        when (view.id) {
-            R.id.image_detail_button -> viewListener?.onZoomClicked(heroBound)
-        }
     }
 }

@@ -2,6 +2,7 @@ package com.example.androidkotlinseed.injection.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.example.androidkotlinseed.mvvm.HeroDetailViewModel
 import com.example.androidkotlinseed.mvvm.HeroListViewModel
 import com.example.androidkotlinseed.mvvm.ViewModelFactory
 import dagger.Binds
@@ -26,5 +27,10 @@ abstract class ViewModelModule {
     @Binds
     @IntoMap
     @ViewModelKey(HeroListViewModel::class)
-    abstract fun questionDetailsViewModel(heroListViewModel: HeroListViewModel): ViewModel
+    abstract fun heroListViewModel(heroListViewModel: HeroListViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(HeroDetailViewModel::class)
+    abstract fun heroDetailViewModel(heroDetailViewModel: HeroDetailViewModel): ViewModel
 }
