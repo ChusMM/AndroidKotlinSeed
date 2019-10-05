@@ -1,13 +1,12 @@
 package com.example.androidkotlinseed.view.activities
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.example.androidkotlinseed.domain.SuperHero
 import com.example.androidkotlinseed.injection.BaseActivity
 import com.example.androidkotlinseed.mvvm.HeroDetailViewModel
-import com.example.androidkotlinseed.mvvm.HeroListViewModel
 import com.example.androidkotlinseed.mvvm.ViewModelFactory
 import com.example.androidkotlinseed.view.mvc.ViewMvcFactory
 import com.example.androidkotlinseed.view.mvc.herodetail.HeroDetailViewMvc
@@ -54,6 +53,9 @@ class HeroDetailActivity : BaseActivity(), HeroDetailViewMvc.ViewListener {
     }
 
     override fun onZoomClicked(hero: SuperHero) {
+        val intent = Intent(this, PhotoViewerActivity::class.java)
+        intent.putExtra(PhotoViewerActivity.EXTRA_IMAGE_URL, hero.photo)
 
+        startActivity(intent)
     }
 }

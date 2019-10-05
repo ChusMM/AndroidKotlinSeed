@@ -18,7 +18,8 @@ class ImageLoader {
     }
 
     interface LoadFinishListener {
-        fun onImageLoaded()
+        fun onImageLoadedSuccessfull()
+        fun onImageLoadedError()
     }
 
     private fun getStandardInstance(uri: String): RequestCreator {
@@ -48,6 +49,7 @@ class ImageLoader {
         getOfflineInstance(url).into(object: Target {
             override fun onPrepareLoad(placeHolderDrawable: Drawable) {
                 target.setImageDrawable(placeHolderDrawable)
+                loadFinishListener?.onImageLoadedError()
             }
 
             override fun onBitmapFailed(e: Exception?, errorDrawable: Drawable) {
@@ -56,7 +58,7 @@ class ImageLoader {
 
             override fun onBitmapLoaded(bitmap: Bitmap, from: Picasso.LoadedFrom) {
                 target.setImageBitmap(bitmap)
-                loadFinishListener?.onImageLoaded()
+                loadFinishListener?.onImageLoadedSuccessfull()
             }
         })
     }

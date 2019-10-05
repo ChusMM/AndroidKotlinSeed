@@ -9,6 +9,8 @@ import com.example.androidkotlinseed.view.mvc.herodetail.HeroDetailViewMvc
 import com.example.androidkotlinseed.view.mvc.herodetail.HeroDetailViewMvcImpl
 import com.example.androidkotlinseed.view.mvc.heroeslist.HeroesListViewMvc
 import com.example.androidkotlinseed.view.mvc.heroeslist.HeroesListViewMvcImpl
+import com.example.androidkotlinseed.view.mvc.photoviewer.PhotoViewerMvc
+import com.example.androidkotlinseed.view.mvc.photoviewer.PhotoViewerViewMvcImpl
 import kotlin.reflect.KClass
 
 class ViewMvcFactory(private val layoutInflater: LayoutInflater,
@@ -21,6 +23,7 @@ class ViewMvcFactory(private val layoutInflater: LayoutInflater,
         (return when (mvcViewClass) {
             HeroesListViewMvc::class -> HeroesListViewMvcImpl(layoutInflater, container, dialogsManager) as T
             HeroDetailViewMvc::class -> HeroDetailViewMvcImpl(layoutInflater, container, dialogsManager, imageLoader) as T
+            PhotoViewerMvc::class -> PhotoViewerViewMvcImpl(layoutInflater, container, imageUtils, imageLoader) as T
             else -> throw IllegalArgumentException("unsupported MVC view class $mvcViewClass")
         })
     }

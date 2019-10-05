@@ -126,6 +126,12 @@ dependencies {
     //Picasso
     implementation 'com.squareup.picasso:picasso:2.71828'
 
+    //Photo Viewer
+    implementation 'com.github.chrisbanes:PhotoView:2.3.0'
+
+    //Easy Permissions
+    implementation 'pub.devrel:easypermissions:1.2.0'
+
     // Unit test dependencies
     testImplementation 'junit:junit:4.12'
     testImplementation 'org.mockito:mockito-core:2.28.2'

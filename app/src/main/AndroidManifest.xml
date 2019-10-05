@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          xmlns:tools="http://schemas.android.com/tools"
-          package="com.example.androidkotlinseed">
+        xmlns:tools="http://schemas.android.com/tools"
+        package="com.example.androidkotlinseed">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
             android:name=".App"
@@ -16,23 +17,23 @@
             android:theme="@style/AppTheme"
             android:usesCleartextTraffic="${usesCleartextTraffic}"
             tools:ignore="GoogleAppIndexingWarning,UnusedAttribute">
-
         <activity
                 android:name=".view.activities.SplashActivity"
                 android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
+                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
-        <activity
-                android:name=".view.activities.HeroesListActivity">
-        </activity>
+        <activity android:name=".view.activities.HeroesListActivity" />
+
+        <activity android:name=".view.activities.HeroDetailActivity" />
 
         <activity
-                android:name=".view.activities.HeroDetailActivity">
+                android:name=".view.activities.PhotoViewerActivity"
+                android:theme="@style/NoActionBar.FullScreen">
         </activity>
 
         <provider
@@ -42,7 +43,7 @@
                 android:grantUriPermissions="true">
             <meta-data
                     android:name="android.support.FILE_PROVIDER_PATHS"
-                    android:resource="@xml/provider_paths"/>
+                    android:resource="@xml/provider_paths" />
         </provider>
     </application>
 

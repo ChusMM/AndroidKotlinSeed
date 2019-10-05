@@ -6,4 +6,5 @@
 
     <color name="grayLight">#ccc3ac</color>
     <color name="gray">#b6b6b9</color>
+    <color name="grayTransparent">#bb000000</color>
 </resources>

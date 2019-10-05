@@ -13,6 +13,12 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <style name="NoActionBar.FullScreen" parent="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
+    </style>
+
     <style name="AppTheme.TextAppearanceSmall" parent="TextAppearance.AppCompat.Small">
         <item name="android:fontFamily">sans-serif-light</item>
     </style>
