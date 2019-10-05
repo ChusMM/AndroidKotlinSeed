@@ -30,7 +30,7 @@ class HeroListViewModel @Inject constructor (private val fetchHeroesUseCase: IFe
     fun unregisterUsecaseListener() {
         fetchHeroesUseCase.unregisterListener(this)
         fetchHeroesUseCase.dispose()
-        compositeDisposable.dispose()
+        compositeDisposable.clear()
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
@@ -43,7 +43,7 @@ class HeroListViewModel @Inject constructor (private val fetchHeroesUseCase: IFe
         this.fetchHeroesAndNotify(refresh)
     }
 
-    fun fetchHeroesAndNotify(forceRefresh: Boolean) {
+    fun fetchHeroesAndNotify(forceRefresh: Boolean = false) {
         if (forceRefresh) {
             fetchHeroesUseCase.fetchAndNotify()
         } else {
