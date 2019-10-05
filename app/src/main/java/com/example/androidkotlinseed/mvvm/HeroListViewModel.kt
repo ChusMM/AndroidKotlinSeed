@@ -12,7 +12,7 @@ class HeroListViewModel @Inject constructor (private val fetchHeroesUseCase: IFe
     : ViewModel(), LifecycleObserver, IFetchHeroesUseCase.Listener {
 
     val heroList: MutableLiveData<List<SuperHero>> by lazy {
-        MutableLiveData<List<SuperHero>>()
+        MutableLiveData()
     }
 
     private val listeners: MutableSet<HeroesListViewMvc> = mutableSetOf()

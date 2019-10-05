@@ -12,7 +12,14 @@ import com.squareup.picasso.Target
 import java.lang.Exception
 
 class ImageLoader {
-    private val TAG = ImageLoader::class.java.simpleName
+
+    companion object {
+        private val TAG = ImageLoader::class.java.simpleName
+    }
+
+    interface LoadFinishListener {
+        fun onImageLoaded()
+    }
 
     private fun getStandardInstance(uri: String): RequestCreator {
         return this.getStandardInstance(uri, R.drawable.placeholder)
@@ -34,6 +41,10 @@ class ImageLoader {
     }
 
     fun loadFromUrl(url: String, target: ImageView) {
+        loadFromUrl(url, target, null)
+    }
+
+    fun loadFromUrl(url: String, target: ImageView, loadFinishListener: LoadFinishListener?) {
         getOfflineInstance(url).into(object: Target {
             override fun onPrepareLoad(placeHolderDrawable: Drawable) {
                 target.setImageDrawable(placeHolderDrawable)
@@ -45,8 +56,8 @@ class ImageLoader {
 
             override fun onBitmapLoaded(bitmap: Bitmap, from: Picasso.LoadedFrom) {
                 target.setImageBitmap(bitmap)
+                loadFinishListener?.onImageLoaded()
             }
-
         })
     }
 

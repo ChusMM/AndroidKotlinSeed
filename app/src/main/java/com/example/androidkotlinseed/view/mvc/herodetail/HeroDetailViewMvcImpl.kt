@@ -16,7 +16,11 @@ import kotlinx.android.synthetic.main.activity_hero_detail.view.*
 class HeroDetailViewMvcImpl(layoutInflater: LayoutInflater,
                             container: ViewGroup?,
                             private val dialogsManager: DialogsManager,
-                            private val imageLoader: ImageLoader): HeroDetailViewMvc {
+                            private val imageLoader: ImageLoader):
+    HeroDetailViewMvc, ImageLoader.LoadFinishListener, View.OnClickListener {
+
+    override var viewListener: HeroDetailViewMvc.ViewListener? = null
+    private lateinit var heroBound: SuperHero
 
     companion object {
         private val TAG = HeroDetailViewMvcImpl::class.java.simpleName
@@ -26,14 +30,29 @@ class HeroDetailViewMvcImpl(layoutInflater: LayoutInflater,
 
     override fun bindHero(hero: SuperHero?) = with(rootView) {
         hero?.let {
-            imageLoader.loadFromUrl(it.photo, rootView.hero_pic)
+            this@HeroDetailViewMvcImpl.heroBound = it
+
+            imageLoader.loadFromUrl(it.photo, rootView.hero_pic, this@HeroDetailViewMvcImpl)
 
             val attrAdapter = HeroAttributesAdapter(it, context)
-            rootView.hero_attrs_list.layoutManager = LinearLayoutManager(context)
-            rootView.hero_attrs_list.adapter = attrAdapter
+            hero_attrs_list.layoutManager = LinearLayoutManager(context)
+            hero_attrs_list.adapter = attrAdapter
+
+            image_detail_button.setOnClickListener(this@HeroDetailViewMvcImpl)
+
         } ?: run {
             Log.e(TAG, "No hero provided to show its detail")
             dialogsManager.showDialogWithId(ErrorDialogFragment.newInstance(context.getString(R.string.hero_not_bound)), "")
+        }
+    }
+
+    override fun onImageLoaded() = with(rootView) {
+        image_detail_button.visibility = View.VISIBLE
+    }
+
+    override fun onClick(view: View) {
+        when (view.id) {
+            R.id.image_detail_button -> viewListener?.onZoomClicked(heroBound)
         }
     }
 }

@@ -39,6 +39,17 @@
                         android:scaleType="centerCrop"
                         android:layout_gravity="center"
                         tools:ignore="ContentDescription"/>
+
+                <ImageView
+                        android:id="@+id/image_detail_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom|end"
+                        android:visibility="gone"
+                        app:srcCompat="@android:drawable/ic_menu_zoom"
+                        tools:visibility="visible"
+                        tools:ignore="ContentDescription">
+                </ImageView>
             </FrameLayout>
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>

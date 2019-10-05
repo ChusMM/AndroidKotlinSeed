@@ -6,11 +6,9 @@ import com.example.androidkotlinseed.domain.SuperHero
 import com.example.androidkotlinseed.injection.BaseActivity
 import com.example.androidkotlinseed.view.mvc.ViewMvcFactory
 import com.example.androidkotlinseed.view.mvc.herodetail.HeroDetailViewMvc
-import kotlinx.android.synthetic.main.activity_hero_detail.hero_attrs_list as heroAttrs
-import kotlinx.android.synthetic.main.activity_hero_detail.hero_pic as heroPic
 import javax.inject.Inject
 
-class HeroDetailActivity : BaseActivity() {
+class HeroDetailActivity : BaseActivity(), HeroDetailViewMvc.ViewListener {
     companion object {
         const val HERO_EXTRA = "hero_extra"
     }
@@ -24,6 +22,7 @@ class HeroDetailActivity : BaseActivity() {
         super.getPresentationComponent().inject(this)
 
         viewMvc = viewMvcFactory.newInstance(HeroDetailViewMvc::class, null)
+        viewMvc.viewListener = this
         setContentView(viewMvc.rootView)
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -40,5 +39,9 @@ class HeroDetailActivity : BaseActivity() {
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    override fun onZoomClicked(hero: SuperHero) {
+
     }
 }
