@@ -8,7 +8,7 @@ import io.reactivex.Observable
 import io.reactivex.disposables.Disposable
 import java.util.concurrent.TimeUnit
 
-class DataMock(private val dataFactory: DataFactory,
+class DataMock(override val dataFactory: DataFactory,
                private val appRxSchedulers: AppRxSchedulers,
                override val cacheManager: CacheManager) : DataStrategy {
 

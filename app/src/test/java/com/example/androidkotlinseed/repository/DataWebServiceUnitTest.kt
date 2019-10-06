@@ -13,7 +13,6 @@ import com.example.androidkotlinseed.injection.UnitTestApplicationComponent
 import com.example.androidkotlinseed.utils.AppRxSchedulers
 import io.reactivex.Completable
 import io.reactivex.Observable
-import io.reactivex.Single
 import okhttp3.mockwebserver.MockWebServer
 import org.junit.After
 import org.junit.Before
@@ -117,8 +116,8 @@ class DataWebServiceUnitTest {
             emitter.onNext(false)
         })
 
-        `when`(cacheManager.queryHeroesFromCache()).thenReturn(Single.create { emitter ->
-            emitter.onSuccess(listOf())
+        `when`(cacheManager.queryHeroesFromCache()).thenReturn(Observable.create { emitter ->
+            emitter.onNext(listOf())
         })
 
         dataWebService.queryHeroes(listener)

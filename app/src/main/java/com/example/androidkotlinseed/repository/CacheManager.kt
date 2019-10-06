@@ -6,7 +6,6 @@ import com.example.androidkotlinseed.domain.SuperHero
 import com.example.androidkotlinseed.persistence.SuperHeroDao
 import com.example.androidkotlinseed.utils.AppRxSchedulers
 import io.reactivex.*
-import io.reactivex.disposables.Disposable
 
 class CacheManager(private val superHeroDao: SuperHeroDao,
                    private val appRxSchedulers: AppRxSchedulers) {
@@ -17,36 +16,19 @@ class CacheManager(private val superHeroDao: SuperHeroDao,
 
     fun saveHeroes(superHeroes: List<SuperHero>): Completable {
         val handler = CompletableOnSubscribe { emitter ->
-            replaceHeroes(superHeroes) { heroesRowsAffected ->
-                if (heroesRowsAffected >= 0) {
-                    updateHeroesExpirationTimestamp().subscribe {
-                        emitter.onComplete()
-                    }
-                } else {
-                    emitter.onError(Throwable("Heroes not inserted nor replaced"))
+            replaceHeroes(superHeroes)
+                .doOnError(emitter::onError)
+                .subscribe {
+                    updateHeroesExpirationTimestamp()
+                        .doOnError(emitter::onError)
+                        .subscribe(emitter::onComplete)
                 }
-            }
         }
         return Completable.create(handler)
     }
 
-    fun queryHeroesFromCache(): Single<List<SuperHero>> {
-        val handler = SingleOnSubscribe<List<SuperHero>> { emitter ->
-            listHeroes().subscribe( {
-                emitter.onSuccess(it)
-            }, { error ->
-                Log.e(TAG, error.toString())
-                emitter.onSuccess(listOf())
-            })
-        }
-        return Single.create(handler)
-    }
-
-    fun deleteAllHeroes(callback: (rowsAffected: Int) -> Unit): Disposable {
-        return superHeroDao.deleteAll()
-            .subscribeOn(appRxSchedulers.database)
-            .observeOn(appRxSchedulers.main)
-            .subscribe(callback)
+    fun queryHeroesFromCache(): Observable<List<SuperHero>> {
+        return listHeroes()
     }
 
     fun checkHeroesCacheValidity(): Observable<Boolean> {
@@ -70,15 +52,17 @@ class CacheManager(private val superHeroDao: SuperHeroDao,
 
     private fun updateHeroesExpirationTimestamp(): Completable {
         return Completable.create { emitter ->
-            updateHeroesExpirationTimestamp { expirationRowsAffected ->
-                if (expirationRowsAffected <= 0) {
-                    insertHeroesExpirationTable().subscribe {
+            updateHeroesExpirationTable()
+                .doOnError(emitter::onError)
+                .subscribe { expirationRowsAffected ->
+                    if (expirationRowsAffected <= 0) {
+                        insertHeroesExpirationTable()
+                            .doOnError(emitter::onError)
+                            .subscribe(emitter::onComplete)
+                    } else {
                         emitter.onComplete()
                     }
-                } else {
-                    emitter.onComplete()
                 }
-            }
         }
     }
 
@@ -88,44 +72,27 @@ class CacheManager(private val superHeroDao: SuperHeroDao,
             .observeOn(appRxSchedulers.main)
     }
 
-    private fun replaceHeroes(superHeroes: List<SuperHero>,
-                              callback: (rowsAffected: Int) -> Unit): Disposable {
+    private fun deleteAllHeroes(): Single<Int> {
+        return superHeroDao.deleteAll()
+            .subscribeOn(appRxSchedulers.database)
+            .observeOn(appRxSchedulers.main)
+    }
+
+    private fun replaceHeroes(superHeroes: List<SuperHero>): Completable {
         return superHeroDao.insertAll(superHeroes)
             .subscribeOn(appRxSchedulers.database)
             .observeOn(appRxSchedulers.main)
-            .subscribe({
-                callback(superHeroes.size)
-            }, { error ->
-                run {
-                    Log.e(TAG, error.toString())
-                    callback(0)
-                }
-            })
     }
 
-    private fun updateHeroesExpirationTimestamp(callback: (rowsAffected: Int) -> Unit): Disposable {
+    private fun updateHeroesExpirationTable(): Single<Int> {
         return superHeroDao.updateHeroesExpirationRow()
             .subscribeOn(appRxSchedulers.database)
             .observeOn(appRxSchedulers.main)
-            .subscribe({ rowsUpdated ->
-                run {
-                    Log.d(TAG, "Heroes expiration table updated")
-                    callback(rowsUpdated)
-                }
-            }, { error ->
-                run {
-                    Log.e(TAG, error.toString())
-                    callback(0)
-                }
-            })
     }
 
     private fun insertHeroesExpirationTable(): Completable {
         return superHeroDao.insertHeroesExpirationRow()
             .subscribeOn(appRxSchedulers.database)
             .observeOn(appRxSchedulers.main)
-            .doOnError { error ->
-                Log.e(TAG, error.toString())
-            }
     }
 }

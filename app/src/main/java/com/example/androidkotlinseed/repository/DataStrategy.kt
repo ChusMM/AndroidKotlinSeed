@@ -11,6 +11,7 @@ interface DataStrategy {
     }
 
     val cacheManager: CacheManager
+    val dataFactory: DataFactory
 
     interface QueryHeroesListener {
         fun onQueryHeroesOk(superHeroes: List<SuperHero>)
@@ -21,11 +22,10 @@ interface DataStrategy {
 
     fun saveHeroesRetrieved(result: List<SuperHero>, queryHeroesListener: QueryHeroesListener): Disposable {
         return cacheManager.saveHeroes(result)
-            .doOnError { error ->
-                Log.e(TAG, error.toString())
-            }.subscribe({
+            .subscribe({
                 queryHeroesListener.onQueryHeroesOk(result)
             }, {
+                Log.e(TAG, it.toString())
                 queryHeroesListener.onQueryHeroesOk(result)
             })
     }
@@ -37,8 +37,8 @@ interface DataStrategy {
                     .subscribe({
                         queryHeroesListener.onQueryHeroesOk(it)
                     }, {
-                        queryHeroesListener.onQueryHeroesFailed(
-                            CallError.buildFromErrorCode(CallError.UNKNOWN_ERROR.errorCode))
+                        Log.e(TAG, it.toString())
+                        queryHeroesListener.onQueryHeroesFailed(dataFactory.callErrorFromThrowable(it))
                     })
             } else {
                 queryHeroesListener.onQueryHeroesFailed(callError)

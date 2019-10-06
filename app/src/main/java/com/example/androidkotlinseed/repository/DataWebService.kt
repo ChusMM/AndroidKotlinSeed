@@ -5,7 +5,7 @@ import com.example.androidkotlinseed.utils.AppRxSchedulers
 import io.reactivex.disposables.Disposable
 
 class DataWebService(private val marvelApi: MarvelApi,
-                     private val dataFactory: DataFactory,
+                     override val dataFactory: DataFactory,
                      private val appRxSchedulers: AppRxSchedulers,
                      override val cacheManager: CacheManager) : DataStrategy {
 
