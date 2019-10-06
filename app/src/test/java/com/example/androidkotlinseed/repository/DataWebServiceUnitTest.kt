@@ -95,7 +95,7 @@ class DataWebServiceUnitTest {
         val captor = argumentCaptor<List<SuperHero>>()
 
         `when`(cacheManager.saveHeroes(unitTestUtils.any())).thenReturn(Completable.create { emitter ->
-            emitter.tryOnError(Throwable())
+            emitter.onError(Throwable())
         })
 
         dataWebService.queryHeroes(listener)
@@ -103,24 +103,6 @@ class DataWebServiceUnitTest {
         verify(cacheManager, times(1)).saveHeroes(unitTestUtils.any())
         verify(listener, times(1)).onQueryHeroesOk(captor.capture())
         verify(listener, times(0)).onQueryHeroesFailed(unitTestUtils.any())
-    }
-
-    @Test
-    fun dataWebService_retrieveFail_cacheFail() {
-        mockWebServer.dispatcher = UnitTestMockServerDispatcher().RequestErrorDispatcher()
-
-        val listener = mock(DataStrategy.QueryHeroesListener::class.java)
-        val captor = argumentCaptor<CallError>()
-
-        `when`(cacheManager.checkHeroesCacheValidity()).thenReturn(Observable.create { emitter ->
-            emitter.onNext(true)
-        })
-
-        dataWebService.queryHeroes(listener)
-
-        verify(cacheManager, times(1)).checkHeroesCacheValidity()
-        verify(listener, times(0)).onQueryHeroesOk(unitTestUtils.any())
-        verify(listener, times(1)).onQueryHeroesFailed(captor.capture())
     }
 
     @Test
@@ -144,5 +126,23 @@ class DataWebServiceUnitTest {
         verify(cacheManager, times(1)).checkHeroesCacheValidity()
         verify(listener, times(1)).onQueryHeroesOk(heroListCaptor.capture())
         verify(listener, times(0)).onQueryHeroesFailed(callErrorCaptor.capture())
+    }
+
+    @Test
+    fun dataWebService_retrieveFail_cacheExpired() {
+        mockWebServer.dispatcher = UnitTestMockServerDispatcher().RequestErrorDispatcher()
+
+        val listener = mock(DataStrategy.QueryHeroesListener::class.java)
+        val captor = argumentCaptor<CallError>()
+
+        `when`(cacheManager.checkHeroesCacheValidity()).thenReturn(Observable.create { emitter ->
+            emitter.onNext(true)
+        })
+
+        dataWebService.queryHeroes(listener)
+
+        verify(cacheManager, times(1)).checkHeroesCacheValidity()
+        verify(listener, times(0)).onQueryHeroesOk(unitTestUtils.any())
+        verify(listener, times(1)).onQueryHeroesFailed(captor.capture())
     }
 }
