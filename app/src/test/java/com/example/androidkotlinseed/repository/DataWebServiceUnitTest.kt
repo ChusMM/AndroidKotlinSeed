@@ -11,6 +11,9 @@ import com.example.androidkotlinseed.argumentCaptor
 import com.example.androidkotlinseed.domain.SuperHero
 import com.example.androidkotlinseed.injection.UnitTestApplicationComponent
 import com.example.androidkotlinseed.utils.AppRxSchedulers
+import io.reactivex.Completable
+import io.reactivex.Observable
+import io.reactivex.Single
 import okhttp3.mockwebserver.MockWebServer
 import org.junit.After
 import org.junit.Before
@@ -67,32 +70,79 @@ class DataWebServiceUnitTest {
     }
 
     @Test
-    fun dataWebService_retrieve_ok() {
+    fun dataWebService_retrieveOk_saveOk() {
         mockWebServer.dispatcher = UnitTestMockServerDispatcher().RequestDispatcher()
 
         val listener = mock(DataStrategy.QueryHeroesListener::class.java)
         val captor = argumentCaptor<List<SuperHero>>()
 
+        `when`(cacheManager.saveHeroes(unitTestUtils.any())).thenReturn(Completable.create { emitter ->
+            emitter.onComplete()
+        })
+
         dataWebService.queryHeroes(listener)
 
+        verify(cacheManager, times(1)).saveHeroes(unitTestUtils.any())
         verify(listener, times(1)).onQueryHeroesOk(captor.capture())
         verify(listener, times(0)).onQueryHeroesFailed(unitTestUtils.any())
     }
 
     @Test
-    fun dataWebService_retrieve_fail() {
+    fun dataWebService_retrieveOk_saveFail() {
+        mockWebServer.dispatcher = UnitTestMockServerDispatcher().RequestDispatcher()
+
+        val listener = mock(DataStrategy.QueryHeroesListener::class.java)
+        val captor = argumentCaptor<List<SuperHero>>()
+
+        `when`(cacheManager.saveHeroes(unitTestUtils.any())).thenReturn(Completable.create { emitter ->
+            emitter.tryOnError(Throwable())
+        })
+
+        dataWebService.queryHeroes(listener)
+
+        verify(cacheManager, times(1)).saveHeroes(unitTestUtils.any())
+        verify(listener, times(1)).onQueryHeroesOk(captor.capture())
+        verify(listener, times(0)).onQueryHeroesFailed(unitTestUtils.any())
+    }
+
+    @Test
+    fun dataWebService_retrieveFail_cacheFail() {
         mockWebServer.dispatcher = UnitTestMockServerDispatcher().RequestErrorDispatcher()
 
         val listener = mock(DataStrategy.QueryHeroesListener::class.java)
         val captor = argumentCaptor<CallError>()
 
-        doAnswer {
-            dataWebService.evaluateHeroesCacheAccess(true, listener, CallError.FORBIDDEN)
-        }.`when`(cacheManager).checkHeroesCacheValidity(unitTestUtils.any())
+        `when`(cacheManager.checkHeroesCacheValidity()).thenReturn(Observable.create { emitter ->
+            emitter.onNext(true)
+        })
 
         dataWebService.queryHeroes(listener)
 
+        verify(cacheManager, times(1)).checkHeroesCacheValidity()
         verify(listener, times(0)).onQueryHeroesOk(unitTestUtils.any())
-        verify(listener, timeout(5000)).onQueryHeroesFailed(captor.capture())
+        verify(listener, times(1)).onQueryHeroesFailed(captor.capture())
+    }
+
+    @Test
+    fun dataWebService_retrieveFail_cacheOk() {
+        mockWebServer.dispatcher = UnitTestMockServerDispatcher().RequestErrorDispatcher()
+
+        val listener = mock(DataStrategy.QueryHeroesListener::class.java)
+        val heroListCaptor = argumentCaptor<List<SuperHero>>()
+        val callErrorCaptor = argumentCaptor<CallError>()
+
+        `when`(cacheManager.checkHeroesCacheValidity()).thenReturn(Observable.create { emitter ->
+            emitter.onNext(false)
+        })
+
+        `when`(cacheManager.queryHeroesFromCache()).thenReturn(Single.create { emitter ->
+            emitter.onSuccess(listOf())
+        })
+
+        dataWebService.queryHeroes(listener)
+
+        verify(cacheManager, times(1)).checkHeroesCacheValidity()
+        verify(listener, times(1)).onQueryHeroesOk(heroListCaptor.capture())
+        verify(listener, times(0)).onQueryHeroesFailed(callErrorCaptor.capture())
     }
 }
