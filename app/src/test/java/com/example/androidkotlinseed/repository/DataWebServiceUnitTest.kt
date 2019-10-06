@@ -75,8 +75,6 @@ class DataWebServiceUnitTest {
 
         dataWebService.queryHeroes(listener)
 
-        //verify(listener).onQueryHeroesOk(captor.capture())
-
         verify(listener, times(1)).onQueryHeroesOk(captor.capture())
         verify(listener, times(0)).onQueryHeroesFailed(unitTestUtils.any())
     }

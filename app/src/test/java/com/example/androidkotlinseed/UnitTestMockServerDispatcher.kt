@@ -29,14 +29,4 @@ class UnitTestMockServerDispatcher {
             }
         }
     }
-
-    /**
-     * Return error response from mock server
-     */
-    internal inner class ErrorDispatcher : Dispatcher() {
-
-        override fun dispatch(request: RecordedRequest): MockResponse {
-            return MockResponse().setResponseCode(400)
-        }
-    }
 }
