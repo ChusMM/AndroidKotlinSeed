@@ -1,43 +1,85 @@
 package com.example.androidkotlinseed.repository
 
 import android.util.Log
-import com.example.androidkotlinseed.api.HeroListWrapper
-import com.example.androidkotlinseed.domain.SuperHero
+import com.example.androidkotlinseed.api.MarvelApi
+import com.example.androidkotlinseed.repository.mock.MockServerDispatcher
 import com.example.androidkotlinseed.utils.AppRxSchedulers
-import io.reactivex.Observable
+import io.reactivex.Completable
+import io.reactivex.CompletableOnSubscribe
+import io.reactivex.Scheduler
 import io.reactivex.disposables.Disposable
-import java.util.concurrent.TimeUnit
+import okhttp3.mockwebserver.MockWebServer
+import java.lang.Exception
 
-class DataMock(override val dataFactory: DataFactory,
-               private val appRxSchedulers: AppRxSchedulers,
+class DataMock(override val marvelApi: MarvelApi,
+               override val dataFactory: DataFactory,
+               override val appRxSchedulers: AppRxSchedulers,
                override val cacheManager: CacheManager) : DataStrategy {
 
     private var disposable: Disposable? = null
+    private val mockWebServer = MockWebServer()
 
     override fun queryHeroes(queryHeroesListener: DataStrategy.QueryHeroesListener) {
         this.cancelCurrentFetchIfActive()
 
-        disposable = getMockHeroesList()
+        disposable = startMockWebServer(appRxSchedulers.network)
             .subscribeOn(appRxSchedulers.network)
             .observeOn(appRxSchedulers.main)
-            .subscribe(
-                { result ->
-                    saveHeroesRetrieved(result, queryHeroesListener)
-                },
-                { error ->
-                    Log.e(TAG, error.toString())
-                    handleGetHeroesError(queryHeroesListener, dataFactory.callErrorFromThrowable(error))
+            .subscribe ({
+                disposable = super.retrieveHeroes(queryHeroesListener)
+            }, { error ->
+                super.onGetHeroesErrorHandler(queryHeroesListener, error)
+            })
+    }
+
+    override fun dispose() {
+        this.cancelCurrentFetchIfActive()
+        shutdownMockWebServer(appRxSchedulers.network).subscribe()
+    }
+
+    /**
+     * Mock Webserver must be started on a background thread
+     */
+    private fun startMockWebServer(scheduler: Scheduler): Completable {
+        val handler = CompletableOnSubscribe { emitter ->
+            val emitterDisposable = scheduler.createWorker().schedule {
+                try {
+                    mockWebServer.start(8080)
+                    mockWebServer.dispatcher = MockServerDispatcher().RequestDispatcher()
+                    if (!emitter.isDisposed) emitter.onComplete()
+                } catch (e: Exception) {
+                    Log.e(TAG, e.toString())
+                    if (!emitter.isDisposed) emitter.onError(e)
                 }
-            )
+
+            }
+            emitter.setDisposable(emitterDisposable)
+        }
+        return Completable.create(handler)
+    }
+
+    /**
+     * Mock Webserver must be shutdown on a background thread
+     */
+    private fun shutdownMockWebServer(scheduler: Scheduler): Completable {
+        val handler = CompletableOnSubscribe { emitter ->
+            val emitterDisposable = scheduler.createWorker().schedule {
+                try {
+                    mockWebServer.shutdown()
+                    if (!emitter.isDisposed) emitter.onComplete()
+                } catch (e: Exception) {
+                    Log.e(TAG, e.toString())
+                    if (!emitter.isDisposed) emitter.onError(e)
+                }
+
+            }
+            emitter.setDisposable(emitterDisposable)
+        }
+        return Completable.create(handler)
     }
 
     private fun cancelCurrentFetchIfActive() {
         disposable?.dispose()
-    }
-
-    private fun getMockHeroesList(): Observable<List<SuperHero>> {
-        return Observable.just(dataFactory.superHeroesFromHeroListWrapper(HeroListWrapper.fromJson(mockHeroesJson)))
-            .delay(1000, TimeUnit.MILLISECONDS)
     }
 
     companion object {

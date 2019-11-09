@@ -26,6 +26,7 @@ class FetchHeroesUseCase(private val dataStrategy: DataStrategy) : IFetchHeroesU
 
     override fun dispose() {
         disposable?.dispose()
+        dataStrategy.dispose()
     }
 
     override fun onQueryHeroesOk(superHeroes: List<SuperHero>) {

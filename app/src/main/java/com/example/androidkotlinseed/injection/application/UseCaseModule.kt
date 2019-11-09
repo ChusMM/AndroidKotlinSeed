@@ -86,7 +86,7 @@ open class UseCaseModule {
                              appRxSchedulers: AppRxSchedulers): DataStrategy {
         return when(dataSource) {
             DataSource.DATA_WS -> DataWebService(marvelApi, dataFactory, appRxSchedulers, cacheManager)
-            DataSource.DATA_MOCK -> DataMock(dataFactory, appRxSchedulers, cacheManager)
+            DataSource.DATA_MOCK -> DataMock(marvelApi, dataFactory, appRxSchedulers, cacheManager)
         }
     }
 }
