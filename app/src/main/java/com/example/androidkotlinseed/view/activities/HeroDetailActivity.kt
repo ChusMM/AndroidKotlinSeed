@@ -42,8 +42,8 @@ class HeroDetailActivity : BaseActivity(), HeroDetailViewMvc.ViewListener {
         heroDetailViewModel.bindHero(hero)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        when(item?.itemId) {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId) {
             android.R.id.home -> {
                 this.finish()
                 return true

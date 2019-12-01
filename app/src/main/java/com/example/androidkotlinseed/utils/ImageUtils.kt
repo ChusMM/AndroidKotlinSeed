@@ -56,25 +56,23 @@ class ImageUtils(private val activity: Activity,
     }
 
     private fun createCacheImagesFolder(): File {
-        val folder = File(Environment.getExternalStorageDirectory().absolutePath + "/AndroidSeedImages")
-        if (!folder.exists()) {
-            if (!folder.mkdir()) {
-                Log.e(TAG, "Unable to create Image")
+        activity.getExternalFilesDir(Environment.DIRECTORY_PICTURES)?.let { picturesDir ->
+            File("${picturesDir.absolutePath}/AndroidSeedImages")
+        }?.let {
+            if (!it.exists() && !it.mkdir()) {
+                Log.e(TAG, "Unable to create pictures folder")
                 throw IOException("Cannot create image Directory")
             }
+            return it
+        } ?: run {
+            Log.e(TAG, "Pictures device folder not found")
+            throw IOException("Cannot create image Directory")
         }
-        return folder
     }
 
     private fun writeInto(directory: File, fileName: String, bitmap: Bitmap, scheduler: Scheduler): Observable<File> {
         val handler = ObservableOnSubscribe<File> { emitter ->
             val disposable = scheduler.createWorker().schedule {
-                try {
-                    Thread.sleep(1500)
-                } catch (e: InterruptedException) {
-                    if (!emitter.isDisposed) emitter.onError(e)
-                    return@schedule
-                }
 
                 val byteArrayOutputStream = ByteArrayOutputStream()
                 try {

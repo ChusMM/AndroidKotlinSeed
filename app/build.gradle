@@ -43,13 +43,6 @@ android {
         def dataWebService = "\"WS\""
         def dataMock = "\"MOCK\""
 
-        pre {
-            dimension "environment"
-            manifestPlaceholders = [usesCleartextTraffic: "true"]
-            buildConfigField "String", "DATA_SOURCE", dataWebService
-            buildConfigField "String", "API_BASE_URL", "\"https://api.myjson.com\""
-        }
-
         pro {
             dimension "environment"
             manifestPlaceholders = [usesCleartextTraffic: "false"]
@@ -57,11 +50,20 @@ android {
             buildConfigField "String", "API_BASE_URL", "\"https://api.myjson.com\""
         }
 
+        pre {
+            dimension "environment"
+            manifestPlaceholders = [usesCleartextTraffic: "true"]
+            buildConfigField "String", "DATA_SOURCE", dataWebService
+            buildConfigField "String", "API_BASE_URL", "\"https://api.myjson.com\""
+            applicationIdSuffix ".pre"
+        }
+
         mock {
             dimension "environment"
             manifestPlaceholders = [usesCleartextTraffic: "true"]
             buildConfigField "String", "DATA_SOURCE", dataMock
             buildConfigField "String", "API_BASE_URL", "\"http://localhost:8080\""
+            applicationIdSuffix ".pro"
         }
     }
 
@@ -84,7 +86,7 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.core:core-ktx:1.1.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
-    implementation 'androidx.recyclerview:recyclerview:1.0.0'
+    implementation 'androidx.recyclerview:recyclerview:1.1.0'
     implementation 'com.google.android.material:material:1.0.0'
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
@@ -112,7 +114,7 @@ dependencies {
     implementation 'com.squareup.okhttp3:okhttp-urlconnection:3.14.2'
 
     // Room
-    def room_version = "2.2.1"
+    def room_version = "2.2.2"
     implementation "androidx.room:room-runtime:$room_version"
     implementation "androidx.room:room-rxjava2:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
@@ -131,7 +133,7 @@ dependencies {
     implementation 'com.github.chrisbanes:PhotoView:2.3.0'
 
     //Easy Permissions
-    implementation 'pub.devrel:easypermissions:1.2.0'
+    implementation 'pub.devrel:easypermissions:3.0.0'
 
     //Mock web server
     implementation 'com.squareup.okhttp3:mockwebserver:3.14.2'

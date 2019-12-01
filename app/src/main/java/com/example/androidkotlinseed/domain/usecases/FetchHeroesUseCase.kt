@@ -38,16 +38,10 @@ class FetchHeroesUseCase(private val dataStrategy: DataStrategy) : IFetchHeroesU
     }
 
     private fun notifyOk(superHeroes: List<SuperHero>) {
-        listener?.let {
-            disposable = Flowable.just(it)
-                .subscribe { listener -> listener.onFetchHeroesOk(superHeroes) }
-        }
+        listener?.onFetchHeroesOk(superHeroes)
     }
 
     private fun notifyFailed(reason: String) {
-        listener?.let {
-            disposable = Flowable.just(it)
-                .subscribe { listener -> listener.onFetchHeroesFailed(reason) }
-        }
+        listener?.onFetchHeroesFailed(reason)
     }
 }
