@@ -1,9 +1,9 @@
 package com.example.androidkotlinseed.repository
 
 import com.example.androidkotlinseed.api.CallError
-import com.example.androidkotlinseed.domain.SuperHero
 import com.example.androidkotlinseed.api.HeroListWrapper
 import com.example.androidkotlinseed.api.HeroWrapper
+import com.example.androidkotlinseed.domain.SuperHero
 import retrofit2.HttpException
 
 class DataFactory {
@@ -20,13 +20,13 @@ class DataFactory {
     private fun superHeroFromHeroWrapper(heroWrapper: HeroWrapper): SuperHero {
         val (name, photo, realName, height, power, abilities, groups) = heroWrapper
         return SuperHero(
-            name,
-            photo,
-            realName,
-            height,
-            power,
-            abilities,
-            groups
+                name,
+                photo,
+                realName,
+                height,
+                power,
+                abilities,
+                groups
         )
     }
 

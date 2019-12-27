@@ -13,9 +13,10 @@ class MockServerDispatcher {
      */
     internal inner class RequestDispatcher : Dispatcher() {
         override fun dispatch(request: RecordedRequest): MockResponse {
-            return when {
-                request.path == MarvelApi.GET_HEROES_PATH -> MockResponse().setResponseCode(HTTP_OK).setBody(mockHeroesJson)
-                else -> MockResponse().setResponseCode(404)
+            Thread.sleep(2000)
+            return when (request.path) {
+                MarvelApi.GET_HEROES_PATH -> MockResponse().setResponseCode(HTTP_OK).setBody(mockHeroesJson)
+                else                      -> MockResponse().setResponseCode(404)
             }
         }
     }

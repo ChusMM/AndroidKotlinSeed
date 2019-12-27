@@ -1,44 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools">
-
-    <data>
-        <variable name="heroAttr" type="com.example.androidkotlinseed.domain.HeroAttribute"/>
-    </data>
+    xmlns:tools="http://schemas.android.com/tools">
 
     <LinearLayout
-        android:orientation="vertical"
-        android:layout_margin="@dimen/generic_margin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?attr/selectableItemBackground">
+        android:layout_margin="@dimen/generic_margin"
+        android:background="?attr/selectableItemBackground"
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/title"
+            style="@style/AppTheme.TextAppearanceMediumAllCaps"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:gravity="start|center_vertical"
+            android:maxLines="1"
+            android:text="@{heroAttr.attribute}"
+            android:textStyle="bold|italic"
+            tools:text="Atributo" />
+
+        <TextView
+            android:id="@+id/description"
+            style="@style/AppTheme.TextAppearanceSmall"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="start|center_vertical"
-            android:maxLines="1"
-            android:ellipsize="end"
-            android:textStyle="bold|italic"
-            android:text="@{heroAttr.attribute}"
-            tools:text="Atributo"
-            style="@style/AppTheme.TextAppearanceMediumAllCaps"/>
+            android:text="@{heroAttr.description}"
+            tools:text="Descripción" />
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginBottom="@dimen/small_margin"
-            android:background="?attr/colorButtonNormal">
-        </View>
-
-        <TextView
-            android:id="@+id/description"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="start|center_vertical"
-            android:text="@{heroAttr.description}"
-            tools:text="Descripción"
-            style="@style/AppTheme.TextAppearanceSmall"/>
+            android:background="?attr/colorButtonNormal"></View>
     </LinearLayout>
+
+    <data>
+
+        <variable
+            name="heroAttr"
+            type="com.example.androidkotlinseed.domain.HeroAttribute" />
+    </data>
 </layout>

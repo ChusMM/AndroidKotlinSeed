@@ -1,22 +1,22 @@
 package com.example.androidkotlinseed.view.mvc.photoviewer
 
+import android.graphics.drawable.BitmapDrawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import com.example.androidkotlinseed.R
 import com.example.androidkotlinseed.utils.ImageLoader
 import com.example.androidkotlinseed.utils.ImageUtils
-import android.graphics.drawable.BitmapDrawable
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.photo_viewer.view.*
 import java.util.*
 
-
 class PhotoViewerViewMvcImpl(layoutInflater: LayoutInflater,
                              container: ViewGroup?,
                              private val imageUtils: ImageUtils,
-                             private val imageLoader: ImageLoader): PhotoViewerMvc,
-    ImageLoader.LoadFinishListener {
+                             private val imageLoader: ImageLoader) : PhotoViewerMvc,
+        ImageLoader.LoadFinishListener {
 
     override var rootView: View = layoutInflater.inflate(R.layout.photo_viewer, container, false)
     override var viewListener: PhotoViewerMvc.ViewListener? = null
@@ -55,11 +55,13 @@ class PhotoViewerViewMvcImpl(layoutInflater: LayoutInflater,
         return@with
     }
 
-    override fun onImageLoadedSuccessfull()  = with(rootView) {
+    override fun onImageLoadedSuccessfull() = with(rootView) {
         progress_circular.visibility = View.GONE
     }
 
     override fun onImageLoadedError() = with(rootView) {
         progress_circular.visibility = View.GONE
+        Toast.makeText(context, R.string.could_not_load_image, Toast.LENGTH_LONG).show()
+        return@with
     }
 }

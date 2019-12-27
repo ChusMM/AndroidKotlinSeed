@@ -2,7 +2,7 @@ package com.example.androidkotlinseed.view.mvc.photoviewer
 
 import com.example.androidkotlinseed.view.mvc.ViewMvc
 
-interface PhotoViewerMvc: ViewMvc {
+interface PhotoViewerMvc : ViewMvc {
     var viewListener: ViewListener?
 
     fun loadImage(imageUrl: String)

@@ -17,7 +17,8 @@ class BaseFragment : Fragment() {
         }
         isInjectorUsed = true
         return getApplicationComponent().newPresentationComponent(
-            PresentationModule(activity ?: throw java.lang.RuntimeException("No activity attached")))
+                PresentationModule(activity
+                                   ?: throw java.lang.RuntimeException("No activity attached")))
     }
 
     private fun getApplicationComponent(): ApplicationComponent {

@@ -11,8 +11,8 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.example.androidkotlinseed.R
 import com.example.androidkotlinseed.domain.SuperHero
 import com.example.androidkotlinseed.view.adapters.HeroesAdapter
-import com.example.androidkotlinseed.view.dialogs.ErrorDialogFragment
 import com.example.androidkotlinseed.view.dialogs.DialogsManager
+import com.example.androidkotlinseed.view.dialogs.ErrorDialogFragment
 import kotlinx.android.synthetic.main.activity_heroes_list.view.*
 
 class HeroesListViewMvcImpl(layoutInflater: LayoutInflater,
@@ -54,7 +54,7 @@ class HeroesListViewMvcImpl(layoutInflater: LayoutInflater,
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
-    fun onStop()  = with(rootView) {
+    fun onStop() = with(rootView) {
         swipe_layout.setOnRefreshListener(null)
     }
 

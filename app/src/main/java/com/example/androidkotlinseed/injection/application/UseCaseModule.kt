@@ -6,7 +6,13 @@ import com.example.androidkotlinseed.BuildConfig
 import com.example.androidkotlinseed.api.MarvelApi
 import com.example.androidkotlinseed.persistence.AppDataBase
 import com.example.androidkotlinseed.persistence.SuperHeroDao
-import com.example.androidkotlinseed.repository.*
+import com.example.androidkotlinseed.repository.CacheManager
+import com.example.androidkotlinseed.repository.DataFactory
+import com.example.androidkotlinseed.repository.DataMock
+import com.example.androidkotlinseed.repository.DataSource
+import com.example.androidkotlinseed.repository.DataSourceProvider
+import com.example.androidkotlinseed.repository.DataStrategy
+import com.example.androidkotlinseed.repository.DataWebService
 import com.example.androidkotlinseed.utils.AppRxSchedulers
 import dagger.Module
 import dagger.Provides
@@ -29,17 +35,17 @@ open class UseCaseModule {
     @Provides
     open fun getRetrofit(): Retrofit.Builder {
         return Retrofit.Builder()
-            .baseUrl(BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create())
-            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
     }
 
     @Singleton
     @Provides
     open fun getMarvelApi(retrofitBuilder: Retrofit.Builder): MarvelApi {
         val httpClientBuilder = OkHttpClient.Builder()
-            .connectTimeout(CONNECT_TIMEOUT, TimeUnit.SECONDS)
-            .readTimeout(READ_TIMEOUT, TimeUnit.SECONDS)
+                .connectTimeout(CONNECT_TIMEOUT, TimeUnit.SECONDS)
+                .readTimeout(READ_TIMEOUT, TimeUnit.SECONDS)
 
         val httpClient = httpClientBuilder.build()
         val retrofit = retrofitBuilder.client(httpClient).build()
@@ -63,7 +69,7 @@ open class UseCaseModule {
     @Provides
     open fun getAppDataBase(application: Application): AppDataBase {
         return Room.databaseBuilder(application,
-            AppDataBase::class.java, "heroes_database").build()
+                AppDataBase::class.java, "heroes_database").build()
     }
 
     @Singleton
@@ -84,8 +90,8 @@ open class UseCaseModule {
                              dataFactory: DataFactory,
                              cacheManager: CacheManager,
                              appRxSchedulers: AppRxSchedulers): DataStrategy {
-        return when(dataSource) {
-            DataSource.DATA_WS -> DataWebService(marvelApi, dataFactory, appRxSchedulers, cacheManager)
+        return when (dataSource) {
+            DataSource.DATA_WS   -> DataWebService(marvelApi, dataFactory, appRxSchedulers, cacheManager)
             DataSource.DATA_MOCK -> DataMock(marvelApi, dataFactory, appRxSchedulers, cacheManager)
         }
     }

@@ -20,7 +20,10 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.Mockito.*
+import org.mockito.Mockito.doAnswer
+import org.mockito.Mockito.reset
+import org.mockito.Mockito.times
+import org.mockito.Mockito.verify
 import org.powermock.core.classloader.annotations.PowerMockIgnore
 import org.powermock.core.classloader.annotations.PrepareForTest
 import org.powermock.modules.junit4.PowerMockRunner
@@ -40,8 +43,10 @@ class HeroViewModelUnitTest {
     @Rule
     val rxSchedulerRule = RxSchedulerRule()
 
-    @Inject lateinit var dataFactory: DataFactory
-    @Inject lateinit var fetchHeroesUseCase: IFetchHeroesUseCase
+    @Inject
+    lateinit var dataFactory: DataFactory
+    @Inject
+    lateinit var fetchHeroesUseCase: IFetchHeroesUseCase
 
     // System to test
     private lateinit var heroListViewModel: HeroListViewModel

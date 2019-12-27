@@ -10,7 +10,7 @@ enum class DataSource(private val dataSource: String) {
         const val MOCK_DATA_ORIGIN = "MOCK"
     }
 
-    override fun toString(): String{
+    override fun toString(): String {
         return "DataSource(dataSource='$dataSource')"
     }
 }

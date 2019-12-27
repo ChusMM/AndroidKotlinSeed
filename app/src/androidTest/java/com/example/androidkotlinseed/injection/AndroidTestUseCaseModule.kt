@@ -12,8 +12,8 @@ class AndroidTestUseCaseModule : UseCaseModule() {
 
     override fun getRetrofit(): Retrofit.Builder {
         return Retrofit.Builder()
-            .baseUrl(BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create())
-            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
     }
 }

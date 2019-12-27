@@ -19,7 +19,7 @@ class HeroesAdapter(private val heroes: List<SuperHero>,
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HeroViewHolder {
         val itemRowBinding: RowHeroItemBinding = DataBindingUtil.inflate(LayoutInflater.from(context),
-            R.layout.row_hero_item, parent, false)
+                R.layout.row_hero_item, parent, false)
         return HeroViewHolder(itemRowBinding)
     }
 

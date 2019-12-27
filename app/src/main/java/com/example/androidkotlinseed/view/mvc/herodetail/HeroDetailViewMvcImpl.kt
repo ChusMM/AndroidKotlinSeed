@@ -17,7 +17,7 @@ import kotlinx.android.synthetic.main.activity_hero_detail.view.*
 class HeroDetailViewMvcImpl(layoutInflater: LayoutInflater,
                             container: ViewGroup?,
                             private val dialogManager: DialogsManager,
-                            private val imageLoader: ImageLoader): HeroDetailViewMvc {
+                            private val imageLoader: ImageLoader) : HeroDetailViewMvc {
 
     companion object {
         private val TAG = HeroDetailViewMvcImpl::class.java.simpleName

@@ -1,14 +1,5 @@
 package com.example.androidkotlinseed
 
-import androidx.test.rule.ActivityTestRule
-import okhttp3.mockwebserver.MockWebServer
-import org.junit.After
-
-import org.junit.Test
-import org.junit.runner.RunWith
-
-import org.junit.Before
-import org.junit.Rule
 import android.content.Intent
 import androidx.test.espresso.Espresso
 import androidx.test.espresso.action.ViewActions
@@ -17,9 +8,16 @@ import androidx.test.espresso.intent.Intents
 import androidx.test.espresso.intent.matcher.IntentMatchers
 import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.rule.ActivityTestRule
 import com.example.androidkotlinseed.view.activities.HeroDetailActivity
 import com.example.androidkotlinseed.view.activities.HeroesListActivity
 import com.example.androidkotlinseed.view.adapters.HeroViewHolder
+import okhttp3.mockwebserver.MockWebServer
+import org.junit.After
+import org.junit.Before
+import org.junit.Rule
+import org.junit.Test
+import org.junit.runner.RunWith
 
 /**
  * Instrumented test, which will execute on an Android device.
@@ -52,7 +50,7 @@ class HeroesListActivityTest {
         activityRule.launchActivity(Intent())
 
         Espresso.onView(ViewMatchers.withId(R.id.recycler_heroes)).perform(
-            RecyclerViewActions.actionOnItemAtPosition<HeroViewHolder>(0, ViewActions.click())
+                RecyclerViewActions.actionOnItemAtPosition<HeroViewHolder>(0, ViewActions.click())
         )
 
         Intents.intended(IntentMatchers.hasComponent(HeroDetailActivity::class.java.name))

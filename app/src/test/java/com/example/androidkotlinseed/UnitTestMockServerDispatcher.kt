@@ -16,7 +16,7 @@ class UnitTestMockServerDispatcher {
         override fun dispatch(request: RecordedRequest): MockResponse {
             return when {
                 request.path == MarvelApi.GET_HEROES_PATH -> MockResponse().setResponseCode(HTTP_OK).setBody(mockHeroesJson)
-                else -> MockResponse().setResponseCode(404)
+                else                                      -> MockResponse().setResponseCode(404)
             }
         }
     }
@@ -25,7 +25,7 @@ class UnitTestMockServerDispatcher {
         override fun dispatch(request: RecordedRequest): MockResponse {
             return when {
                 request.path == MarvelApi.GET_HEROES_PATH -> MockResponse().setResponseCode(HTTP_FORBIDDEN).setBody("forbidden")
-                else -> MockResponse().setResponseCode(404)
+                else                                      -> MockResponse().setResponseCode(404)
             }
         }
     }

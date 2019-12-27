@@ -5,7 +5,7 @@ import com.example.androidkotlinseed.R
 import java.net.HttpURLConnection.HTTP_FORBIDDEN
 import java.net.HttpURLConnection.HTTP_NOT_FOUND
 
-enum class CallError(val errorCode: Int, @StringRes val msgStringRes: Int) {
+enum class CallError(private val errorCode: Int, @StringRes val msgStringRes: Int) {
     NOT_FOUND(HTTP_NOT_FOUND, R.string.cannot_reach_server),
     FORBIDDEN(HTTP_FORBIDDEN, R.string.server_access_forbidden),
     UNKNOWN_ERROR(-1, R.string.server_call_failed);
@@ -19,7 +19,7 @@ enum class CallError(val errorCode: Int, @StringRes val msgStringRes: Int) {
             return when (errorCode) {
                 HTTP_NOT_FOUND -> NOT_FOUND
                 HTTP_FORBIDDEN -> FORBIDDEN
-                else -> UNKNOWN_ERROR
+                else           -> UNKNOWN_ERROR
             }
         }
     }

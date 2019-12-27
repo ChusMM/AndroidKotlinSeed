@@ -1,13 +1,13 @@
 package com.example.androidkotlinseed
 
-import androidx.test.runner.AndroidJUnitRunner
 import android.app.Application
 import android.content.Context
-import android.os.StrictMode
 import android.os.Bundle
+import android.os.StrictMode
+import androidx.test.runner.AndroidJUnitRunner
 
 @Suppress("unused") // See testInstrumentationRunner
-class MockRunner: AndroidJUnitRunner() {
+class MockRunner : AndroidJUnitRunner() {
     override fun onCreate(arguments: Bundle) {
         StrictMode.setThreadPolicy(StrictMode.ThreadPolicy.Builder().permitAll().build())
         super.onCreate(arguments)

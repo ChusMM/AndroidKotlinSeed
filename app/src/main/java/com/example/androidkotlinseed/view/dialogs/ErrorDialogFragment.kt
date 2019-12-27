@@ -6,7 +6,6 @@ import android.os.Bundle
 import androidx.fragment.app.DialogFragment
 import com.example.androidkotlinseed.R
 
-
 class ErrorDialogFragment : DialogFragment() {
     private var mMsg: String? = null
 

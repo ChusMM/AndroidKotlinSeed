@@ -14,7 +14,7 @@ import javax.inject.Singleton
 
 @Module
 open class ApplicationModule(private val application: Application) {
-    
+
     @Singleton
     @Provides
     fun getApplication(): Application {
@@ -35,9 +35,9 @@ open class ApplicationModule(private val application: Application) {
     @Singleton
     @Provides
     open fun provideRxSchedulers() = AppRxSchedulers(
-        database = Schedulers.single(),
-        disk = Schedulers.io(),
-        network = Schedulers.io(),
-        main = AndroidSchedulers.mainThread()
+            database = Schedulers.single(),
+            disk = Schedulers.io(),
+            network = Schedulers.io(),
+            main = AndroidSchedulers.mainThread()
     )
 }

@@ -29,34 +29,34 @@ interface DataStrategy {
     fun retrieveHeroes(queryHeroesListener: QueryHeroesListener): Disposable {
         val heroObservable = marvelApi.getHeroes()
         return heroObservable.subscribeOn(appRxSchedulers.network)
-            .observeOn(appRxSchedulers.main)
-            .map { result -> dataFactory.superHeroesFromHeroListWrapper(result) }
-            .subscribe(
-                { result -> saveHeroesRetrieved(result, queryHeroesListener) },
-                { error -> onGetHeroesErrorHandler(queryHeroesListener, error) }
-            )
+                .observeOn(appRxSchedulers.main)
+                .map { result -> dataFactory.superHeroesFromHeroListWrapper(result) }
+                .subscribe(
+                        { result -> saveHeroesRetrieved(result, queryHeroesListener) },
+                        { error -> onGetHeroesErrorHandler(queryHeroesListener, error) }
+                )
     }
 
     fun saveHeroesRetrieved(result: List<SuperHero>, queryHeroesListener: QueryHeroesListener): Disposable {
         return cacheManager.saveHeroes(result)
-            .subscribe({
-                queryHeroesListener.onQueryHeroesOk(result)
-            }, {
-                Log.e(TAG, it.toString())
-                queryHeroesListener.onQueryHeroesOk(result)
-            })
+                .subscribe({
+                    queryHeroesListener.onQueryHeroesOk(result)
+                }, {
+                    Log.e(TAG, it.toString())
+                    queryHeroesListener.onQueryHeroesOk(result)
+                })
     }
 
     fun onGetHeroesErrorHandler(queryHeroesListener: QueryHeroesListener, error: Throwable): Disposable {
         return cacheManager.checkHeroesCacheValidity().subscribe { cacheExpired ->
             if (!cacheExpired) {
                 cacheManager.queryHeroesFromCache()
-                    .subscribe({
-                        queryHeroesListener.onQueryHeroesOk(it)
-                    }, {
-                        Log.e(TAG, it.toString())
-                        queryHeroesListener.onQueryHeroesFailed(dataFactory.callErrorFromThrowable(it))
-                    })
+                        .subscribe({
+                            queryHeroesListener.onQueryHeroesOk(it)
+                        }, {
+                            Log.e(TAG, it.toString())
+                            queryHeroesListener.onQueryHeroesFailed(dataFactory.callErrorFromThrowable(it))
+                        })
             } else {
 
                 queryHeroesListener.onQueryHeroesFailed(dataFactory.callErrorFromThrowable(error))

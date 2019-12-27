@@ -6,9 +6,8 @@ import com.example.androidkotlinseed.App
 import com.example.androidkotlinseed.injection.application.ApplicationComponent
 import com.example.androidkotlinseed.injection.presentation.PresentationComponent
 import com.example.androidkotlinseed.injection.presentation.PresentationModule
-import com.example.androidkotlinseed.injection.presentation.ViewModelModule
 
-class BaseDialog: DialogFragment() {
+class BaseDialog : DialogFragment() {
     private var isInjectorUsed = false
 
     @UiThread
@@ -18,7 +17,8 @@ class BaseDialog: DialogFragment() {
         }
         isInjectorUsed = true
         return getApplicationComponent().newPresentationComponent(
-            PresentationModule(activity ?: throw java.lang.RuntimeException("No activity attached")))
+                PresentationModule(activity
+                                   ?: throw java.lang.RuntimeException("No activity attached")))
     }
 
     private fun getApplicationComponent(): ApplicationComponent {

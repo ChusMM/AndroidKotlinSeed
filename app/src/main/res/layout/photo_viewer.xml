@@ -1,62 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/photo_viewer_root"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@android:color/black">
-
-    <ProgressBar
-            android:id="@+id/progress_circular"
-            android:layout_gravity="center"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:minWidth="?attr/actionBarSize"
-            android:minHeight="?attr/actionBarSize"
-            android:visibility="gone"/>
-
-
-    <com.github.chrisbanes.photoview.PhotoView
-            android:id="@+id/image_to_show"
-            tools:visibility="visible"
-            android:layout_gravity="center"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:src="@mipmap/ic_launcher"/>
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/photo_viewer_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/black">
 
     <FrameLayout
-            android:id="@+id/photo_action_bar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="top"
-            android:background="@color/grayTransparent">
+        android:id="@+id/photo_action_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        android:background="@color/grayTransparent">
 
         <FrameLayout
-                android:id="@+id/close_view"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="start"
-                android:padding="@dimen/generic_margin">
+            android:id="@+id/close_view"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            android:padding="@dimen/generic_margin">
+
             <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:srcCompat="@android:drawable/ic_menu_close_clear_cancel"
-                    tools:ignore="ContentDescription"/>
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@android:drawable/ic_menu_close_clear_cancel"
+                tools:ignore="ContentDescription" />
         </FrameLayout>
 
         <FrameLayout
-                android:id="@+id/share_image"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="end"
-                android:padding="@dimen/generic_margin">
+            android:id="@+id/share_image"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="end"
+            android:padding="@dimen/generic_margin">
+
             <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:srcCompat="@android:drawable/ic_menu_share"
-                    tools:ignore="ContentDescription"/>
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@android:drawable/ic_menu_share"
+                tools:ignore="ContentDescription" />
         </FrameLayout>
     </FrameLayout>
+
+
+    <ProgressBar
+        android:id="@+id/progress_circular"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:minWidth="?attr/actionBarSize"
+        android:minHeight="?attr/actionBarSize"
+        android:visibility="gone" />
+
+    <com.github.chrisbanes.photoview.PhotoView
+        android:id="@+id/image_to_show"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        tools:src="@mipmap/ic_launcher"
+        tools:visibility="visible" />
 
 </FrameLayout>

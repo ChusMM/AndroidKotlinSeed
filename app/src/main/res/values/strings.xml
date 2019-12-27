@@ -14,4 +14,5 @@
     <string name="server_call_failed">We got somme issues while attempting to connect. Please, try it later.</string>
     <string name="hero_not_bound">Hero detail not received</string>
     <string name="request_write_storage">Write storage access required to share an image</string>
+    <string name="could_not_load_image">Could not load image</string>
 </resources>

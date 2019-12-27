@@ -15,9 +15,9 @@ class UnitTestApplicationModule(application: Application) : ApplicationModule(ap
     }
 
     override fun provideRxSchedulers() = AppRxSchedulers(
-        database = Schedulers.trampoline(),
-        disk = Schedulers.trampoline(),
-        network = Schedulers.trampoline(),
-        main = Schedulers.trampoline()
+            database = Schedulers.trampoline(),
+            disk = Schedulers.trampoline(),
+            network = Schedulers.trampoline(),
+            main = Schedulers.trampoline()
     )
 }

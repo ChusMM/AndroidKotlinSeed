@@ -7,10 +7,10 @@ import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LifecycleRegistry
 import com.example.androidkotlinseed.utils.AppRxSchedulers
-import com.example.androidkotlinseed.view.mvc.ViewMvcFactory
 import com.example.androidkotlinseed.utils.ImageLoader
 import com.example.androidkotlinseed.utils.ImageUtils
 import com.example.androidkotlinseed.view.dialogs.DialogsManager
+import com.example.androidkotlinseed.view.mvc.ViewMvcFactory
 import dagger.Module
 import dagger.Provides
 import dagger.Reusable
@@ -33,13 +33,12 @@ class PresentationModule(private val activity: FragmentActivity) {
     @Provides
     fun getDialogManager(fragmentManager: FragmentManager): DialogsManager = DialogsManager(fragmentManager)
 
-
     @Provides
     fun getLifecycleRegistry(): LifecycleRegistry = LifecycleRegistry(activity)
 
     @Provides
     fun getImageUtils(activity: Activity, appRxSchedulers: AppRxSchedulers): ImageUtils =
-        ImageUtils(activity, appRxSchedulers)
+            ImageUtils(activity, appRxSchedulers)
 
     @Reusable
     @Provides
@@ -50,5 +49,5 @@ class PresentationModule(private val activity: FragmentActivity) {
                           dialogsManager: DialogsManager,
                           imageUtils: ImageUtils,
                           imageLoader: ImageLoader): ViewMvcFactory =
-        ViewMvcFactory(layoutInflater, dialogsManager, imageUtils, imageLoader)
+            ViewMvcFactory(layoutInflater, dialogsManager, imageUtils, imageLoader)
 }

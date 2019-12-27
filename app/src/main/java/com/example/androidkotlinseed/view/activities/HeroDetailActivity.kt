@@ -17,8 +17,10 @@ class HeroDetailActivity : BaseActivity(), HeroDetailViewMvc.ViewListener {
         const val HERO_EXTRA = "hero_extra"
     }
 
-    @Inject lateinit var viewMvcFactory: ViewMvcFactory
-    @Inject lateinit var viewModelFactory: ViewModelFactory
+    @Inject
+    lateinit var viewMvcFactory: ViewMvcFactory
+    @Inject
+    lateinit var viewModelFactory: ViewModelFactory
 
     private lateinit var heroDetailViewModel: HeroDetailViewModel
     private lateinit var viewMvc: HeroDetailViewMvc
@@ -34,7 +36,7 @@ class HeroDetailActivity : BaseActivity(), HeroDetailViewMvc.ViewListener {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         heroDetailViewModel = ViewModelProviders.of(this, viewModelFactory)
-            .get(HeroDetailViewModel::class.java)
+                .get(HeroDetailViewModel::class.java)
         heroDetailViewModel.registerViewBinder(viewMvc)
         heroDetailViewModel.heroBound.observe(this, viewMvc.heroDetailObserver)
 
@@ -43,7 +45,7 @@ class HeroDetailActivity : BaseActivity(), HeroDetailViewMvc.ViewListener {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when(item.itemId) {
+        when (item.itemId) {
             android.R.id.home -> {
                 this.finish()
                 return true

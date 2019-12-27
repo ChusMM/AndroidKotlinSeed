@@ -15,6 +15,7 @@ data class SuperHero(@ColumnInfo(name = "name") val name: String,
                      @ColumnInfo(name = "groups") val groups: String) : Parcelable {
 
     override fun equals(other: Any?): Boolean {
+
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
 
@@ -30,13 +31,13 @@ data class SuperHero(@ColumnInfo(name = "name") val name: String,
     }
 
     constructor(source: Parcel) : this(
-        source.readString().let { it } ?: HERO_NO_ATTR,
-        source.readString().let { it } ?: HERO_NO_ATTR,
-        source.readString().let { it } ?: HERO_NO_ATTR,
-        source.readString().let { it } ?: HERO_NO_ATTR,
-        source.readString().let { it } ?: HERO_NO_ATTR,
-        source.readString().let { it } ?: HERO_NO_ATTR,
-        source.readString().let { it } ?: HERO_NO_ATTR
+            source.readString().let { it } ?: HERO_NO_ATTR,
+            source.readString().let { it } ?: HERO_NO_ATTR,
+            source.readString().let { it } ?: HERO_NO_ATTR,
+            source.readString().let { it } ?: HERO_NO_ATTR,
+            source.readString().let { it } ?: HERO_NO_ATTR,
+            source.readString().let { it } ?: HERO_NO_ATTR,
+            source.readString().let { it } ?: HERO_NO_ATTR
     )
 
     override fun describeContents() = 0
@@ -58,7 +59,8 @@ data class SuperHero(@ColumnInfo(name = "name") val name: String,
         @JvmField
         val CREATOR: Parcelable.Creator<SuperHero> = object : Parcelable.Creator<SuperHero> {
             override fun createFromParcel(source: Parcel): SuperHero =
-                SuperHero(source)
+                    SuperHero(source)
+
             override fun newArray(size: Int): Array<SuperHero?> = arrayOfNulls(size)
         }
     }

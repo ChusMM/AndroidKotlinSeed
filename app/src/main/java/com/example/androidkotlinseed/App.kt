@@ -20,8 +20,8 @@ open class App : Application() {
 
     protected open fun buidAppComponent(): ApplicationComponent {
         return DaggerApplicationComponent.builder()
-            .applicationModule(ApplicationModule(this))
-            .useCaseModule(UseCaseModule())
-            .build()
+                .applicationModule(ApplicationModule(this))
+                .useCaseModule(UseCaseModule())
+                .build()
     }
 }

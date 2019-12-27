@@ -19,7 +19,11 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.Mockito.*
+import org.mockito.Mockito.`when`
+import org.mockito.Mockito.mock
+import org.mockito.Mockito.reset
+import org.mockito.Mockito.times
+import org.mockito.Mockito.verify
 import org.powermock.api.mockito.PowerMockito
 import org.powermock.core.classloader.annotations.PowerMockIgnore
 import org.powermock.core.classloader.annotations.PrepareForTest
@@ -44,10 +48,14 @@ class DataWebServiceUnitTest {
     private val unitTestUtils = UnitTestUtils()
     private lateinit var mockWebServer: MockWebServer
 
-    @Inject lateinit var marvelApi: MarvelApi
-    @Inject lateinit var dataFactory: DataFactory
-    @Inject lateinit var cacheManager: CacheManager
-    @Inject lateinit var appRxSchedulers: AppRxSchedulers
+    @Inject
+    lateinit var marvelApi: MarvelApi
+    @Inject
+    lateinit var dataFactory: DataFactory
+    @Inject
+    lateinit var cacheManager: CacheManager
+    @Inject
+    lateinit var appRxSchedulers: AppRxSchedulers
 
     // SUT
     private lateinit var dataWebService: DataStrategy

@@ -11,9 +11,8 @@ import com.example.androidkotlinseed.injection.presentation.PresentationComponen
 import com.example.androidkotlinseed.injection.presentation.PresentationModule
 import pub.devrel.easypermissions.EasyPermissions
 
-
 abstract class BaseActivity : AppCompatActivity(),
-    EasyPermissions.PermissionCallbacks {
+        EasyPermissions.PermissionCallbacks {
     private var isInjectorUsed = false
 
     companion object {
@@ -64,8 +63,8 @@ abstract class BaseActivity : AppCompatActivity(),
 
     protected fun requestWriteStoragePermission() {
         EasyPermissions.requestPermissions(this, getString(R.string.request_write_storage),
-            REQUEST_PERMISSION_WRITE_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                REQUEST_PERMISSION_WRITE_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE)
     }
 
-    open fun onWriteExternalStorageResult(resultCode: Int) { }
+    open fun onWriteExternalStorageResult(resultCode: Int) {}
 }

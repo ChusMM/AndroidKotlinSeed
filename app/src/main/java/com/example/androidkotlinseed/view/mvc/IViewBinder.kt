@@ -1,6 +1,5 @@
 package com.example.androidkotlinseed.view.mvc
 
-
 interface IViewBinder<V> {
     val viewBinders: MutableSet<V>
 

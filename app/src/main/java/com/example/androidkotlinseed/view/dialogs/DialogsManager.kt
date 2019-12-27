@@ -50,8 +50,8 @@ class DialogsManager(private val fragmentManager: FragmentManager) {
      */
     private fun getCurrentlyShownDialogId(): String {
         return if (currentlyShownDialog == null ||
-            currentlyShownDialog?.arguments == null ||
-            currentlyShownDialog?.arguments?.containsKey(ARGUMENT_DIALOG_ID) == false) {
+                   currentlyShownDialog?.arguments == null ||
+                   currentlyShownDialog?.arguments?.containsKey(ARGUMENT_DIALOG_ID) == false) {
             EMPTY_DIALOG_ID
         } else {
             currentlyShownDialog?.arguments?.getString(ARGUMENT_DIALOG_ID) ?: EMPTY_DIALOG_ID
@@ -99,7 +99,7 @@ class DialogsManager(private val fragmentManager: FragmentManager) {
 
     private fun showDialog(dialogFragment: DialogFragment) {
         fragmentManager.beginTransaction()
-            .add(dialogFragment, DIALOG_FRAGMENT_TAG)
-            .commitAllowingStateLoss()
+                .add(dialogFragment, DIALOG_FRAGMENT_TAG)
+                .commitAllowingStateLoss()
     }
 }

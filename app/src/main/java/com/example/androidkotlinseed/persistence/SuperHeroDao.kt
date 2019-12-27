@@ -33,5 +33,5 @@ interface SuperHeroDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertHeroesExpirationRow(expirationTable: ExpirationTable = ExpirationTable(
-        ExpirationEntity.HEROES.entityName, System.currentTimeMillis())): Completable
+            ExpirationEntity.HEROES.entityName, System.currentTimeMillis())): Completable
 }

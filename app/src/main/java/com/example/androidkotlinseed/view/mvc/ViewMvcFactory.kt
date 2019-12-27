@@ -23,8 +23,8 @@ class ViewMvcFactory(private val layoutInflater: LayoutInflater,
         (return when (mvcViewClass) {
             HeroesListViewMvc::class -> HeroesListViewMvcImpl(layoutInflater, container, dialogsManager) as T
             HeroDetailViewMvc::class -> HeroDetailViewMvcImpl(layoutInflater, container, dialogsManager, imageLoader) as T
-            PhotoViewerMvc::class -> PhotoViewerViewMvcImpl(layoutInflater, container, imageUtils, imageLoader) as T
-            else -> throw IllegalArgumentException("unsupported MVC view class $mvcViewClass")
+            PhotoViewerMvc::class    -> PhotoViewerViewMvcImpl(layoutInflater, container, imageUtils, imageLoader) as T
+            else                     -> throw IllegalArgumentException("unsupported MVC view class $mvcViewClass")
         })
     }
 }

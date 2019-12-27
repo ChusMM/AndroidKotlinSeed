@@ -6,6 +6,7 @@ import android.graphics.Bitmap
 import android.os.Environment
 import android.provider.MediaStore
 import android.util.Log
+import androidx.annotation.UiThread
 import androidx.core.content.FileProvider
 import com.example.androidkotlinseed.BuildConfig
 import com.example.androidkotlinseed.R
@@ -13,8 +14,10 @@ import io.reactivex.Observable
 import io.reactivex.ObservableOnSubscribe
 import io.reactivex.Scheduler
 import io.reactivex.disposables.Disposable
-import java.io.*
-import java.lang.Exception
+import java.io.ByteArrayOutputStream
+import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
 
 class ImageUtils(private val activity: Activity,
                  private val appRxSchedulers: AppRxSchedulers) {
@@ -23,6 +26,7 @@ class ImageUtils(private val activity: Activity,
         private val TAG = ImageUtils::class.java.simpleName
     }
 
+    @UiThread
     fun shareImageVia(bitmap: Bitmap, imageName: String): Disposable {
         return writeImageInCacheStorage(bitmap, imageName) { imageFile, error ->
             if (error == null && imageFile != null) {
@@ -37,8 +41,8 @@ class ImageUtils(private val activity: Activity,
         val fileObservable = writeInto(createCacheImagesFolder(), imageName, bitmap, appRxSchedulers.disk)
 
         return fileObservable.subscribeOn(appRxSchedulers.disk)
-            .observeOn(appRxSchedulers.main)
-            .subscribe({ path -> callback(path, null) }, { t -> callback(null, t) } )
+                .observeOn(appRxSchedulers.main)
+                .subscribe({ path -> callback(path, null) }, { t -> callback(null, t) })
     }
 
     private fun actionShare(imageFile: File) {
@@ -47,7 +51,7 @@ class ImageUtils(private val activity: Activity,
         intent.type = "image/*"
 
         val uri = FileProvider.getUriForFile(activity,
-            BuildConfig.APPLICATION_ID + ".provider", File(imageFile.absolutePath))
+                BuildConfig.APPLICATION_ID + ".provider", File(imageFile.absolutePath))
 
         intent.putExtra(MediaStore.EXTRA_OUTPUT, uri)
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)

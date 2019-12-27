@@ -10,7 +10,6 @@ import com.example.androidkotlinseed.R
 import com.example.androidkotlinseed.databinding.RowAttrItemBinding
 import com.example.androidkotlinseed.domain.HeroAttribute
 import com.example.androidkotlinseed.domain.SuperHero
-import java.lang.IndexOutOfBoundsException
 
 class HeroAttributesAdapter(hero: SuperHero,
                             private val context: Context) : RecyclerView.Adapter<HeroAttributeHolder>() {
@@ -31,8 +30,8 @@ class HeroAttributesAdapter(hero: SuperHero,
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HeroAttributeHolder {
         val itemRowBinding: RowAttrItemBinding = DataBindingUtil.inflate(
-            LayoutInflater.from(context),
-            R.layout.row_attr_item, parent, false)
+                LayoutInflater.from(context),
+                R.layout.row_attr_item, parent, false)
         return HeroAttributeHolder(itemRowBinding)
     }
 

@@ -8,8 +8,8 @@ import com.example.androidkotlinseed.injection.application.ApplicationComponent
 class AndroidTestApp : App() {
     override fun buidAppComponent(): ApplicationComponent {
         return DaggerAndroidTestApplicationComponent.builder()
-            .applicationModule(AndroidTestApplicationModule(this))
-            .useCaseModule(AndroidTestUseCaseModule())
-            .build()
+                .applicationModule(AndroidTestApplicationModule(this))
+                .useCaseModule(AndroidTestUseCaseModule())
+                .build()
     }
 }
