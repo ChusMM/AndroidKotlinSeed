@@ -2,6 +2,7 @@ package com.example.androidkotlinseed.view.mvc
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.lifecycle.LifecycleRegistry
 import com.example.androidkotlinseed.utils.ImageLoader
 import com.example.androidkotlinseed.utils.ImageUtils
 import com.example.androidkotlinseed.view.dialogs.DialogsManager
@@ -15,6 +16,7 @@ import kotlin.reflect.KClass
 
 class ViewMvcFactory(private val layoutInflater: LayoutInflater,
                      private val dialogsManager: DialogsManager,
+                     private val lifecycleRegistry: LifecycleRegistry,
                      private val imageUtils: ImageUtils,
                      private val imageLoader: ImageLoader) {
 

@@ -16,12 +16,12 @@ class DataMock(override val marvelApi: MarvelApi,
                override val cacheManager: CacheManager) : DataStrategy {
 
     private var disposable: Disposable? = null
-    private val mockWebServer = MockWebServer()
+    private var mockWebServer = MockWebServer()
 
     override fun queryHeroes(queryHeroesListener: DataStrategy.QueryHeroesListener) {
         this.cancelCurrentFetchIfActive()
 
-        disposable = startMockWebServer(appRxSchedulers.network)
+        disposable = restartMockWebServer(appRxSchedulers.network)
                 .subscribeOn(appRxSchedulers.network)
                 .observeOn(appRxSchedulers.main)
                 .subscribe({
@@ -33,38 +33,26 @@ class DataMock(override val marvelApi: MarvelApi,
 
     override fun dispose() {
         this.cancelCurrentFetchIfActive()
-        shutdownMockWebServer(appRxSchedulers.network).subscribe()
     }
 
     /**
-     * Mock Webserver must be started on a background thread
+     * Restart mock Webserver
      */
-    private fun startMockWebServer(scheduler: Scheduler): Completable {
+    private fun restartMockWebServer(scheduler: Scheduler): Completable {
         val handler = CompletableOnSubscribe { emitter ->
             val emitterDisposable = scheduler.createWorker().schedule {
                 try {
-                    mockWebServer.start(8080)
-                    mockWebServer.dispatcher = MockServerDispatcher().RequestDispatcher()
+                    mockWebServer.shutdown()
                     if (!emitter.isDisposed) emitter.onComplete()
                 } catch (e: Exception) {
                     Log.e(TAG, e.toString())
                     if (!emitter.isDisposed) emitter.onError(e)
                 }
 
-            }
-            emitter.setDisposable(emitterDisposable)
-        }
-        return Completable.create(handler)
-    }
-
-    /**
-     * Mock Webserver must be shutdown on a background thread
-     */
-    private fun shutdownMockWebServer(scheduler: Scheduler): Completable {
-        val handler = CompletableOnSubscribe { emitter ->
-            val emitterDisposable = scheduler.createWorker().schedule {
                 try {
-                    mockWebServer.shutdown()
+                    mockWebServer = MockWebServer()
+                    mockWebServer.start(8080)
+                    mockWebServer.dispatcher = MockServerDispatcher().RequestDispatcher()
                     if (!emitter.isDisposed) emitter.onComplete()
                 } catch (e: Exception) {
                     Log.e(TAG, e.toString())

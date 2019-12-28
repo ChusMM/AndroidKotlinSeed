@@ -34,39 +34,28 @@ class HeroesListViewMvcImpl(layoutInflater: LayoutInflater,
         }
     }
 
-    private var isGesture = true
-
-    init {
-        this.initViews()
-    }
-
-    private fun initViews() = with(rootView) {
+    @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
+    fun onCreate() = with(rootView) {
         recycler_heroes.layoutManager = GridLayoutManager(context, 2)
         recycler_heroes.setHasFixedSize(true)
+
+        swipe_layout.setOnRefreshListener(this@HeroesListViewMvcImpl)
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_START)
     fun onStart() = with(rootView) {
-        swipe_layout.setOnRefreshListener(this@HeroesListViewMvcImpl)
-        isGesture = false
-
-        this@HeroesListViewMvcImpl.onRefresh()
+        recycler_heroes.visibility = View.GONE
+        swipe_layout.isRefreshing = true
     }
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
-    fun onStop() = with(rootView) {
+    @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
+    fun onDestroy() = with(rootView) {
         swipe_layout.setOnRefreshListener(null)
     }
 
-    override fun onRefresh(): Unit = with(rootView) {
-        recycler_heroes.visibility = View.GONE
-        swipe_layout.isRefreshing = true
-
-        if (isGesture) {
-            viewListener?.onSwipeGesture()
-        } else {
-            isGesture = true
-        }
+    override fun onRefresh() {
+        this.onStart()
+        viewListener?.onSwipeGesture()
     }
 
     override fun onHeroesFetched() = with(rootView) {

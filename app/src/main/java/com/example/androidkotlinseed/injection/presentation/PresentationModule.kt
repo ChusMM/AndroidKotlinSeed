@@ -47,7 +47,8 @@ class PresentationModule(private val activity: FragmentActivity) {
     @Provides
     fun getViewMvcFactory(layoutInflater: LayoutInflater,
                           dialogsManager: DialogsManager,
+                          lifecycleRegistry: LifecycleRegistry,
                           imageUtils: ImageUtils,
                           imageLoader: ImageLoader): ViewMvcFactory =
-            ViewMvcFactory(layoutInflater, dialogsManager, imageUtils, imageLoader)
+            ViewMvcFactory(layoutInflater, dialogsManager, lifecycleRegistry, imageUtils, imageLoader)
 }

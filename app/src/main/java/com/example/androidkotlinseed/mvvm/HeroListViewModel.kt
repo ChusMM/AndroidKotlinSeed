@@ -16,6 +16,8 @@ import javax.inject.Inject
 class HeroListViewModel @Inject constructor(private val fetchHeroesUseCase: IFetchHeroesUseCase)
     : ViewModel(), LifecycleObserver, IFetchHeroesUseCase.Listener, IViewBinder<HeroesListViewMvc> {
 
+    var forceRefresh: Boolean = false
+
     val heroList: MutableLiveData<List<SuperHero>> by lazy {
         @Suppress("RemoveExplicitTypeArguments")
         MutableLiveData<List<SuperHero>>()
@@ -42,14 +44,13 @@ class HeroListViewModel @Inject constructor(private val fetchHeroesUseCase: IFet
         heroList.value = mutableListOf()
     }
 
-    private fun fetchHeroesAndNotify() {
-        val refresh = heroList.value?.isEmpty() ?: true
-        this.fetchHeroesAndNotify(refresh)
-    }
+    fun fetchHeroesAndNotify() {
+        val mayRefresh = heroList.value?.isEmpty() ?: true
+        this.forceRefresh = this.forceRefresh || mayRefresh
 
-    fun fetchHeroesAndNotify(forceRefresh: Boolean = false) {
         if (forceRefresh) {
             fetchHeroesUseCase.fetchAndNotify()
+            this.forceRefresh = false
         } else {
             heroList.postValue(heroList.value)
         }

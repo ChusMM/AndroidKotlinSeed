@@ -40,6 +40,7 @@ class HeroesListActivity : BaseActivity(), LifecycleOwner, HeroesListViewMvc.Vie
 
         lifecycleRegistry.addObserver(heroListViewModel)
         lifecycleRegistry.addObserver(viewMvc)
+
         lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_CREATE)
     }
 
@@ -55,8 +56,14 @@ class HeroesListActivity : BaseActivity(), LifecycleOwner, HeroesListViewMvc.Vie
         lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_STOP)
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_DESTROY)
+    }
+
     override fun onSwipeGesture() {
-        heroListViewModel.fetchHeroesAndNotify(true)
+        heroListViewModel.forceRefresh = true
+        heroListViewModel.fetchHeroesAndNotify()
     }
 
     override fun onClickHero(superHero: SuperHero) {
