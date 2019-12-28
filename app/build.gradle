@@ -43,28 +43,34 @@ android {
         def dataWebService = "\"WS\""
         def dataMock = "\"MOCK\""
 
-        pro {
+        mock {
             dimension "environment"
-            manifestPlaceholders = [usesCleartextTraffic: "false"]
-            buildConfigField "String", "DATA_SOURCE", dataWebService
-            buildConfigField "String", "API_BASE_URL", "\"https://api.myjson.com\""
+            buildConfigField "String", "DATA_SOURCE", dataMock
+            manifestPlaceholders = [usesCleartextTraffic: "true"]
+            buildConfigField "String", "API_BASE_URL", "\"http://localhost:8080\""
+            applicationIdSuffix ".mock"
         }
 
         pre {
             dimension "environment"
-            manifestPlaceholders = [usesCleartextTraffic: "true"]
             buildConfigField "String", "DATA_SOURCE", dataWebService
+            manifestPlaceholders = [usesCleartextTraffic: "true"]
             buildConfigField "String", "API_BASE_URL", "\"https://api.myjson.com\""
             applicationIdSuffix ".pre"
         }
 
-        mock {
+        pro {
             dimension "environment"
-            manifestPlaceholders = [usesCleartextTraffic: "true"]
-            buildConfigField "String", "DATA_SOURCE", dataMock
-            buildConfigField "String", "API_BASE_URL", "\"http://localhost:8080\""
-            applicationIdSuffix ".mock"
+            buildConfigField "String", "DATA_SOURCE", dataWebService
+            manifestPlaceholders = [usesCleartextTraffic: "false"]
+            buildConfigField "String", "API_BASE_URL", "\"https://api.myjson.com\""
         }
+    }
+
+    sourceSets {
+        mock.java.srcDirs "src/main/java", "src/mock/java"
+        pre.java.srcDirs "src/main/java", "src/ws/java"
+        pro.java.srcDirs "src/main/java", "src/ws/java"
     }
 
     dataBinding {

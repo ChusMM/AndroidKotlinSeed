@@ -10,10 +10,10 @@ import io.reactivex.Scheduler
 import io.reactivex.disposables.Disposable
 import okhttp3.mockwebserver.MockWebServer
 
-class DataMock(override val marvelApi: MarvelApi,
-               override val dataFactory: DataFactory,
-               override val appRxSchedulers: AppRxSchedulers,
-               override val cacheManager: CacheManager) : DataStrategy {
+class DataWebService(override val marvelApi: MarvelApi,
+                     override val dataFactory: DataFactory,
+                     override val appRxSchedulers: AppRxSchedulers,
+                     override val cacheManager: CacheManager) : DataStrategy {
 
     private var disposable: Disposable? = null
     private var mockWebServer = MockWebServer()
@@ -70,7 +70,7 @@ class DataMock(override val marvelApi: MarvelApi,
     }
 
     companion object {
-        private val TAG = DataMock::class.simpleName
+        private val TAG = DataWebService::class.simpleName
 
         const val mockHeroesJson = "{  \n" +
                                    "   \"superheroes\":[  \n" +

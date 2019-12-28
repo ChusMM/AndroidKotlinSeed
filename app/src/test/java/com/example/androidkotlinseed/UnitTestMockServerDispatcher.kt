@@ -1,7 +1,7 @@
 package com.example.androidkotlinseed
 
 import com.example.androidkotlinseed.api.MarvelApi
-import com.example.androidkotlinseed.repository.DataMock.Companion.mockHeroesJson
+import com.example.androidkotlinseed.repository.DataWebService.Companion.mockHeroesJson
 import okhttp3.mockwebserver.Dispatcher
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.RecordedRequest

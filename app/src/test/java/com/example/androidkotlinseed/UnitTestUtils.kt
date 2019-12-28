@@ -8,7 +8,7 @@ import com.example.androidkotlinseed.injection.DaggerUnitTestApplicationComponen
 import com.example.androidkotlinseed.injection.UnitTestApplicationComponent
 import com.example.androidkotlinseed.injection.UnitTestApplicationModule
 import com.example.androidkotlinseed.injection.UnitTestUseCaseModule
-import com.example.androidkotlinseed.repository.DataMock.Companion.mockHeroesJson
+import com.example.androidkotlinseed.repository.DataWebService.Companion.mockHeroesJson
 import org.mockito.ArgumentCaptor
 import org.mockito.Mockito
 import org.powermock.api.mockito.PowerMockito

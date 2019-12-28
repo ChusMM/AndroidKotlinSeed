@@ -13,6 +13,7 @@ class DataSourceProvider {
         return buildFromString(BuildConfig.DATA_SOURCE)
     }
 
+    @Suppress("MemberVisibilityCanBePrivate")
     fun buildFromString(source: String): DataSource {
         return when (source) {
             WS_DATA_ORIGIN   -> DataSource.DATA_WS

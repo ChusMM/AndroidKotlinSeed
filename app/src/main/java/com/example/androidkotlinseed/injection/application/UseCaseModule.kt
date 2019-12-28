@@ -8,7 +8,6 @@ import com.example.androidkotlinseed.persistence.AppDataBase
 import com.example.androidkotlinseed.persistence.SuperHeroDao
 import com.example.androidkotlinseed.repository.CacheManager
 import com.example.androidkotlinseed.repository.DataFactory
-import com.example.androidkotlinseed.repository.DataMock
 import com.example.androidkotlinseed.repository.DataSource
 import com.example.androidkotlinseed.repository.DataSourceProvider
 import com.example.androidkotlinseed.repository.DataStrategy
@@ -85,14 +84,10 @@ open class UseCaseModule {
     }
 
     @Provides
-    open fun getDataStrategy(dataSource: DataSource,
-                             marvelApi: MarvelApi,
+    open fun getDataStrategy(marvelApi: MarvelApi,
                              dataFactory: DataFactory,
                              cacheManager: CacheManager,
                              appRxSchedulers: AppRxSchedulers): DataStrategy {
-        return when (dataSource) {
-            DataSource.DATA_WS   -> DataWebService(marvelApi, dataFactory, appRxSchedulers, cacheManager)
-            DataSource.DATA_MOCK -> DataMock(marvelApi, dataFactory, appRxSchedulers, cacheManager)
-        }
+        return DataWebService(marvelApi, dataFactory, appRxSchedulers, cacheManager)
     }
 }
