@@ -28,6 +28,7 @@ open class UseCaseModule {
         private const val BASE_URL = BuildConfig.API_BASE_URL
         private const val CONNECT_TIMEOUT: Long = 10
         private const val READ_TIMEOUT: Long = 10
+        private const val HEROES_DB = "heroes_database"
     }
 
     @Singleton
@@ -67,8 +68,7 @@ open class UseCaseModule {
     @Singleton
     @Provides
     open fun getAppDataBase(application: Application): AppDataBase {
-        return Room.databaseBuilder(application,
-                AppDataBase::class.java, "heroes_database").build()
+        return Room.databaseBuilder(application, AppDataBase::class.java, HEROES_DB).build()
     }
 
     @Singleton

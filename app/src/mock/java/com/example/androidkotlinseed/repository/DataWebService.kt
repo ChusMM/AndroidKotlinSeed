@@ -6,7 +6,6 @@ import com.example.androidkotlinseed.repository.mock.MockServerDispatcher
 import com.example.androidkotlinseed.utils.AppRxSchedulers
 import io.reactivex.Completable
 import io.reactivex.CompletableOnSubscribe
-import io.reactivex.Scheduler
 import io.reactivex.disposables.Disposable
 import okhttp3.mockwebserver.MockWebServer
 
@@ -19,16 +18,15 @@ class DataWebService(override val marvelApi: MarvelApi,
     private var mockWebServer = MockWebServer()
 
     override fun queryHeroes(queryHeroesListener: DataStrategy.QueryHeroesListener) {
-        this.cancelCurrentFetchIfActive()
-
-        disposable = restartMockWebServer(appRxSchedulers.network)
-                .subscribeOn(appRxSchedulers.network)
-                .observeOn(appRxSchedulers.main)
-                .subscribe({
-                    disposable = super.retrieveHeroes(queryHeroesListener)
-                }, { error ->
-                    super.onGetHeroesErrorHandler(queryHeroesListener, error)
-                })
+        disposable = this.cancelCurrentFetchIfActive().subscribe({
+            disposable = startMockWebServer().subscribe({
+                disposable = super.retrieveHeroes(queryHeroesListener)
+            }, { error ->
+                super.onGetHeroesErrorHandler(queryHeroesListener, error)
+            })
+        }, { error ->
+            super.onGetHeroesErrorHandler(queryHeroesListener, error)
+        })
     }
 
     override fun dispose() {
@@ -38,17 +36,9 @@ class DataWebService(override val marvelApi: MarvelApi,
     /**
      * Restart mock Webserver
      */
-    private fun restartMockWebServer(scheduler: Scheduler): Completable {
+    private fun startMockWebServer(): Completable {
         val handler = CompletableOnSubscribe { emitter ->
-            val emitterDisposable = scheduler.createWorker().schedule {
-                try {
-                    mockWebServer.shutdown()
-                    if (!emitter.isDisposed) emitter.onComplete()
-                } catch (e: Exception) {
-                    Log.e(TAG, e.toString())
-                    if (!emitter.isDisposed) emitter.onError(e)
-                }
-
+            val emitterDisposable = appRxSchedulers.network.createWorker().schedule {
                 try {
                     mockWebServer = MockWebServer()
                     mockWebServer.start(8080)
@@ -62,11 +52,31 @@ class DataWebService(override val marvelApi: MarvelApi,
             }
             emitter.setDisposable(emitterDisposable)
         }
-        return Completable.create(handler)
+        return Completable.create(handler).observeOn(appRxSchedulers.main)
     }
 
-    private fun cancelCurrentFetchIfActive() {
+    /**
+     * Stop mock web server
+     */
+    private fun stopMockWebServer(): Completable {
+        val handler = CompletableOnSubscribe { emitter ->
+            val emitterDisposable = appRxSchedulers.network.createWorker().schedule {
+                try {
+                    mockWebServer.shutdown()
+                    if (!emitter.isDisposed) emitter.onComplete()
+                } catch (e: Exception) {
+                    Log.e(TAG, e.toString())
+                    if (!emitter.isDisposed) emitter.onError(e)
+                }
+            }
+            emitter.setDisposable(emitterDisposable)
+        }
+        return Completable.create(handler).observeOn(appRxSchedulers.main)
+    }
+
+    private fun cancelCurrentFetchIfActive(): Completable {
         disposable?.dispose()
+        return stopMockWebServer()
     }
 
     companion object {
