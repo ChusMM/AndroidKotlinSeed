@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/photo_viewer_root"
@@ -7,42 +7,58 @@
     android:layout_height="match_parent"
     android:background="@android:color/black">
 
-    <FrameLayout
+    <TableRow
         android:id="@+id/photo_action_bar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="top"
-        android:background="@color/grayTransparent">
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/grayTransparent"
+        android:weightSum="2"
+        app:layout_constraintTop_toTopOf="parent">
 
         <FrameLayout
             android:id="@+id/close_view"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="start"
+            android:layout_weight="1"
             android:padding="@dimen/generic_margin">
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center|start"
                 app:srcCompat="@android:drawable/ic_menu_close_clear_cancel"
                 tools:ignore="ContentDescription" />
         </FrameLayout>
 
         <FrameLayout
             android:id="@+id/share_image"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="end"
+            android:layout_weight="1"
             android:padding="@dimen/generic_margin">
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center|end"
                 app:srcCompat="@android:drawable/ic_menu_share"
                 tools:ignore="ContentDescription" />
         </FrameLayout>
-    </FrameLayout>
+    </TableRow>
 
+    <com.github.chrisbanes.photoview.PhotoView
+        android:id="@+id/image_to_show"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/photo_action_bar"
+        tools:src="@mipmap/ic_launcher"
+        tools:visibility="visible" />
 
     <ProgressBar
         android:id="@+id/progress_circular"
@@ -51,14 +67,11 @@
         android:layout_gravity="center"
         android:minWidth="?attr/actionBarSize"
         android:minHeight="?attr/actionBarSize"
-        android:visibility="gone" />
-
-    <com.github.chrisbanes.photoview.PhotoView
-        android:id="@+id/image_to_show"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center"
-        tools:src="@mipmap/ic_launcher"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/photo_action_bar"
         tools:visibility="visible" />
 
-</FrameLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

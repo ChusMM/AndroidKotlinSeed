@@ -1,11 +1,13 @@
 package com.example.androidkotlinseed
 
+import android.annotation.SuppressLint
 import android.app.Application
 import com.example.androidkotlinseed.injection.application.ApplicationComponent
 import com.example.androidkotlinseed.injection.application.ApplicationModule
 import com.example.androidkotlinseed.injection.application.DaggerApplicationComponent
 import com.example.androidkotlinseed.injection.application.UseCaseModule
 
+@SuppressLint("Registered")
 open class App : Application() {
     private lateinit var appComponent: ApplicationComponent
 

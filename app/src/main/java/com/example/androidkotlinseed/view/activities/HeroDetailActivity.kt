@@ -3,7 +3,7 @@ package com.example.androidkotlinseed.view.activities
 import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import com.example.androidkotlinseed.domain.SuperHero
 import com.example.androidkotlinseed.injection.BaseActivity
 import com.example.androidkotlinseed.mvvm.HeroDetailViewModel
@@ -35,7 +35,7 @@ class HeroDetailActivity : BaseActivity(), HeroDetailViewMvc.ViewListener {
         setContentView(viewMvc.rootView)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        heroDetailViewModel = ViewModelProviders.of(this, viewModelFactory)
+        heroDetailViewModel = ViewModelProvider(this, viewModelFactory)
                 .get(HeroDetailViewModel::class.java)
         heroDetailViewModel.registerViewBinder(viewMvc)
         heroDetailViewModel.heroBound.observe(this, viewMvc.heroDetailObserver)

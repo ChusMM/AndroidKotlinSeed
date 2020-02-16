@@ -3,13 +3,13 @@ package com.example.androidkotlinseed.repository
 import android.util.Log
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.example.androidkotlinseed.RxSchedulerRule
-import com.example.androidkotlinseed.UnitTestMockServerDispatcher
 import com.example.androidkotlinseed.UnitTestUtils
 import com.example.androidkotlinseed.api.CallError
 import com.example.androidkotlinseed.api.MarvelApi
 import com.example.androidkotlinseed.argumentCaptor
 import com.example.androidkotlinseed.domain.SuperHero
 import com.example.androidkotlinseed.injection.UnitTestApplicationComponent
+import com.example.androidkotlinseed.UnitTestMockServerDispatcher
 import com.example.androidkotlinseed.utils.AppRxSchedulers
 import io.reactivex.Completable
 import io.reactivex.Observable

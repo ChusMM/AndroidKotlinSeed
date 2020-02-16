@@ -3,17 +3,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.androidkotlinseed">
 
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
-        android:name=".App"
         android:allowBackup="true"
         android:fullBackupContent="true"
-        android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="${usesCleartextTraffic}"
-        tools:ignore="GoogleAppIndexingWarning,UnusedAttribute">
+        tools:ignore="GoogleAppIndexingWarning,MissingApplicationIcon,UnusedAttribute">
         <activity
             android:name=".view.activities.SplashActivity"
             android:theme="@style/AppTheme.NoActionBar">
@@ -30,7 +29,7 @@
 
         <activity
             android:name=".view.activities.PhotoViewerActivity"
-            android:theme="@style/NoActionBar.FullScreen"></activity>
+            android:theme="@style/NoActionBar.FullScreen" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -42,9 +41,4 @@
                 android:resource="@xml/provider_paths" />
         </provider>
     </application>
-
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-
-    <uses-permission android:name="android.permission.INTERNET" />
-
 </manifest>

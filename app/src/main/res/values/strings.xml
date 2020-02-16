@@ -1,5 +1,4 @@
 <resources>
-    <string name="app_name">AndroidKotlinSeed</string>
     <string name="server_error_dialog_title">Error</string>
     <string name="ok">OK</string>
     <string name="share_image_via">Share image via…</string>

@@ -31,6 +31,7 @@ interface DataStrategy {
         return heroObservable.subscribeOn(appRxSchedulers.network)
                 .observeOn(appRxSchedulers.main)
                 .map { result -> dataFactory.superHeroesFromHeroListWrapper(result) }
+                .doFinally(this::dispose)
                 .subscribe(
                         { result -> saveHeroesRetrieved(result, queryHeroesListener) },
                         { error -> onGetHeroesErrorHandler(queryHeroesListener, error) }

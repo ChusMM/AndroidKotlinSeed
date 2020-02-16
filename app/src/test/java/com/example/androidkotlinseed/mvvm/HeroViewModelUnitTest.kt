@@ -6,13 +6,13 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleRegistry
 import androidx.lifecycle.LiveData
 import com.example.androidkotlinseed.RxSchedulerRule
-import com.example.androidkotlinseed.UnitTestMockServerDispatcher
 import com.example.androidkotlinseed.UnitTestUtils
 import com.example.androidkotlinseed.api.CallError
 import com.example.androidkotlinseed.domain.SuperHero
 import com.example.androidkotlinseed.domain.usecases.IFetchHeroesUseCase
 import com.example.androidkotlinseed.injection.UnitTestApplicationComponent
 import com.example.androidkotlinseed.repository.DataFactory
+import com.example.androidkotlinseed.UnitTestMockServerDispatcher
 import com.google.common.truth.Truth
 import okhttp3.mockwebserver.MockWebServer
 import org.junit.After

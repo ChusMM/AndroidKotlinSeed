@@ -10,6 +10,7 @@ import dagger.Module
 import dagger.Provides
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import okhttp3.mockwebserver.MockWebServer
 import javax.inject.Singleton
 
 @Module
@@ -40,4 +41,7 @@ open class ApplicationModule(private val application: Application) {
             network = Schedulers.io(),
             main = AndroidSchedulers.mainThread()
     )
+
+    @Provides
+    fun provideMockWebServer() = MockWebServer()
 }

@@ -5,7 +5,7 @@ import android.os.Bundle
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LifecycleRegistry
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import com.example.androidkotlinseed.domain.SuperHero
 import com.example.androidkotlinseed.injection.BaseActivity
 import com.example.androidkotlinseed.mvvm.HeroListViewModel
@@ -34,7 +34,7 @@ class HeroesListActivity : BaseActivity(), LifecycleOwner, HeroesListViewMvc.Vie
 
         setContentView(viewMvc.rootView)
 
-        heroListViewModel = ViewModelProviders.of(this, viewModelFactory)
+        heroListViewModel = ViewModelProvider(this, viewModelFactory)
                 .get(HeroListViewModel::class.java)
         heroListViewModel.heroList.observe(this, viewMvc.heroListObserver)
 
