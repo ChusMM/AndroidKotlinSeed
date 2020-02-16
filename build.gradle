@@ -15,6 +15,11 @@ buildscript {
     }
 }
 
+wrapper {
+    gradleVersion = '6.0.1'
+    distributionUrl = distributionUrl.replace("bin", "all")
+}
+
 allprojects {
     repositories {
         google()
