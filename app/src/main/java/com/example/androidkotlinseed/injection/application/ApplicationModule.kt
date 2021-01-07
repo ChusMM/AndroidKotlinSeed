@@ -8,19 +8,16 @@ import com.example.androidkotlinseed.repository.DataStrategy
 import com.example.androidkotlinseed.utils.AppRxSchedulers
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ApplicationComponent
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import okhttp3.mockwebserver.MockWebServer
 import javax.inject.Singleton
 
+@InstallIn(ApplicationComponent::class)
 @Module
-open class ApplicationModule(private val application: Application) {
-
-    @Singleton
-    @Provides
-    fun getApplication(): Application {
-        return application
-    }
+open class ApplicationModule {
 
     @Provides
     fun getAppContext(application: Application): Context {

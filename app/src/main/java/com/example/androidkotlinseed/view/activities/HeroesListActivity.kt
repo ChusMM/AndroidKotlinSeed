@@ -2,40 +2,36 @@ package com.example.androidkotlinseed.view.activities
 
 import android.content.Intent
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LifecycleRegistry
-import androidx.lifecycle.ViewModelProvider
 import com.example.androidkotlinseed.domain.SuperHero
 import com.example.androidkotlinseed.injection.BaseActivity
 import com.example.androidkotlinseed.mvvm.HeroListViewModel
-import com.example.androidkotlinseed.mvvm.ViewModelFactory
 import com.example.androidkotlinseed.view.mvc.ViewMvcFactory
 import com.example.androidkotlinseed.view.mvc.heroeslist.HeroesListViewMvc
+import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
+@AndroidEntryPoint
 class HeroesListActivity : BaseActivity(), LifecycleOwner, HeroesListViewMvc.ViewListener {
     @Inject
     lateinit var viewMvcFactory: ViewMvcFactory
     @Inject
-    lateinit var viewModelFactory: ViewModelFactory
-    @Inject
     lateinit var lifecycleRegistry: LifecycleRegistry
 
-    private lateinit var heroListViewModel: HeroListViewModel
+    private val heroListViewModel: HeroListViewModel by viewModels()
     private lateinit var viewMvc: HeroesListViewMvc
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        getPresentationComponent().inject(this)
 
         viewMvc = viewMvcFactory.newInstance(HeroesListViewMvc::class, null)
         viewMvc.viewListener = this
 
         setContentView(viewMvc.rootView)
 
-        heroListViewModel = ViewModelProvider(this, viewModelFactory)
-                .get(HeroListViewModel::class.java)
         heroListViewModel.heroList.observe(this, viewMvc.heroListObserver)
 
         lifecycleRegistry.addObserver(heroListViewModel)

@@ -14,27 +14,26 @@ import com.example.androidkotlinseed.view.mvc.ViewMvcFactory
 import dagger.Module
 import dagger.Provides
 import dagger.Reusable
+import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ActivityComponent
 
 @Module
-class PresentationModule(private val activity: FragmentActivity) {
+@InstallIn(ActivityComponent::class)
+class PresentationModule {
+    @Provides
+    fun context(activity: FragmentActivity): Context = activity
 
     @Provides
-    fun getFragmentManager(): FragmentManager = activity.supportFragmentManager
+    fun getFragmentManager(activity: FragmentActivity): FragmentManager = activity.supportFragmentManager
 
     @Provides
-    fun getLayoutInflater(): LayoutInflater = LayoutInflater.from(activity)
-
-    @Provides
-    fun getActivity(): Activity = activity
-
-    @Provides
-    fun context(activity: Activity): Context = activity
+    fun getLayoutInflater(activity: Activity): LayoutInflater = LayoutInflater.from(activity)
 
     @Provides
     fun getDialogManager(fragmentManager: FragmentManager): DialogsManager = DialogsManager(fragmentManager)
 
     @Provides
-    fun getLifecycleRegistry(): LifecycleRegistry = LifecycleRegistry(activity)
+    fun getLifecycleRegistry(activity: FragmentActivity): LifecycleRegistry = LifecycleRegistry(activity)
 
     @Provides
     fun getImageUtils(activity: Activity, appRxSchedulers: AppRxSchedulers): ImageUtils =

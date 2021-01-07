@@ -3,15 +3,16 @@ package com.example.androidkotlinseed.view.activities
 import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
-import androidx.lifecycle.ViewModelProvider
+import androidx.activity.viewModels
 import com.example.androidkotlinseed.domain.SuperHero
 import com.example.androidkotlinseed.injection.BaseActivity
 import com.example.androidkotlinseed.mvvm.HeroDetailViewModel
-import com.example.androidkotlinseed.mvvm.ViewModelFactory
 import com.example.androidkotlinseed.view.mvc.ViewMvcFactory
 import com.example.androidkotlinseed.view.mvc.herodetail.HeroDetailViewMvc
+import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
+@AndroidEntryPoint
 class HeroDetailActivity : BaseActivity(), HeroDetailViewMvc.ViewListener {
     companion object {
         const val HERO_EXTRA = "hero_extra"
@@ -19,15 +20,12 @@ class HeroDetailActivity : BaseActivity(), HeroDetailViewMvc.ViewListener {
 
     @Inject
     lateinit var viewMvcFactory: ViewMvcFactory
-    @Inject
-    lateinit var viewModelFactory: ViewModelFactory
 
-    private lateinit var heroDetailViewModel: HeroDetailViewModel
+    private val heroDetailViewModel: HeroDetailViewModel by viewModels()
     private lateinit var viewMvc: HeroDetailViewMvc
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        super.getPresentationComponent().inject(this)
 
         viewMvc = viewMvcFactory.newInstance(HeroDetailViewMvc::class, null)
         viewMvc.viewListener = this
@@ -35,8 +33,6 @@ class HeroDetailActivity : BaseActivity(), HeroDetailViewMvc.ViewListener {
         setContentView(viewMvc.rootView)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        heroDetailViewModel = ViewModelProvider(this, viewModelFactory)
-                .get(HeroDetailViewModel::class.java)
         heroDetailViewModel.registerViewBinder(viewMvc)
         heroDetailViewModel.heroBound.observe(this, viewMvc.heroDetailObserver)
 

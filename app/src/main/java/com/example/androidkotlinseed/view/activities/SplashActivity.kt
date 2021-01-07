@@ -7,11 +7,13 @@ import com.example.androidkotlinseed.R
 import com.example.androidkotlinseed.injection.BaseActivity
 import com.example.androidkotlinseed.repository.DataSource
 import com.example.androidkotlinseed.utils.StartupMessage
+import dagger.hilt.android.AndroidEntryPoint
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import javax.inject.Inject
 
+@AndroidEntryPoint
 open class SplashActivity : BaseActivity() {
     @Inject
     lateinit var dataSource: DataSource
@@ -19,13 +21,12 @@ open class SplashActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        getPresentationComponent().inject(this)
 
         if (dataSource == DataSource.DATA_WS) {
-            Thread(Runnable {
+            Thread {
                 Thread.sleep(1500)
                 EventBus.getDefault().postSticky(StartupMessage(ready = true))
-            }).start()
+            }.start()
         }
     }
 

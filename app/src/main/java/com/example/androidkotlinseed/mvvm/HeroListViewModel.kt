@@ -1,27 +1,27 @@
 package com.example.androidkotlinseed.mvvm
 
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleObserver
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.OnLifecycleEvent
-import androidx.lifecycle.ViewModel
+import androidx.hilt.Assisted
+import androidx.hilt.lifecycle.ViewModelInject
+import androidx.lifecycle.*
 import com.example.androidkotlinseed.domain.SuperHero
 import com.example.androidkotlinseed.domain.usecases.IFetchHeroesUseCase
 import com.example.androidkotlinseed.view.mvc.IViewBinder
 import com.example.androidkotlinseed.view.mvc.heroeslist.HeroesListViewMvc
 import io.reactivex.Flowable
 import io.reactivex.disposables.CompositeDisposable
-import javax.inject.Inject
 
-class HeroListViewModel @Inject constructor(private val fetchHeroesUseCase: IFetchHeroesUseCase)
-    : ViewModel(), LifecycleObserver, IFetchHeroesUseCase.Listener, IViewBinder<HeroesListViewMvc> {
+class HeroListViewModel @ViewModelInject constructor(
+    private val fetchHeroesUseCase: IFetchHeroesUseCase,
+    @Assisted private val savedStateHandle: SavedStateHandle
+) : ViewModel(), LifecycleObserver, IFetchHeroesUseCase.Listener, IViewBinder<HeroesListViewMvc> {
 
     var forceRefresh: Boolean = false
 
-    val heroList: MutableLiveData<List<SuperHero>> by lazy {
-        @Suppress("RemoveExplicitTypeArguments")
+    val heroList: LiveData<List<SuperHero>> get() = _heroList
+    private val _heroList: MutableLiveData<List<SuperHero>> by lazy {
         MutableLiveData<List<SuperHero>>()
     }
+
     override val viewBinders: MutableSet<HeroesListViewMvc> = mutableSetOf()
 
     private val compositeDisposable = CompositeDisposable()
@@ -41,7 +41,7 @@ class HeroListViewModel @Inject constructor(private val fetchHeroesUseCase: IFet
 
     @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
     fun clearList() {
-        heroList.value = mutableListOf()
+        _heroList.value = mutableListOf()
     }
 
     fun fetchHeroesAndNotify() {
@@ -52,13 +52,13 @@ class HeroListViewModel @Inject constructor(private val fetchHeroesUseCase: IFet
             fetchHeroesUseCase.fetchAndNotify()
             this.forceRefresh = false
         } else {
-            heroList.postValue(heroList.value)
+            _heroList.postValue(heroList.value)
         }
     }
 
     //region Usecase Listener
     override fun onFetchHeroesOk(superHeroes: List<SuperHero>) {
-        heroList.value = superHeroes
+        _heroList.value = superHeroes
     }
 
     override fun onFetchHeroesFailed(msg: String) {

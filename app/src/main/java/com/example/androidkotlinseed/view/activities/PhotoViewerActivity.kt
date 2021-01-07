@@ -5,8 +5,10 @@ import android.os.Bundle
 import com.example.androidkotlinseed.injection.BaseActivity
 import com.example.androidkotlinseed.view.mvc.ViewMvcFactory
 import com.example.androidkotlinseed.view.mvc.photoviewer.PhotoViewerMvc
+import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
+@AndroidEntryPoint
 class PhotoViewerActivity : BaseActivity(), PhotoViewerMvc.ViewListener {
     companion object {
         const val EXTRA_IMAGE_URL = "image_url"
@@ -19,7 +21,6 @@ class PhotoViewerActivity : BaseActivity(), PhotoViewerMvc.ViewListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        getPresentationComponent().inject(this)
 
         viewMvc = viewMvcFactory.newInstance(PhotoViewerMvc::class, null)
         viewMvc.viewListener = this

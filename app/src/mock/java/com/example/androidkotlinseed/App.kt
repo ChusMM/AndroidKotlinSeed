@@ -1,14 +1,11 @@
 package com.example.androidkotlinseed
 
-import android.annotation.SuppressLint
+import android.app.Application
 import android.util.Log
-import com.example.androidkotlinseed.injection.application.ApplicationModule
-import com.example.androidkotlinseed.injection.application.DaggerMockApplicationComponent
-import com.example.androidkotlinseed.injection.application.MockApplicationComponent
-import com.example.androidkotlinseed.injection.application.UseCaseModule
 import com.example.androidkotlinseed.repository.mock.MockServerDispatcher
 import com.example.androidkotlinseed.utils.AppRxSchedulers
 import com.example.androidkotlinseed.utils.StartupMessage
+import dagger.hilt.android.HiltAndroidApp
 import io.reactivex.Completable
 import io.reactivex.CompletableOnSubscribe
 import io.reactivex.disposables.Disposable
@@ -16,9 +13,9 @@ import okhttp3.mockwebserver.MockWebServer
 import org.greenrobot.eventbus.EventBus
 import javax.inject.Inject
 
-@SuppressLint("Registered")
-class MockApp : App() {
-    private val TAG = MockApp::class.java.simpleName
+@HiltAndroidApp
+class App : Application() {
+    private val TAG = App::class.java.simpleName
 
     @Inject
     lateinit var appRxSchedulers: AppRxSchedulers
@@ -29,7 +26,6 @@ class MockApp : App() {
 
     override fun onCreate() {
         super.onCreate()
-        (this.getApplicationComponent() as MockApplicationComponent).inject(this)
         disposable = startMockWebServer().subscribe({
             Log.d(TAG, "Mock web server started")
             disposable?.dispose()
@@ -38,13 +34,6 @@ class MockApp : App() {
             Log.d(TAG, error.toString())
             EventBus.getDefault().postSticky(StartupMessage(ready = false))
         })
-    }
-
-    override fun buidAppComponent(): MockApplicationComponent {
-        return DaggerMockApplicationComponent.builder()
-                .applicationModule(ApplicationModule(this))
-                .useCaseModule(UseCaseModule())
-                .build()
     }
 
     override fun onTerminate() {
