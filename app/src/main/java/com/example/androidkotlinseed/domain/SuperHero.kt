@@ -31,13 +31,13 @@ data class SuperHero(@ColumnInfo(name = "name") val name: String,
     }
 
     constructor(source: Parcel) : this(
-            source.readString().let { it } ?: HERO_NO_ATTR,
-            source.readString().let { it } ?: HERO_NO_ATTR,
-            source.readString().let { it } ?: HERO_NO_ATTR,
-            source.readString().let { it } ?: HERO_NO_ATTR,
-            source.readString().let { it } ?: HERO_NO_ATTR,
-            source.readString().let { it } ?: HERO_NO_ATTR,
-            source.readString().let { it } ?: HERO_NO_ATTR
+            source.readString() ?: HERO_NO_ATTR,
+            source.readString() ?: HERO_NO_ATTR,
+            source.readString() ?: HERO_NO_ATTR,
+            source.readString() ?: HERO_NO_ATTR,
+            source.readString() ?: HERO_NO_ATTR,
+            source.readString() ?: HERO_NO_ATTR,
+            source.readString() ?: HERO_NO_ATTR
     )
 
     override fun describeContents() = 0

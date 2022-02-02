@@ -9,13 +9,13 @@ import com.example.androidkotlinseed.utils.AppRxSchedulers
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ApplicationComponent
+import dagger.hilt.components.SingletonComponent
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import okhttp3.mockwebserver.MockWebServer
 import javax.inject.Singleton
 
-@InstallIn(ApplicationComponent::class)
+@InstallIn(SingletonComponent::class)
 @Module
 open class ApplicationModule {
 

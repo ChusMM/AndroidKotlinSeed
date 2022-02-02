@@ -1,18 +1,19 @@
 package com.example.androidkotlinseed.mvvm
 
-import androidx.hilt.Assisted
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
 import com.example.androidkotlinseed.domain.SuperHero
 import com.example.androidkotlinseed.domain.usecases.IFetchHeroesUseCase
 import com.example.androidkotlinseed.view.mvc.IViewBinder
 import com.example.androidkotlinseed.view.mvc.heroeslist.HeroesListViewMvc
+import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.Flowable
 import io.reactivex.disposables.CompositeDisposable
+import javax.inject.Inject
 
-class HeroListViewModel @ViewModelInject constructor(
-    private val fetchHeroesUseCase: IFetchHeroesUseCase,
-    @Assisted private val savedStateHandle: SavedStateHandle
+@HiltViewModel
+class HeroListViewModel @Inject constructor(
+    private val savedStateHandle: SavedStateHandle,
+    private val fetchHeroesUseCase: IFetchHeroesUseCase
 ) : ViewModel(), LifecycleObserver, IFetchHeroesUseCase.Listener, IViewBinder<HeroesListViewMvc> {
 
     var forceRefresh: Boolean = false
