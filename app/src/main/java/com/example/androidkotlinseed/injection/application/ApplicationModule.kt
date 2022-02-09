@@ -2,9 +2,6 @@ package com.example.androidkotlinseed.injection.application
 
 import android.app.Application
 import android.content.Context
-import com.example.androidkotlinseed.domain.usecases.FetchHeroesUseCase
-import com.example.androidkotlinseed.domain.usecases.IFetchHeroesUseCase
-import com.example.androidkotlinseed.repository.DataStrategy
 import com.example.androidkotlinseed.utils.AppRxSchedulers
 import dagger.Module
 import dagger.Provides
@@ -23,7 +20,6 @@ open class ApplicationModule {
     fun getAppContext(application: Application): Context {
         return application.applicationContext
     }
-
     @Singleton
     @Provides
     open fun provideRxSchedulers() = AppRxSchedulers(

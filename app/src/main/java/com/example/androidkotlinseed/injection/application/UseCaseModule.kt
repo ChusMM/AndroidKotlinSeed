@@ -85,7 +85,8 @@ open class UseCaseModule {
 
     @Singleton
     @Provides
-    open fun getCacheManager(superHeroDao: SuperHeroDao, appRxSchedulers: AppRxSchedulers): CacheManager {
+    open fun getCacheManager(superHeroDao: SuperHeroDao,
+                             appRxSchedulers: AppRxSchedulers): CacheManager {
         return CacheManager(superHeroDao, appRxSchedulers)
     }
 
