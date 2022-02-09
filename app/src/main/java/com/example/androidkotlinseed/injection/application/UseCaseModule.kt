@@ -1,9 +1,12 @@
 package com.example.androidkotlinseed.injection.application
 
 import android.app.Application
+import android.content.Context
 import androidx.room.Room
 import com.example.androidkotlinseed.BuildConfig
 import com.example.androidkotlinseed.api.MarvelApi
+import com.example.androidkotlinseed.domain.usecases.FetchHeroesUseCase
+import com.example.androidkotlinseed.domain.usecases.IFetchHeroesUseCase
 import com.example.androidkotlinseed.persistence.AppDataBase
 import com.example.androidkotlinseed.persistence.SuperHeroDao
 import com.example.androidkotlinseed.repository.CacheManager
@@ -92,5 +95,11 @@ open class UseCaseModule {
                              cacheManager: CacheManager,
                              appRxSchedulers: AppRxSchedulers): DataStrategy {
         return DataWebService(marvelApi, dataFactory, appRxSchedulers, cacheManager)
+    }
+
+    @Provides
+    open fun getFetchHeroesUserCase(dataStrategy: DataStrategy, context: Context)
+            : IFetchHeroesUseCase {
+        return FetchHeroesUseCase(dataStrategy, context)
     }
 }

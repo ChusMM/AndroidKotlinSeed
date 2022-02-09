@@ -24,12 +24,6 @@ open class ApplicationModule {
         return application.applicationContext
     }
 
-    @Provides
-    open fun getFetchHeroesUserCase(dataStrategy: DataStrategy, context: Context)
-            : IFetchHeroesUseCase {
-        return FetchHeroesUseCase(dataStrategy, context)
-    }
-
     @Singleton
     @Provides
     open fun provideRxSchedulers() = AppRxSchedulers(
